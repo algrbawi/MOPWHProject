@@ -1,4 +1,5 @@
 ﻿using aspnetcore.ntier.DAL.DataContext;
+using aspnetcore.ntier.DAL.Entities;
 using aspnetcore.ntier.DAL.Repositories;
 using aspnetcore.ntier.DAL.Repositories.IRepositories;
 using Microsoft.EntityFrameworkCore;
@@ -13,9 +14,10 @@ public static class DependencyInjection
     {
         services.AddDbContext<AspNetCoreNTierDbContext>(options =>
         {
-            options.UseSqlite(Configuration.GetConnectionString("DefaultConnection"));
+            options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
         });
 
         services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
     }
 }

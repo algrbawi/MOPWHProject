@@ -11,7 +11,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-namespace aspnetcore.ntier.BLL.Services;
+namespace aspnetcore.ntier.BLL.Services.Apis;
 
 public class AuthService : IAuthService
 {
@@ -33,14 +33,14 @@ public class AuthService : IAuthService
     public async Task<UserToReturnDTO> LoginAsync(UserToLoginDTO userToLoginDTO)
     {
         var user = await _userRepository.GetAsync(
-            u => u.Username == userToLoginDTO.Username.ToLower() && u.Password == userToLoginDTO.Password);
+            u => u.Email == userToLoginDTO.Username.ToLower() && u.Password == userToLoginDTO.Password);
 
         if (user == null)
             throw new UserNotFoundException();
 
         var userToReturn = _mapper.Map<UserToReturnDTO>(user);
-        userToReturn.Token = GenerateToken(user.UserId, user.Username);
-        userToReturn.RefreshToken = GenerateToken(user.UserId, user.Username, true);
+        userToReturn.Token = GenerateToken(user.Id, user.Email);
+        userToReturn.RefreshToken = GenerateToken(user.Id, user.Email, true);
 
         return userToReturn;
     }
@@ -49,11 +49,11 @@ public class AuthService : IAuthService
     {
         userToRegisterDTO.Username = userToRegisterDTO.Username.ToLower();
 
-        var addedUser = await _userRepository.AddAsync(_mapper.Map<User>(userToRegisterDTO));
+        var addedUser = await _userRepository.AddAsync(_mapper.Map<ApiUser>(userToRegisterDTO));
 
         var userToReturn = _mapper.Map<UserToReturnDTO>(addedUser);
-        userToReturn.Token = GenerateToken(addedUser.UserId, addedUser.Username);
-        userToReturn.RefreshToken = GenerateToken(addedUser.UserId, addedUser.Username, true);
+        userToReturn.Token = GenerateToken(addedUser.Id, addedUser.Email);
+        userToReturn.RefreshToken = GenerateToken(addedUser.Id, addedUser.Email, true);
 
         return userToReturn;
     }

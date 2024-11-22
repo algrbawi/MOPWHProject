@@ -1,11 +1,14 @@
 ﻿using aspnetcore.ntier.BLL.Services;
+using aspnetcore.ntier.BLL.Services.Apis;
 using aspnetcore.ntier.BLL.Services.IServices;
 using aspnetcore.ntier.BLL.Utilities.AutoMapperProfiles;
+using aspnetcore.ntier.BLL.Utilities.ModelStateValidation;
 using aspnetcore.ntier.BLL.Utilities.Swagger;
 using aspnetcore.ntier.BLL.Validators;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.Extensions.Configuration;
@@ -21,6 +24,11 @@ public static class DependencyInjection
         services.AddAutoMapper(typeof(AutoMapperProfiles));
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<IAuthService, AuthService>();
+        services.AddScoped<IAccountService, AccountService>();
+        services.AddScoped<ModelStateValidation>();
+
+
+
 
         services.AddFluentValidationAutoValidation();
         services.AddValidatorsFromAssemblyContaining<UserToLoginDTOValidator>();

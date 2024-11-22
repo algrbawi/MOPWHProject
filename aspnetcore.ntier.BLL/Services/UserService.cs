@@ -32,7 +32,7 @@ public class UserService : IUserService
     public async Task<UserDTO> GetUserAsync(int userId, CancellationToken cancellationToken = default)
     {
         _logger.LogInformation("User with userId = {UserId} was requested", userId);
-        var userToReturn = await _userRepository.GetAsync(x => x.UserId == userId, cancellationToken);
+        var userToReturn = await _userRepository.GetAsync(x => x.Id == userId, cancellationToken);
 
         if (userToReturn is null)
         {
@@ -46,7 +46,7 @@ public class UserService : IUserService
     public async Task<UserDTO> AddUserAsync(UserToAddDTO userToAddDTO)
     {
         userToAddDTO.Username = userToAddDTO.Username.ToLower();
-        var addedUser = await _userRepository.AddAsync(_mapper.Map<User>(userToAddDTO));
+        var addedUser = await _userRepository.AddAsync(_mapper.Map<ApiUser>(userToAddDTO));
 
         return _mapper.Map<UserDTO>(addedUser);
     }
@@ -54,7 +54,7 @@ public class UserService : IUserService
     public async Task<UserDTO> UpdateUserAsync(UserToUpdateDTO userToUpdateDTO)
     {
         userToUpdateDTO.Username = userToUpdateDTO.Username.ToLower();
-        var user = await _userRepository.GetAsync(x => x.UserId == userToUpdateDTO.UserId);
+        var user = await _userRepository.GetAsync(x => x.Id == userToUpdateDTO.UserId);
 
         if (user is null)
         {
@@ -62,7 +62,7 @@ public class UserService : IUserService
             throw new UserNotFoundException();
         }
 
-        var userToUpdate = _mapper.Map<User>(userToUpdateDTO);
+        var userToUpdate = _mapper.Map<ApiUser>(userToUpdateDTO);
 
         _logger.LogInformation("User with these properties: {@UserToUpdate} has been updated", userToUpdateDTO);
 
@@ -71,7 +71,7 @@ public class UserService : IUserService
 
     public async Task DeleteUserAsync(int userId)
     {
-        var userToDelete = await _userRepository.GetAsync(x => x.UserId == userId);
+        var userToDelete = await _userRepository.GetAsync(x => x.Id == userId);
 
         if (userToDelete is null)
         {

@@ -2,7 +2,7 @@
 
 namespace aspnetcore.ntier.DAL.Repositories.IRepositories;
 
-public interface IUserRepository : IGenericRepository<User>
+public interface IUserRepository : IGenericRepository<ApiUser>
 {
-    Task<User> UpdateUserAsync(User user);
+    Task<ApiUser> UpdateUserAsync(ApiUser user);
 }

@@ -7,19 +7,28 @@ public class AspNetCoreNTierDbContext : DbContext
 {
     public AspNetCoreNTierDbContext(DbContextOptions<AspNetCoreNTierDbContext> options) : base(options) { }
 
-    public DbSet<User> Users { get; set; }
+    public DbSet<ApiUser> ApiUsers { get; set; }
+    public DbSet<DashboardUser> DashboardUsers { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<User>().HasData(
-             new User
+        modelBuilder.Entity<ApiUser>().HasData(
+             new ApiUser
              {
-                 UserId = 1,
-                 Username = "johndoe",
+                 Id = 1,
+                 Email = "admin@admin.com",
                  Password = "123",
-                 Name = "John",
-                 Surname = "Doe",
              }
          );
+
+        modelBuilder.Entity<DashboardUser>().HasData(
+        new DashboardUser
+        {
+            Id = 1,
+            Email = "admin@admin.com",
+            Password = "123",
+            Name = "Admin",
+        }
+    );
     }
 }

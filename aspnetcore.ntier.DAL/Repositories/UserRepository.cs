@@ -4,7 +4,7 @@ using aspnetcore.ntier.DAL.Repositories.IRepositories;
 
 namespace aspnetcore.ntier.DAL.Repositories;
 
-public class UserRepository : GenericRepository<User>, IUserRepository
+public class UserRepository : GenericRepository<ApiUser>, IUserRepository
 {
     private readonly AspNetCoreNTierDbContext _aspNetCoreNTierDbContext;
     public UserRepository(AspNetCoreNTierDbContext aspNetCoreNTierDbContext) : base(aspNetCoreNTierDbContext)
@@ -12,7 +12,7 @@ public class UserRepository : GenericRepository<User>, IUserRepository
         _aspNetCoreNTierDbContext = aspNetCoreNTierDbContext;
     }
 
-    public async Task<User> UpdateUserAsync(User user)
+    public async Task<ApiUser> UpdateUserAsync(ApiUser user)
     {
         _ = _aspNetCoreNTierDbContext.Update(user);
 
