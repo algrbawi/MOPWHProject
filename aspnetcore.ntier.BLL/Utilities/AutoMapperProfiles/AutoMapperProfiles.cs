@@ -10,11 +10,11 @@ public static class AutoMapperProfiles
     {
         public AutoMapperProfile()
         {
-            CreateMap<ApiUser, UserDTO>().ReverseMap();
-            CreateMap<ApiUser, UserToAddDTO>().ReverseMap();
-            CreateMap<ApiUser, UserToUpdateDTO>().ReverseMap();
-            CreateMap<ApiUser, UserToRegisterDTO>().ReverseMap();
-            CreateMap<ApiUser, UserToReturnDTO>().ReverseMap();
+            //CreateMap<ApiUser, UserDTO>().ReverseMap();
+            //CreateMap<ApiUser, UserToAddDTO>().ReverseMap();
+            //CreateMap<ApiUser, UserToUpdateDTO>().ReverseMap();
+            //CreateMap<ApiUser, UserToRegisterDTO>().ReverseMap();
+            //CreateMap<ApiUser, UserToReturnDTO>().ReverseMap();
         }
     }
 }

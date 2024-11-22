@@ -12,6 +12,7 @@ using aspnetcore.ntier.DTO.DTOs;
 using System.Net;
 using aspnetcore.ntier.DAL.Repositories.IRepositories;
 using aspnetcore.ntier.DAL.Entities;
+using aspnetcore.ntier.DAL.Password;
 
 namespace aspnetcore.ntier.BLL.Services
 {
@@ -28,16 +29,20 @@ namespace aspnetcore.ntier.BLL.Services
 
         public async Task<LoginResponseDto> Login(string Email, string Password, bool IsPersistent)
         {
-            var user = await _dashboardUser.GetAsync(x => x.Email == Email && x.Password == Password);
+            var user = await _dashboardUser.GetAsync(x => x.Email == Email);
+
             var result = new LoginResponseDto()
             {
                 StatusCode = HttpStatusCode.OK
             };
-            if (user is null)
+            var isValidPassword = HashPassword.VerifyPasswordHash(Password, user?.PasswordHash, user?.PasswordSalt);
+
+            if (user is null || !isValidPassword)
             {
                 result.ErrorMessage = "invalid credentials";
                 result.StatusCode = HttpStatusCode.BadRequest;
             }
+
             else
             {
                 var claims = new List<Claim>{

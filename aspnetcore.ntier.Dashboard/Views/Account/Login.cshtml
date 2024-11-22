@@ -20,14 +20,14 @@
                             <div class="row gy-2 overflow-hidden">
                                 <div class="col-12">
                                     <div class="form-floating mb-3">
-                                        <input asp-for="Email" class="form-control" placeholder="name@example.com" required>
+                                        <input asp-for="Email" class="form-control" placeholder="name@example.com">
                                         <label for="email" class="form-label">Email</label>
                                     </div>
                                     <span asp-validation-for="Email" class="text-danger"></span>
                                 </div>
                                 <div class="col-12">
                                     <div class="form-floating mb-3">
-                                        <input type="password" class="form-control" asp-for="Password" placeholder="Password" required>
+                                        <input type="password" class="form-control" asp-for="Password" placeholder="Password">
                                         <label for="password" class="form-label">Password</label>
                                     </div>
                                     <span asp-validation-for="Password" class="text-danger"></span>
@@ -42,6 +42,8 @@
                                         </div>
                                         <a href="#!" class="link-primary text-decoration-none">Forgot password?</a>
                                     </div>
+                                </div>
+                                <div class="text-danger" asp-validation-summary="ModelOnly">
                                 </div>
                                 <div class="col-12">
                                     <div class="d-grid my-3">

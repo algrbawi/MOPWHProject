@@ -35,7 +35,7 @@ namespace aspnetcore.ntier.Dashboard.Controllers
                 {
                     return Redirect(model.ReturnUrl);
                 }
-                _modelStateValidation.ModelStateErrors(ModelState, new Dictionary<string, string> { { nameof(model.Email), result.ErrorMessage } });
+                _modelStateValidation.ModelStateErrors(ModelState, new Dictionary<string, string> { { "", result.ErrorMessage } });
 
             }
             return View(model);

@@ -24,4 +24,8 @@
     <ProjectReference Include="..\aspnetcore.ntier.BLL\aspnetcore.ntier.BLL.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Models\Api\" />
+  </ItemGroup>
+
 </Project>

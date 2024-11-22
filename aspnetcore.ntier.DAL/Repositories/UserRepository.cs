@@ -17,7 +17,7 @@ public class UserRepository : GenericRepository<ApiUser>, IUserRepository
         _ = _aspNetCoreNTierDbContext.Update(user);
 
         // Ignore password property update for user
-        _aspNetCoreNTierDbContext.Entry(user).Property(x => x.Password).IsModified = false;
+        _aspNetCoreNTierDbContext.Entry(user).Property(x => x.PasswordHash).IsModified = false;
 
         await _aspNetCoreNTierDbContext.SaveChangesAsync();
         return user;

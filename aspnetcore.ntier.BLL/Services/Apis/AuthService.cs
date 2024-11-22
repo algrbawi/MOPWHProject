@@ -2,6 +2,7 @@
 using aspnetcore.ntier.BLL.Utilities.CustomExceptions;
 using aspnetcore.ntier.BLL.Utilities.Settings;
 using aspnetcore.ntier.DAL.Entities;
+using aspnetcore.ntier.DAL.Password;
 using aspnetcore.ntier.DAL.Repositories.IRepositories;
 using aspnetcore.ntier.DTO.DTOs;
 using AutoMapper;
@@ -15,32 +16,35 @@ namespace aspnetcore.ntier.BLL.Services.Apis;
 
 public class AuthService : IAuthService
 {
-    private readonly IUserRepository _userRepository;
+    private readonly IGenericRepository<ApiUser> _apiUserRepository;
     private readonly IMapper _mapper;
     private readonly JwtSettings _jwtSettings;
 
     public AuthService(
-        IUserRepository userRepository,
+        IGenericRepository<ApiUser> userRepository,
 
         IMapper mapper,
         IOptions<JwtSettings> jwtSettings)
     {
-        _userRepository = userRepository;
+        _apiUserRepository = userRepository;
         _mapper = mapper;
         _jwtSettings = jwtSettings.Value;
     }
 
     public async Task<UserToReturnDTO> LoginAsync(UserToLoginDTO userToLoginDTO)
     {
-        var user = await _userRepository.GetAsync(
-            u => u.Email == userToLoginDTO.Username.ToLower() && u.Password == userToLoginDTO.Password);
+        var user = await _apiUserRepository.GetAsync(
+            u => u.Email == userToLoginDTO.Username.ToLower());
 
-        if (user == null)
+        var isValidPassword = HashPassword.VerifyPasswordHash(userToLoginDTO.Password, user?.PasswordHash, user?.PasswordSalt);
+
+
+        if (user == null || !isValidPassword)
             throw new UserNotFoundException();
 
-        var userToReturn = _mapper.Map<UserToReturnDTO>(user);
+        var userToReturn = new UserToReturnDTO();
         userToReturn.Token = GenerateToken(user.Id, user.Email);
-        userToReturn.RefreshToken = GenerateToken(user.Id, user.Email, true);
+        //userToReturn.RefreshToken = GenerateToken(user.Id, user.Email, true);
 
         return userToReturn;
     }
@@ -49,11 +53,11 @@ public class AuthService : IAuthService
     {
         userToRegisterDTO.Username = userToRegisterDTO.Username.ToLower();
 
-        var addedUser = await _userRepository.AddAsync(_mapper.Map<ApiUser>(userToRegisterDTO));
+        var addedUser = await _apiUserRepository.AddAsync(_mapper.Map<ApiUser>(userToRegisterDTO));
 
         var userToReturn = _mapper.Map<UserToReturnDTO>(addedUser);
         userToReturn.Token = GenerateToken(addedUser.Id, addedUser.Email);
-        userToReturn.RefreshToken = GenerateToken(addedUser.Id, addedUser.Email, true);
+        //userToReturn.RefreshToken = GenerateToken(addedUser.Id, addedUser.Email, true);
 
         return userToReturn;
     }
