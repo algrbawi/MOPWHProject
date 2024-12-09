@@ -32,7 +32,7 @@ builder.Services
 builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection(nameof(JwtSettings)));
 builder.Services.RegisterDALDependencies(builder.Configuration);
 builder.Services.RegisterBLLDependencies(builder.Configuration);
-
+builder.Services.AddHttpContextAccessor();
 builder.Host.UseSerilog((context, configuration) =>
     configuration.ReadFrom.Configuration(context.Configuration));
 
@@ -49,6 +49,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
 
 app.UseSwagger();
 app.UseSwaggerUI(c =>
