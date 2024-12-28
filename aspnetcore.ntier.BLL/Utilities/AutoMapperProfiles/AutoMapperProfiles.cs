@@ -20,9 +20,6 @@ public class AutoMapperProfile : Profile
         CreateMap<ProductsTblDto, ProductsTbl>();
         CreateMap<UsersTblDto, UsersTbl>();
         CreateMap<DriversTblDto, DriversTbl>();
-
-
-
-
+        CreateMap<NationTblDto, NationTbl>();
     }
 }
