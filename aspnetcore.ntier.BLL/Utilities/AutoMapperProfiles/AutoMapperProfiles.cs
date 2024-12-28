@@ -16,6 +16,7 @@ public class AutoMapperProfile : Profile
         //CreateMap<WeightTbl, WeightTblDto>();
         CreateMap<WeightTblDto, WeightTbl>();
         CreateMap<TrucksTblDto, TrucksTbl>();
+        CreateMap<ProductsTblDto, ProductsTbl>();
 
 
     }
