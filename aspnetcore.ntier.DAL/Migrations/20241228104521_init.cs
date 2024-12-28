@@ -27,6 +27,56 @@ namespace aspnetcore.ntier.DAL.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "DashboardUsers",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PasswordHash = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
+                    PasswordSalt = table.Column<byte[]>(type: "varbinary(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DashboardUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Site_TBL",
+                columns: table => new
+                {
+                    Site_ID = table.Column<decimal>(type: "numeric(18,0)", nullable: false),
+                    Site_Code = table.Column<decimal>(type: "numeric(18,0)", nullable: true),
+                    Site_Name = table.Column<string>(type: "varchar(max)", unicode: false, nullable: true),
+                    Site_Location = table.Column<string>(type: "varchar(max)", unicode: false, nullable: true),
+                    Site_Title = table.Column<string>(type: "varchar(max)", unicode: false, nullable: true),
+                    Site_State = table.Column<bool>(type: "bit", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Site_TBL", x => x.Site_ID);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "USER_P_Setting_TBL",
+                columns: table => new
+                {
+                    USER_P_ID = table.Column<decimal>(type: "numeric(18,0)", nullable: false),
+                    USER_P_Code = table.Column<decimal>(type: "numeric(18,0)", nullable: true),
+                    USER_P_Form = table.Column<string>(type: "varchar(max)", unicode: false, nullable: true),
+                    USER_P_Name1 = table.Column<string>(type: "varchar(max)", unicode: false, nullable: true),
+                    USER_P_Name2 = table.Column<string>(type: "varchar(max)", unicode: false, nullable: true),
+                    USER_P_State = table.Column<bool>(type: "bit", nullable: true),
+                    USER_P_Note = table.Column<string>(type: "varchar(max)", unicode: false, nullable: true),
+                    Site_ID = table.Column<decimal>(type: "numeric(18,0)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_USER_P_Setting_TBL", x => x.USER_P_ID);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Camera_TBL",
                 columns: table => new
                 {
@@ -43,6 +93,38 @@ namespace aspnetcore.ntier.DAL.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Camera_TBL", x => x.CamID);
+                    table.ForeignKey(
+                        name: "FK_Camera_TBL_Site_TBL",
+                        column: x => x.Site_ID,
+                        principalTable: "Site_TBL",
+                        principalColumn: "Site_ID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "COM_SCREEN_SETTING",
+                columns: table => new
+                {
+                    COM_ID = table.Column<decimal>(type: "numeric(20,0)", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    COM_NAME = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    BPS = table.Column<int>(type: "int", nullable: true),
+                    DB = table.Column<int>(type: "int", nullable: true),
+                    PARITY = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    SB = table.Column<int>(type: "int", nullable: true),
+                    HDSH = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    SStart = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    SEND = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    SITE_ID = table.Column<decimal>(type: "numeric(18,0)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_COM_SCREEN_SETTING", x => x.COM_ID);
+                    table.ForeignKey(
+                        name: "FK_COM_SCREEN_SETTING_Site_TBL",
+                        column: x => x.SITE_ID,
+                        principalTable: "Site_TBL",
+                        principalColumn: "Site_ID");
                 });
 
             migrationBuilder.CreateTable(
@@ -64,22 +146,12 @@ namespace aspnetcore.ntier.DAL.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_COM_SETTING_TBL_1", x => x.COM_ID);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "DashboardUsers",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PasswordHash = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
-                    PasswordSalt = table.Column<byte[]>(type: "varbinary(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_DashboardUsers", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_COM_SETTING_TBL_Site_TBL",
+                        column: x => x.SITE_ID,
+                        principalTable: "Site_TBL",
+                        principalColumn: "Site_ID",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -95,6 +167,12 @@ namespace aspnetcore.ntier.DAL.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Drivers_TBL", x => x.Driver_ID);
+                    table.ForeignKey(
+                        name: "FK_Drivers_TBL_Site_TBL",
+                        column: x => x.Site_ID,
+                        principalTable: "Site_TBL",
+                        principalColumn: "Site_ID",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -110,22 +188,12 @@ namespace aspnetcore.ntier.DAL.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Nation_TBL", x => x.Nation_ID);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Site_TBL",
-                columns: table => new
-                {
-                    Site_ID = table.Column<decimal>(type: "numeric(18,0)", nullable: false),
-                    Site_Code = table.Column<decimal>(type: "numeric(18,0)", nullable: true),
-                    Site_Name = table.Column<string>(type: "varchar(max)", unicode: false, nullable: true),
-                    Site_Location = table.Column<string>(type: "varchar(max)", unicode: false, nullable: true),
-                    Site_Title = table.Column<string>(type: "varchar(max)", unicode: false, nullable: true),
-                    Site_State = table.Column<bool>(type: "bit", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Site_TBL", x => x.Site_ID);
+                    table.ForeignKey(
+                        name: "FK_Nation_TBL_Site_TBL",
+                        column: x => x.Site_ID,
+                        principalTable: "Site_TBL",
+                        principalColumn: "Site_ID",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -290,6 +358,68 @@ namespace aspnetcore.ntier.DAL.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Log_TBL",
+                columns: table => new
+                {
+                    Log_ID = table.Column<decimal>(type: "numeric(18,0)", nullable: false),
+                    Log_Code = table.Column<decimal>(type: "numeric(18,0)", nullable: true),
+                    Log_Name = table.Column<string>(type: "varchar(max)", unicode: false, nullable: true),
+                    Log_Date = table.Column<DateOnly>(type: "date", nullable: true),
+                    Log_Time = table.Column<TimeOnly>(type: "time", nullable: true),
+                    Log_Trans = table.Column<string>(type: "varchar(max)", unicode: false, nullable: true),
+                    User_ID = table.Column<decimal>(type: "numeric(18,0)", nullable: true),
+                    Site_ID = table.Column<decimal>(type: "numeric(18,0)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Log_TBL", x => x.Log_ID);
+                    table.ForeignKey(
+                        name: "FK_Log_TBL_Site_TBL",
+                        column: x => x.Site_ID,
+                        principalTable: "Site_TBL",
+                        principalColumn: "Site_ID");
+                    table.ForeignKey(
+                        name: "FK_Log_TBL_Users_TBL",
+                        column: x => x.User_ID,
+                        principalTable: "Users_TBL",
+                        principalColumn: "User_ID");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Users_Per_TBL",
+                columns: table => new
+                {
+                    UP_ID = table.Column<decimal>(type: "numeric(18,0)", nullable: false),
+                    UP_Code = table.Column<decimal>(type: "numeric(18,0)", nullable: true),
+                    UP_State = table.Column<bool>(type: "bit", nullable: true),
+                    UP_Note = table.Column<string>(type: "varchar(max)", unicode: false, nullable: true),
+                    USER_P_ID = table.Column<decimal>(type: "numeric(18,0)", nullable: true),
+                    User_ID = table.Column<decimal>(type: "numeric(18,0)", nullable: true),
+                    Site_ID = table.Column<decimal>(type: "numeric(18,0)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Users_Per_TBL", x => x.UP_ID);
+                    table.ForeignKey(
+                        name: "FK_Users_Per_TBL_Site_TBL",
+                        column: x => x.Site_ID,
+                        principalTable: "Site_TBL",
+                        principalColumn: "Site_ID");
+                    table.ForeignKey(
+                        name: "FK_Users_Per_TBL_USER_P_Setting_TBL",
+                        column: x => x.USER_P_ID,
+                        principalTable: "USER_P_Setting_TBL",
+                        principalColumn: "USER_P_ID",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Users_Per_TBL_Users_TBL",
+                        column: x => x.User_ID,
+                        principalTable: "Users_TBL",
+                        principalColumn: "User_ID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Weight_TBL",
                 columns: table => new
                 {
@@ -330,49 +460,61 @@ namespace aspnetcore.ntier.DAL.Migrations
                         principalTable: "Nation_TBL",
                         principalColumn: "Nation_ID");
                     table.ForeignKey(
-                        name: "FK_Weight_TBL_Trucks_TBL",
-                        column: x => x.Truck_Num,
-                        principalTable: "Trucks_TBL",
-                        principalColumn: "Truck_Num");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Log_TBL",
-                columns: table => new
-                {
-                    Log_ID = table.Column<decimal>(type: "numeric(18,0)", nullable: false),
-                    Log_Code = table.Column<decimal>(type: "numeric(18,0)", nullable: true),
-                    Log_Name = table.Column<string>(type: "varchar(max)", unicode: false, nullable: true),
-                    Log_Date = table.Column<DateOnly>(type: "date", nullable: true),
-                    Log_Time = table.Column<TimeOnly>(type: "time", nullable: true),
-                    Log_Trans = table.Column<string>(type: "varchar(max)", unicode: false, nullable: true),
-                    User_ID = table.Column<decimal>(type: "numeric(18,0)", nullable: true),
-                    Site_ID = table.Column<decimal>(type: "numeric(18,0)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Log_TBL", x => x.Log_ID);
+                        name: "FK_Weight_TBL_Products_TBL",
+                        column: x => x.Product_ID,
+                        principalTable: "Products_TBL",
+                        principalColumn: "Product_ID");
                     table.ForeignKey(
-                        name: "FK_Log_TBL_Site_TBL",
+                        name: "FK_Weight_TBL_Site_TBL",
                         column: x => x.Site_ID,
                         principalTable: "Site_TBL",
                         principalColumn: "Site_ID");
                     table.ForeignKey(
-                        name: "FK_Log_TBL_Users_TBL",
+                        name: "FK_Weight_TBL_Trucks_TBL",
+                        column: x => x.Truck_Num,
+                        principalTable: "Trucks_TBL",
+                        principalColumn: "Truck_Num");
+                    table.ForeignKey(
+                        name: "FK_Weight_TBL_Users_TBL",
                         column: x => x.User_ID,
                         principalTable: "Users_TBL",
                         principalColumn: "User_ID");
+                    table.ForeignKey(
+                        name: "FK_Weight_TBL_Weight_Class_TBL",
+                        column: x => x.W_Class_ID,
+                        principalTable: "Weight_Class_TBL",
+                        principalColumn: "W_Class_ID");
                 });
 
             migrationBuilder.InsertData(
                 table: "ApiUsers",
                 columns: new[] { "Id", "Email", "PasswordHash", "PasswordSalt" },
-                values: new object[] { 1, "admin@admin.com", new byte[] { 208, 107, 208, 69, 252, 12, 249, 77, 247, 139, 8, 120, 37, 236, 205, 101, 232, 125, 175, 76, 222, 78, 125, 135, 36, 101, 217, 12, 37, 56, 145, 81, 233, 180, 246, 56, 167, 223, 103, 67, 39, 81, 234, 210, 236, 124, 235, 75, 22, 53, 213, 142, 80, 125, 21, 153, 25, 183, 254, 209, 142, 221, 139, 50 }, new byte[] { 190, 153, 254, 250, 174, 226, 243, 54, 202, 221, 22, 66, 74, 106, 217, 24, 251, 193, 95, 3, 71, 220, 38, 48, 86, 155, 145, 195, 27, 80, 200, 127, 61, 159, 186, 82, 209, 112, 193, 48, 32, 106, 201, 79, 245, 160, 58, 149, 226, 126, 14, 148, 92, 19, 88, 9, 252, 155, 99, 148, 80, 158, 220, 54, 65, 155, 62, 27, 61, 182, 147, 69, 153, 210, 41, 138, 142, 183, 240, 172, 49, 161, 104, 101, 171, 19, 228, 20, 120, 81, 158, 105, 117, 243, 116, 112, 78, 190, 219, 218, 189, 51, 168, 126, 146, 191, 190, 29, 45, 217, 87, 18, 64, 11, 28, 26, 25, 83, 185, 65, 178, 39, 244, 71, 88, 67, 54, 147 } });
+                values: new object[] { 1, "admin@admin.com", new byte[] { 180, 241, 198, 127, 205, 166, 113, 167, 117, 152, 13, 42, 187, 128, 45, 180, 44, 196, 104, 129, 31, 24, 226, 30, 227, 148, 189, 31, 150, 158, 227, 226, 12, 225, 246, 109, 57, 100, 75, 15, 197, 95, 242, 200, 229, 63, 129, 163, 81, 26, 183, 45, 220, 84, 78, 175, 240, 123, 116, 86, 85, 51, 111, 104 }, new byte[] { 197, 233, 155, 122, 47, 174, 155, 20, 112, 54, 61, 134, 33, 131, 168, 115, 115, 219, 72, 132, 104, 135, 58, 12, 76, 2, 151, 78, 56, 224, 172, 182, 115, 11, 40, 199, 233, 92, 73, 235, 220, 121, 45, 60, 56, 196, 114, 222, 86, 233, 16, 142, 57, 30, 138, 156, 60, 46, 159, 82, 239, 222, 196, 184, 224, 200, 150, 140, 24, 254, 143, 223, 4, 139, 238, 59, 103, 202, 138, 181, 144, 138, 90, 106, 238, 8, 170, 108, 135, 163, 222, 181, 112, 150, 54, 159, 71, 100, 102, 48, 103, 170, 66, 84, 176, 196, 109, 249, 193, 108, 112, 63, 189, 178, 185, 77, 14, 155, 80, 198, 82, 68, 158, 233, 112, 94, 85, 72 } });
 
             migrationBuilder.InsertData(
                 table: "DashboardUsers",
                 columns: new[] { "Id", "Email", "Name", "PasswordHash", "PasswordSalt" },
-                values: new object[] { 1, "admin@admin.com", "Admin", new byte[] { 208, 107, 208, 69, 252, 12, 249, 77, 247, 139, 8, 120, 37, 236, 205, 101, 232, 125, 175, 76, 222, 78, 125, 135, 36, 101, 217, 12, 37, 56, 145, 81, 233, 180, 246, 56, 167, 223, 103, 67, 39, 81, 234, 210, 236, 124, 235, 75, 22, 53, 213, 142, 80, 125, 21, 153, 25, 183, 254, 209, 142, 221, 139, 50 }, new byte[] { 190, 153, 254, 250, 174, 226, 243, 54, 202, 221, 22, 66, 74, 106, 217, 24, 251, 193, 95, 3, 71, 220, 38, 48, 86, 155, 145, 195, 27, 80, 200, 127, 61, 159, 186, 82, 209, 112, 193, 48, 32, 106, 201, 79, 245, 160, 58, 149, 226, 126, 14, 148, 92, 19, 88, 9, 252, 155, 99, 148, 80, 158, 220, 54, 65, 155, 62, 27, 61, 182, 147, 69, 153, 210, 41, 138, 142, 183, 240, 172, 49, 161, 104, 101, 171, 19, 228, 20, 120, 81, 158, 105, 117, 243, 116, 112, 78, 190, 219, 218, 189, 51, 168, 126, 146, 191, 190, 29, 45, 217, 87, 18, 64, 11, 28, 26, 25, 83, 185, 65, 178, 39, 244, 71, 88, 67, 54, 147 } });
+                values: new object[] { 1, "admin@admin.com", "Admin", new byte[] { 180, 241, 198, 127, 205, 166, 113, 167, 117, 152, 13, 42, 187, 128, 45, 180, 44, 196, 104, 129, 31, 24, 226, 30, 227, 148, 189, 31, 150, 158, 227, 226, 12, 225, 246, 109, 57, 100, 75, 15, 197, 95, 242, 200, 229, 63, 129, 163, 81, 26, 183, 45, 220, 84, 78, 175, 240, 123, 116, 86, 85, 51, 111, 104 }, new byte[] { 197, 233, 155, 122, 47, 174, 155, 20, 112, 54, 61, 134, 33, 131, 168, 115, 115, 219, 72, 132, 104, 135, 58, 12, 76, 2, 151, 78, 56, 224, 172, 182, 115, 11, 40, 199, 233, 92, 73, 235, 220, 121, 45, 60, 56, 196, 114, 222, 86, 233, 16, 142, 57, 30, 138, 156, 60, 46, 159, 82, 239, 222, 196, 184, 224, 200, 150, 140, 24, 254, 143, 223, 4, 139, 238, 59, 103, 202, 138, 181, 144, 138, 90, 106, 238, 8, 170, 108, 135, 163, 222, 181, 112, 150, 54, 159, 71, 100, 102, 48, 103, 170, 66, 84, 176, 196, 109, 249, 193, 108, 112, 63, 189, 178, 185, 77, 14, 155, 80, 198, 82, 68, 158, 233, 112, 94, 85, 72 } });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Camera_TBL_Site_ID",
+                table: "Camera_TBL",
+                column: "Site_ID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_COM_SCREEN_SETTING_SITE_ID",
+                table: "COM_SCREEN_SETTING",
+                column: "SITE_ID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_COM_SETTING_TBL_SITE_ID",
+                table: "COM_SETTING_TBL",
+                column: "SITE_ID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Drivers_TBL_Site_ID",
+                table: "Drivers_TBL",
+                column: "Site_ID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Log_TBL_Site_ID",
@@ -383,6 +525,11 @@ namespace aspnetcore.ntier.DAL.Migrations
                 name: "IX_Log_TBL_User_ID",
                 table: "Log_TBL",
                 column: "User_ID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Nation_TBL_Site_ID",
+                table: "Nation_TBL",
+                column: "Site_ID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Pictures_TBL_Site_ID",
@@ -417,6 +564,21 @@ namespace aspnetcore.ntier.DAL.Migrations
                 column: "Site_ID");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Users_Per_TBL_Site_ID",
+                table: "Users_Per_TBL",
+                column: "Site_ID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_Per_TBL_User_ID",
+                table: "Users_Per_TBL",
+                column: "User_ID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_Per_TBL_USER_P_ID",
+                table: "Users_Per_TBL",
+                column: "USER_P_ID");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Users_TBL_Site_ID",
                 table: "Users_TBL",
                 column: "Site_ID");
@@ -425,6 +587,11 @@ namespace aspnetcore.ntier.DAL.Migrations
                 name: "IX_Weight_Class_TBL_Site_ID",
                 table: "Weight_Class_TBL",
                 column: "Site_ID");
+
+            migrationBuilder.CreateIndex(
+                name: "IN_DATE_INDEX",
+                table: "Weight_TBL",
+                column: "In_Date");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Weight_TBL_Driver_ID",
@@ -437,9 +604,29 @@ namespace aspnetcore.ntier.DAL.Migrations
                 column: "Nation_ID");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Weight_TBL_Product_ID",
+                table: "Weight_TBL",
+                column: "Product_ID");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Weight_TBL_Truck_Num",
                 table: "Weight_TBL",
                 column: "Truck_Num");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Weight_TBL_User_ID",
+                table: "Weight_TBL",
+                column: "User_ID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Weight_TBL_W_Class_ID",
+                table: "Weight_TBL",
+                column: "W_Class_ID");
+
+            migrationBuilder.CreateIndex(
+                name: "SITE_ID_INDEX",
+                table: "Weight_TBL",
+                column: "Site_ID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Weight_Ticket_TBL_Site_ID",
@@ -457,6 +644,9 @@ namespace aspnetcore.ntier.DAL.Migrations
                 name: "Camera_TBL");
 
             migrationBuilder.DropTable(
+                name: "COM_SCREEN_SETTING");
+
+            migrationBuilder.DropTable(
                 name: "COM_SETTING_TBL");
 
             migrationBuilder.DropTable(
@@ -469,13 +659,10 @@ namespace aspnetcore.ntier.DAL.Migrations
                 name: "Pictures_TBL");
 
             migrationBuilder.DropTable(
-                name: "Products_TBL");
-
-            migrationBuilder.DropTable(
                 name: "Setting_TBL");
 
             migrationBuilder.DropTable(
-                name: "Weight_Class_TBL");
+                name: "Users_Per_TBL");
 
             migrationBuilder.DropTable(
                 name: "Weight_TBL");
@@ -484,7 +671,7 @@ namespace aspnetcore.ntier.DAL.Migrations
                 name: "Weight_Ticket_TBL");
 
             migrationBuilder.DropTable(
-                name: "Users_TBL");
+                name: "USER_P_Setting_TBL");
 
             migrationBuilder.DropTable(
                 name: "Drivers_TBL");
@@ -493,7 +680,16 @@ namespace aspnetcore.ntier.DAL.Migrations
                 name: "Nation_TBL");
 
             migrationBuilder.DropTable(
+                name: "Products_TBL");
+
+            migrationBuilder.DropTable(
                 name: "Trucks_TBL");
+
+            migrationBuilder.DropTable(
+                name: "Users_TBL");
+
+            migrationBuilder.DropTable(
+                name: "Weight_Class_TBL");
 
             migrationBuilder.DropTable(
                 name: "Site_TBL");

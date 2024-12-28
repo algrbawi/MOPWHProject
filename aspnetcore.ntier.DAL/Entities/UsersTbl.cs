@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using aspnetcore.ntier.DAL.Entities;
 
-namespace aspnetcore.ntier.DAL.Entities;
+namespace aspnetcore.ntier.BLL;
 
 public partial class UsersTbl
 {
@@ -23,4 +22,8 @@ public partial class UsersTbl
     public virtual ICollection<LogTbl> LogTbls { get; set; } = new List<LogTbl>();
 
     public virtual SiteTbl? Site { get; set; }
+
+    public virtual ICollection<UsersPerTbl> UsersPerTbls { get; set; } = new List<UsersPerTbl>();
+
+    public virtual ICollection<WeightTbl> WeightTbls { get; set; } = new List<WeightTbl>();
 }

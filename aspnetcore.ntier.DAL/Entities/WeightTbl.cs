@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using aspnetcore.ntier.DAL.Entities;
 
-namespace aspnetcore.ntier.DAL.Entities;
+namespace aspnetcore.ntier.BLL;
 
 public partial class WeightTbl
 {
@@ -54,5 +53,13 @@ public partial class WeightTbl
 
     public virtual NationTbl? Nation { get; set; }
 
+    public virtual ProductsTbl? Product { get; set; }
+
+    public virtual SiteTbl? Site { get; set; }
+
     public virtual TrucksTbl? TruckNumNavigation { get; set; }
+
+    public virtual UsersTbl? User { get; set; }
+
+    public virtual WeightClassTbl? WClass { get; set; }
 }

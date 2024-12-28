@@ -22,41 +22,7 @@ namespace aspnetcore.ntier.DAL.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("aspnetcore.ntier.DAL.Entities.ApiUser", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<byte[]>("PasswordHash")
-                        .IsRequired()
-                        .HasColumnType("varbinary(max)");
-
-                    b.Property<byte[]>("PasswordSalt")
-                        .IsRequired()
-                        .HasColumnType("varbinary(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("ApiUsers");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Email = "admin@admin.com",
-                            PasswordHash = new byte[] { 208, 107, 208, 69, 252, 12, 249, 77, 247, 139, 8, 120, 37, 236, 205, 101, 232, 125, 175, 76, 222, 78, 125, 135, 36, 101, 217, 12, 37, 56, 145, 81, 233, 180, 246, 56, 167, 223, 103, 67, 39, 81, 234, 210, 236, 124, 235, 75, 22, 53, 213, 142, 80, 125, 21, 153, 25, 183, 254, 209, 142, 221, 139, 50 },
-                            PasswordSalt = new byte[] { 190, 153, 254, 250, 174, 226, 243, 54, 202, 221, 22, 66, 74, 106, 217, 24, 251, 193, 95, 3, 71, 220, 38, 48, 86, 155, 145, 195, 27, 80, 200, 127, 61, 159, 186, 82, 209, 112, 193, 48, 32, 106, 201, 79, 245, 160, 58, 149, 226, 126, 14, 148, 92, 19, 88, 9, 252, 155, 99, 148, 80, 158, 220, 54, 65, 155, 62, 27, 61, 182, 147, 69, 153, 210, 41, 138, 142, 183, 240, 172, 49, 161, 104, 101, 171, 19, 228, 20, 120, 81, 158, 105, 117, 243, 116, 112, 78, 190, 219, 218, 189, 51, 168, 126, 146, 191, 190, 29, 45, 217, 87, 18, 64, 11, 28, 26, 25, 83, 185, 65, 178, 39, 244, 71, 88, 67, 54, 147 }
-                        });
-                });
-
-            modelBuilder.Entity("aspnetcore.ntier.DAL.Entities.CameraTbl", b =>
+            modelBuilder.Entity("aspnetcore.ntier.BLL.CameraTbl", b =>
                 {
                     b.Property<decimal>("CamId")
                         .HasColumnType("numeric(18, 0)")
@@ -98,10 +64,69 @@ namespace aspnetcore.ntier.DAL.Migrations
 
                     b.HasKey("CamId");
 
+                    b.HasIndex("SiteId");
+
                     b.ToTable("Camera_TBL", (string)null);
                 });
 
-            modelBuilder.Entity("aspnetcore.ntier.DAL.Entities.ComSettingTbl", b =>
+            modelBuilder.Entity("aspnetcore.ntier.BLL.ComScreenSetting", b =>
+                {
+                    b.Property<decimal>("ComId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("numeric(20, 0)")
+                        .HasColumnName("COM_ID");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<decimal>("ComId"));
+
+                    b.Property<int?>("Bps")
+                        .HasColumnType("int")
+                        .HasColumnName("BPS");
+
+                    b.Property<string>("ComName")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnName("COM_NAME");
+
+                    b.Property<int?>("Db")
+                        .HasColumnType("int")
+                        .HasColumnName("DB");
+
+                    b.Property<string>("Hdsh")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnName("HDSH");
+
+                    b.Property<string>("Parity")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnName("PARITY");
+
+                    b.Property<int?>("Sb")
+                        .HasColumnType("int")
+                        .HasColumnName("SB");
+
+                    b.Property<string>("Send")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnName("SEND");
+
+                    b.Property<decimal>("SiteId")
+                        .HasColumnType("numeric(18, 0)")
+                        .HasColumnName("SITE_ID");
+
+                    b.Property<string>("Sstart")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnName("SStart");
+
+                    b.HasKey("ComId");
+
+                    b.HasIndex("SiteId");
+
+                    b.ToTable("COM_SCREEN_SETTING", (string)null);
+                });
+
+            modelBuilder.Entity("aspnetcore.ntier.BLL.ComSettingTbl", b =>
                 {
                     b.Property<decimal>("ComId")
                         .ValueGeneratedOnAdd()
@@ -154,49 +179,12 @@ namespace aspnetcore.ntier.DAL.Migrations
                     b.HasKey("ComId")
                         .HasName("PK_COM_SETTING_TBL_1");
 
+                    b.HasIndex("SiteId");
+
                     b.ToTable("COM_SETTING_TBL", (string)null);
                 });
 
-            modelBuilder.Entity("aspnetcore.ntier.DAL.Entities.DashboardUser", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<byte[]>("PasswordHash")
-                        .IsRequired()
-                        .HasColumnType("varbinary(max)");
-
-                    b.Property<byte[]>("PasswordSalt")
-                        .IsRequired()
-                        .HasColumnType("varbinary(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("DashboardUsers");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Email = "admin@admin.com",
-                            Name = "Admin",
-                            PasswordHash = new byte[] { 208, 107, 208, 69, 252, 12, 249, 77, 247, 139, 8, 120, 37, 236, 205, 101, 232, 125, 175, 76, 222, 78, 125, 135, 36, 101, 217, 12, 37, 56, 145, 81, 233, 180, 246, 56, 167, 223, 103, 67, 39, 81, 234, 210, 236, 124, 235, 75, 22, 53, 213, 142, 80, 125, 21, 153, 25, 183, 254, 209, 142, 221, 139, 50 },
-                            PasswordSalt = new byte[] { 190, 153, 254, 250, 174, 226, 243, 54, 202, 221, 22, 66, 74, 106, 217, 24, 251, 193, 95, 3, 71, 220, 38, 48, 86, 155, 145, 195, 27, 80, 200, 127, 61, 159, 186, 82, 209, 112, 193, 48, 32, 106, 201, 79, 245, 160, 58, 149, 226, 126, 14, 148, 92, 19, 88, 9, 252, 155, 99, 148, 80, 158, 220, 54, 65, 155, 62, 27, 61, 182, 147, 69, 153, 210, 41, 138, 142, 183, 240, 172, 49, 161, 104, 101, 171, 19, 228, 20, 120, 81, 158, 105, 117, 243, 116, 112, 78, 190, 219, 218, 189, 51, 168, 126, 146, 191, 190, 29, 45, 217, 87, 18, 64, 11, 28, 26, 25, 83, 185, 65, 178, 39, 244, 71, 88, 67, 54, 147 }
-                        });
-                });
-
-            modelBuilder.Entity("aspnetcore.ntier.DAL.Entities.DriversTbl", b =>
+            modelBuilder.Entity("aspnetcore.ntier.BLL.DriversTbl", b =>
                 {
                     b.Property<decimal>("DriverId")
                         .HasColumnType("numeric(18, 0)")
@@ -222,10 +210,12 @@ namespace aspnetcore.ntier.DAL.Migrations
 
                     b.HasKey("DriverId");
 
+                    b.HasIndex("SiteId");
+
                     b.ToTable("Drivers_TBL", (string)null);
                 });
 
-            modelBuilder.Entity("aspnetcore.ntier.DAL.Entities.LogTbl", b =>
+            modelBuilder.Entity("aspnetcore.ntier.BLL.LogTbl", b =>
                 {
                     b.Property<decimal>("LogId")
                         .HasColumnType("numeric(18, 0)")
@@ -270,7 +260,7 @@ namespace aspnetcore.ntier.DAL.Migrations
                     b.ToTable("Log_TBL", (string)null);
                 });
 
-            modelBuilder.Entity("aspnetcore.ntier.DAL.Entities.NationTbl", b =>
+            modelBuilder.Entity("aspnetcore.ntier.BLL.NationTbl", b =>
                 {
                     b.Property<decimal>("NationId")
                         .HasColumnType("numeric(18, 0)")
@@ -296,10 +286,12 @@ namespace aspnetcore.ntier.DAL.Migrations
 
                     b.HasKey("NationId");
 
+                    b.HasIndex("SiteId");
+
                     b.ToTable("Nation_TBL", (string)null);
                 });
 
-            modelBuilder.Entity("aspnetcore.ntier.DAL.Entities.PicturesTbl", b =>
+            modelBuilder.Entity("aspnetcore.ntier.BLL.PicturesTbl", b =>
                 {
                     b.Property<decimal>("PicId")
                         .ValueGeneratedOnAdd()
@@ -353,7 +345,7 @@ namespace aspnetcore.ntier.DAL.Migrations
                     b.ToTable("Pictures_TBL", (string)null);
                 });
 
-            modelBuilder.Entity("aspnetcore.ntier.DAL.Entities.ProductsTbl", b =>
+            modelBuilder.Entity("aspnetcore.ntier.BLL.ProductsTbl", b =>
                 {
                     b.Property<decimal>("ProductId")
                         .HasColumnType("numeric(18, 0)")
@@ -389,7 +381,7 @@ namespace aspnetcore.ntier.DAL.Migrations
                     b.ToTable("Products_TBL", (string)null);
                 });
 
-            modelBuilder.Entity("aspnetcore.ntier.DAL.Entities.SettingTbl", b =>
+            modelBuilder.Entity("aspnetcore.ntier.BLL.SettingTbl", b =>
                 {
                     b.Property<decimal>("Id")
                         .HasColumnType("numeric(18, 0)")
@@ -435,7 +427,7 @@ namespace aspnetcore.ntier.DAL.Migrations
                     b.ToTable("Setting_TBL", (string)null);
                 });
 
-            modelBuilder.Entity("aspnetcore.ntier.DAL.Entities.SiteTbl", b =>
+            modelBuilder.Entity("aspnetcore.ntier.BLL.SiteTbl", b =>
                 {
                     b.Property<decimal>("SiteId")
                         .HasColumnType("numeric(18, 0)")
@@ -469,7 +461,7 @@ namespace aspnetcore.ntier.DAL.Migrations
                     b.ToTable("Site_TBL", (string)null);
                 });
 
-            modelBuilder.Entity("aspnetcore.ntier.DAL.Entities.TrucksTbl", b =>
+            modelBuilder.Entity("aspnetcore.ntier.BLL.TrucksTbl", b =>
                 {
                     b.Property<string>("TruckNum")
                         .HasMaxLength(200)
@@ -500,7 +492,92 @@ namespace aspnetcore.ntier.DAL.Migrations
                     b.ToTable("Trucks_TBL", (string)null);
                 });
 
-            modelBuilder.Entity("aspnetcore.ntier.DAL.Entities.UsersTbl", b =>
+            modelBuilder.Entity("aspnetcore.ntier.BLL.UserPSettingTbl", b =>
+                {
+                    b.Property<decimal>("UserPId")
+                        .HasColumnType("numeric(18, 0)")
+                        .HasColumnName("USER_P_ID");
+
+                    b.Property<decimal?>("SiteId")
+                        .HasColumnType("numeric(18, 0)")
+                        .HasColumnName("Site_ID");
+
+                    b.Property<decimal?>("UserPCode")
+                        .HasColumnType("numeric(18, 0)")
+                        .HasColumnName("USER_P_Code");
+
+                    b.Property<string>("UserPForm")
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(max)")
+                        .HasColumnName("USER_P_Form");
+
+                    b.Property<string>("UserPName1")
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(max)")
+                        .HasColumnName("USER_P_Name1");
+
+                    b.Property<string>("UserPName2")
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(max)")
+                        .HasColumnName("USER_P_Name2");
+
+                    b.Property<string>("UserPNote")
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(max)")
+                        .HasColumnName("USER_P_Note");
+
+                    b.Property<bool?>("UserPState")
+                        .HasColumnType("bit")
+                        .HasColumnName("USER_P_State");
+
+                    b.HasKey("UserPId");
+
+                    b.ToTable("USER_P_Setting_TBL", (string)null);
+                });
+
+            modelBuilder.Entity("aspnetcore.ntier.BLL.UsersPerTbl", b =>
+                {
+                    b.Property<decimal>("UpId")
+                        .HasColumnType("numeric(18, 0)")
+                        .HasColumnName("UP_ID");
+
+                    b.Property<decimal?>("SiteId")
+                        .HasColumnType("numeric(18, 0)")
+                        .HasColumnName("Site_ID");
+
+                    b.Property<decimal?>("UpCode")
+                        .HasColumnType("numeric(18, 0)")
+                        .HasColumnName("UP_Code");
+
+                    b.Property<string>("UpNote")
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(max)")
+                        .HasColumnName("UP_Note");
+
+                    b.Property<bool?>("UpState")
+                        .HasColumnType("bit")
+                        .HasColumnName("UP_State");
+
+                    b.Property<decimal?>("UserId")
+                        .HasColumnType("numeric(18, 0)")
+                        .HasColumnName("User_ID");
+
+                    b.Property<decimal?>("UserPId")
+                        .HasColumnType("numeric(18, 0)")
+                        .HasColumnName("USER_P_ID");
+
+                    b.HasKey("UpId");
+
+                    b.HasIndex("SiteId");
+
+                    b.HasIndex("UserId");
+
+                    b.HasIndex("UserPId");
+
+                    b.ToTable("Users_Per_TBL", (string)null);
+                });
+
+            modelBuilder.Entity("aspnetcore.ntier.BLL.UsersTbl", b =>
                 {
                     b.Property<decimal>("UserId")
                         .HasColumnType("numeric(18, 0)")
@@ -543,7 +620,7 @@ namespace aspnetcore.ntier.DAL.Migrations
                     b.ToTable("Users_TBL", (string)null);
                 });
 
-            modelBuilder.Entity("aspnetcore.ntier.DAL.Entities.WeightClassTbl", b =>
+            modelBuilder.Entity("aspnetcore.ntier.BLL.WeightClassTbl", b =>
                 {
                     b.Property<decimal>("WClassId")
                         .HasColumnType("numeric(18, 0)")
@@ -587,7 +664,7 @@ namespace aspnetcore.ntier.DAL.Migrations
                     b.ToTable("Weight_Class_TBL", (string)null);
                 });
 
-            modelBuilder.Entity("aspnetcore.ntier.DAL.Entities.WeightTbl", b =>
+            modelBuilder.Entity("aspnetcore.ntier.BLL.WeightTbl", b =>
                 {
                     b.Property<decimal>("WId")
                         .HasColumnType("numeric(18, 0)")
@@ -695,12 +772,22 @@ namespace aspnetcore.ntier.DAL.Migrations
 
                     b.HasIndex("NationId");
 
+                    b.HasIndex("ProductId");
+
                     b.HasIndex("TruckNum");
+
+                    b.HasIndex("UserId");
+
+                    b.HasIndex("WClassId");
+
+                    b.HasIndex(new[] { "InDate" }, "IN_DATE_INDEX");
+
+                    b.HasIndex(new[] { "SiteId" }, "SITE_ID_INDEX");
 
                     b.ToTable("Weight_TBL", (string)null);
                 });
 
-            modelBuilder.Entity("aspnetcore.ntier.DAL.Entities.WeightTicketTbl", b =>
+            modelBuilder.Entity("aspnetcore.ntier.BLL.WeightTicketTbl", b =>
                 {
                     b.Property<decimal>("WTicketId")
                         .HasColumnType("numeric(18, 0)")
@@ -738,14 +825,132 @@ namespace aspnetcore.ntier.DAL.Migrations
                     b.ToTable("Weight_Ticket_TBL", (string)null);
                 });
 
-            modelBuilder.Entity("aspnetcore.ntier.DAL.Entities.LogTbl", b =>
+            modelBuilder.Entity("aspnetcore.ntier.DAL.Entities.ApiUser", b =>
                 {
-                    b.HasOne("aspnetcore.ntier.DAL.Entities.SiteTbl", "Site")
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<byte[]>("PasswordHash")
+                        .IsRequired()
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<byte[]>("PasswordSalt")
+                        .IsRequired()
+                        .HasColumnType("varbinary(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ApiUsers");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Email = "admin@admin.com",
+                            PasswordHash = new byte[] { 180, 241, 198, 127, 205, 166, 113, 167, 117, 152, 13, 42, 187, 128, 45, 180, 44, 196, 104, 129, 31, 24, 226, 30, 227, 148, 189, 31, 150, 158, 227, 226, 12, 225, 246, 109, 57, 100, 75, 15, 197, 95, 242, 200, 229, 63, 129, 163, 81, 26, 183, 45, 220, 84, 78, 175, 240, 123, 116, 86, 85, 51, 111, 104 },
+                            PasswordSalt = new byte[] { 197, 233, 155, 122, 47, 174, 155, 20, 112, 54, 61, 134, 33, 131, 168, 115, 115, 219, 72, 132, 104, 135, 58, 12, 76, 2, 151, 78, 56, 224, 172, 182, 115, 11, 40, 199, 233, 92, 73, 235, 220, 121, 45, 60, 56, 196, 114, 222, 86, 233, 16, 142, 57, 30, 138, 156, 60, 46, 159, 82, 239, 222, 196, 184, 224, 200, 150, 140, 24, 254, 143, 223, 4, 139, 238, 59, 103, 202, 138, 181, 144, 138, 90, 106, 238, 8, 170, 108, 135, 163, 222, 181, 112, 150, 54, 159, 71, 100, 102, 48, 103, 170, 66, 84, 176, 196, 109, 249, 193, 108, 112, 63, 189, 178, 185, 77, 14, 155, 80, 198, 82, 68, 158, 233, 112, 94, 85, 72 }
+                        });
+                });
+
+            modelBuilder.Entity("aspnetcore.ntier.DAL.Entities.DashboardUser", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<byte[]>("PasswordHash")
+                        .IsRequired()
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<byte[]>("PasswordSalt")
+                        .IsRequired()
+                        .HasColumnType("varbinary(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("DashboardUsers");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Email = "admin@admin.com",
+                            Name = "Admin",
+                            PasswordHash = new byte[] { 180, 241, 198, 127, 205, 166, 113, 167, 117, 152, 13, 42, 187, 128, 45, 180, 44, 196, 104, 129, 31, 24, 226, 30, 227, 148, 189, 31, 150, 158, 227, 226, 12, 225, 246, 109, 57, 100, 75, 15, 197, 95, 242, 200, 229, 63, 129, 163, 81, 26, 183, 45, 220, 84, 78, 175, 240, 123, 116, 86, 85, 51, 111, 104 },
+                            PasswordSalt = new byte[] { 197, 233, 155, 122, 47, 174, 155, 20, 112, 54, 61, 134, 33, 131, 168, 115, 115, 219, 72, 132, 104, 135, 58, 12, 76, 2, 151, 78, 56, 224, 172, 182, 115, 11, 40, 199, 233, 92, 73, 235, 220, 121, 45, 60, 56, 196, 114, 222, 86, 233, 16, 142, 57, 30, 138, 156, 60, 46, 159, 82, 239, 222, 196, 184, 224, 200, 150, 140, 24, 254, 143, 223, 4, 139, 238, 59, 103, 202, 138, 181, 144, 138, 90, 106, 238, 8, 170, 108, 135, 163, 222, 181, 112, 150, 54, 159, 71, 100, 102, 48, 103, 170, 66, 84, 176, 196, 109, 249, 193, 108, 112, 63, 189, 178, 185, 77, 14, 155, 80, 198, 82, 68, 158, 233, 112, 94, 85, 72 }
+                        });
+                });
+
+            modelBuilder.Entity("aspnetcore.ntier.BLL.CameraTbl", b =>
+                {
+                    b.HasOne("aspnetcore.ntier.BLL.SiteTbl", "Site")
+                        .WithMany("CameraTbls")
+                        .HasForeignKey("SiteId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .HasConstraintName("FK_Camera_TBL_Site_TBL");
+
+                    b.Navigation("Site");
+                });
+
+            modelBuilder.Entity("aspnetcore.ntier.BLL.ComScreenSetting", b =>
+                {
+                    b.HasOne("aspnetcore.ntier.BLL.SiteTbl", "Site")
+                        .WithMany("ComScreenSettings")
+                        .HasForeignKey("SiteId")
+                        .IsRequired()
+                        .HasConstraintName("FK_COM_SCREEN_SETTING_Site_TBL");
+
+                    b.Navigation("Site");
+                });
+
+            modelBuilder.Entity("aspnetcore.ntier.BLL.ComSettingTbl", b =>
+                {
+                    b.HasOne("aspnetcore.ntier.BLL.SiteTbl", "Site")
+                        .WithMany("ComSettingTbls")
+                        .HasForeignKey("SiteId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("FK_COM_SETTING_TBL_Site_TBL");
+
+                    b.Navigation("Site");
+                });
+
+            modelBuilder.Entity("aspnetcore.ntier.BLL.DriversTbl", b =>
+                {
+                    b.HasOne("aspnetcore.ntier.BLL.SiteTbl", "Site")
+                        .WithMany("DriversTbls")
+                        .HasForeignKey("SiteId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .HasConstraintName("FK_Drivers_TBL_Site_TBL");
+
+                    b.Navigation("Site");
+                });
+
+            modelBuilder.Entity("aspnetcore.ntier.BLL.LogTbl", b =>
+                {
+                    b.HasOne("aspnetcore.ntier.BLL.SiteTbl", "Site")
                         .WithMany("LogTbls")
                         .HasForeignKey("SiteId")
                         .HasConstraintName("FK_Log_TBL_Site_TBL");
 
-                    b.HasOne("aspnetcore.ntier.DAL.Entities.UsersTbl", "User")
+                    b.HasOne("aspnetcore.ntier.BLL.UsersTbl", "User")
                         .WithMany("LogTbls")
                         .HasForeignKey("UserId")
                         .HasConstraintName("FK_Log_TBL_Users_TBL");
@@ -755,9 +960,20 @@ namespace aspnetcore.ntier.DAL.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("aspnetcore.ntier.DAL.Entities.PicturesTbl", b =>
+            modelBuilder.Entity("aspnetcore.ntier.BLL.NationTbl", b =>
                 {
-                    b.HasOne("aspnetcore.ntier.DAL.Entities.SiteTbl", "Site")
+                    b.HasOne("aspnetcore.ntier.BLL.SiteTbl", "Site")
+                        .WithMany("NationTbls")
+                        .HasForeignKey("SiteId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .HasConstraintName("FK_Nation_TBL_Site_TBL");
+
+                    b.Navigation("Site");
+                });
+
+            modelBuilder.Entity("aspnetcore.ntier.BLL.PicturesTbl", b =>
+                {
+                    b.HasOne("aspnetcore.ntier.BLL.SiteTbl", "Site")
                         .WithMany("PicturesTbls")
                         .HasForeignKey("SiteId")
                         .HasConstraintName("FK_Pictures_TBL_Site_TBL");
@@ -765,9 +981,9 @@ namespace aspnetcore.ntier.DAL.Migrations
                     b.Navigation("Site");
                 });
 
-            modelBuilder.Entity("aspnetcore.ntier.DAL.Entities.ProductsTbl", b =>
+            modelBuilder.Entity("aspnetcore.ntier.BLL.ProductsTbl", b =>
                 {
-                    b.HasOne("aspnetcore.ntier.DAL.Entities.SiteTbl", "Site")
+                    b.HasOne("aspnetcore.ntier.BLL.SiteTbl", "Site")
                         .WithMany("ProductsTbls")
                         .HasForeignKey("SiteId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -776,9 +992,9 @@ namespace aspnetcore.ntier.DAL.Migrations
                     b.Navigation("Site");
                 });
 
-            modelBuilder.Entity("aspnetcore.ntier.DAL.Entities.SettingTbl", b =>
+            modelBuilder.Entity("aspnetcore.ntier.BLL.SettingTbl", b =>
                 {
-                    b.HasOne("aspnetcore.ntier.DAL.Entities.SiteTbl", "Site")
+                    b.HasOne("aspnetcore.ntier.BLL.SiteTbl", "Site")
                         .WithMany("SettingTbls")
                         .HasForeignKey("SiteId")
                         .HasConstraintName("FK_Setting_TBL_Site_TBL");
@@ -786,9 +1002,9 @@ namespace aspnetcore.ntier.DAL.Migrations
                     b.Navigation("Site");
                 });
 
-            modelBuilder.Entity("aspnetcore.ntier.DAL.Entities.TrucksTbl", b =>
+            modelBuilder.Entity("aspnetcore.ntier.BLL.TrucksTbl", b =>
                 {
-                    b.HasOne("aspnetcore.ntier.DAL.Entities.SiteTbl", "Site")
+                    b.HasOne("aspnetcore.ntier.BLL.SiteTbl", "Site")
                         .WithMany("TrucksTbls")
                         .HasForeignKey("SiteId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -797,9 +1013,35 @@ namespace aspnetcore.ntier.DAL.Migrations
                     b.Navigation("Site");
                 });
 
-            modelBuilder.Entity("aspnetcore.ntier.DAL.Entities.UsersTbl", b =>
+            modelBuilder.Entity("aspnetcore.ntier.BLL.UsersPerTbl", b =>
                 {
-                    b.HasOne("aspnetcore.ntier.DAL.Entities.SiteTbl", "Site")
+                    b.HasOne("aspnetcore.ntier.BLL.SiteTbl", "Site")
+                        .WithMany("UsersPerTbls")
+                        .HasForeignKey("SiteId")
+                        .HasConstraintName("FK_Users_Per_TBL_Site_TBL");
+
+                    b.HasOne("aspnetcore.ntier.BLL.UsersTbl", "User")
+                        .WithMany("UsersPerTbls")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .HasConstraintName("FK_Users_Per_TBL_Users_TBL");
+
+                    b.HasOne("aspnetcore.ntier.BLL.UserPSettingTbl", "UserP")
+                        .WithMany("UsersPerTbls")
+                        .HasForeignKey("UserPId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .HasConstraintName("FK_Users_Per_TBL_USER_P_Setting_TBL");
+
+                    b.Navigation("Site");
+
+                    b.Navigation("User");
+
+                    b.Navigation("UserP");
+                });
+
+            modelBuilder.Entity("aspnetcore.ntier.BLL.UsersTbl", b =>
+                {
+                    b.HasOne("aspnetcore.ntier.BLL.SiteTbl", "Site")
                         .WithMany("UsersTbls")
                         .HasForeignKey("SiteId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -808,9 +1050,9 @@ namespace aspnetcore.ntier.DAL.Migrations
                     b.Navigation("Site");
                 });
 
-            modelBuilder.Entity("aspnetcore.ntier.DAL.Entities.WeightClassTbl", b =>
+            modelBuilder.Entity("aspnetcore.ntier.BLL.WeightClassTbl", b =>
                 {
-                    b.HasOne("aspnetcore.ntier.DAL.Entities.SiteTbl", "Site")
+                    b.HasOne("aspnetcore.ntier.BLL.SiteTbl", "Site")
                         .WithMany("WeightClassTbls")
                         .HasForeignKey("SiteId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -819,33 +1061,61 @@ namespace aspnetcore.ntier.DAL.Migrations
                     b.Navigation("Site");
                 });
 
-            modelBuilder.Entity("aspnetcore.ntier.DAL.Entities.WeightTbl", b =>
+            modelBuilder.Entity("aspnetcore.ntier.BLL.WeightTbl", b =>
                 {
-                    b.HasOne("aspnetcore.ntier.DAL.Entities.DriversTbl", "Driver")
+                    b.HasOne("aspnetcore.ntier.BLL.DriversTbl", "Driver")
                         .WithMany("WeightTbls")
                         .HasForeignKey("DriverId")
                         .HasConstraintName("FK_Weight_TBL_Drivers_TBL");
 
-                    b.HasOne("aspnetcore.ntier.DAL.Entities.NationTbl", "Nation")
+                    b.HasOne("aspnetcore.ntier.BLL.NationTbl", "Nation")
                         .WithMany("WeightTbls")
                         .HasForeignKey("NationId")
                         .HasConstraintName("FK_Weight_TBL_Nation_TBL");
 
-                    b.HasOne("aspnetcore.ntier.DAL.Entities.TrucksTbl", "TruckNumNavigation")
+                    b.HasOne("aspnetcore.ntier.BLL.ProductsTbl", "Product")
+                        .WithMany("WeightTbls")
+                        .HasForeignKey("ProductId")
+                        .HasConstraintName("FK_Weight_TBL_Products_TBL");
+
+                    b.HasOne("aspnetcore.ntier.BLL.SiteTbl", "Site")
+                        .WithMany("WeightTbls")
+                        .HasForeignKey("SiteId")
+                        .HasConstraintName("FK_Weight_TBL_Site_TBL");
+
+                    b.HasOne("aspnetcore.ntier.BLL.TrucksTbl", "TruckNumNavigation")
                         .WithMany("WeightTbls")
                         .HasForeignKey("TruckNum")
                         .HasConstraintName("FK_Weight_TBL_Trucks_TBL");
+
+                    b.HasOne("aspnetcore.ntier.BLL.UsersTbl", "User")
+                        .WithMany("WeightTbls")
+                        .HasForeignKey("UserId")
+                        .HasConstraintName("FK_Weight_TBL_Users_TBL");
+
+                    b.HasOne("aspnetcore.ntier.BLL.WeightClassTbl", "WClass")
+                        .WithMany("WeightTbls")
+                        .HasForeignKey("WClassId")
+                        .HasConstraintName("FK_Weight_TBL_Weight_Class_TBL");
 
                     b.Navigation("Driver");
 
                     b.Navigation("Nation");
 
+                    b.Navigation("Product");
+
+                    b.Navigation("Site");
+
                     b.Navigation("TruckNumNavigation");
+
+                    b.Navigation("User");
+
+                    b.Navigation("WClass");
                 });
 
-            modelBuilder.Entity("aspnetcore.ntier.DAL.Entities.WeightTicketTbl", b =>
+            modelBuilder.Entity("aspnetcore.ntier.BLL.WeightTicketTbl", b =>
                 {
-                    b.HasOne("aspnetcore.ntier.DAL.Entities.SiteTbl", "Site")
+                    b.HasOne("aspnetcore.ntier.BLL.SiteTbl", "Site")
                         .WithMany("WeightTicketTbls")
                         .HasForeignKey("SiteId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -854,19 +1124,34 @@ namespace aspnetcore.ntier.DAL.Migrations
                     b.Navigation("Site");
                 });
 
-            modelBuilder.Entity("aspnetcore.ntier.DAL.Entities.DriversTbl", b =>
+            modelBuilder.Entity("aspnetcore.ntier.BLL.DriversTbl", b =>
                 {
                     b.Navigation("WeightTbls");
                 });
 
-            modelBuilder.Entity("aspnetcore.ntier.DAL.Entities.NationTbl", b =>
+            modelBuilder.Entity("aspnetcore.ntier.BLL.NationTbl", b =>
                 {
                     b.Navigation("WeightTbls");
                 });
 
-            modelBuilder.Entity("aspnetcore.ntier.DAL.Entities.SiteTbl", b =>
+            modelBuilder.Entity("aspnetcore.ntier.BLL.ProductsTbl", b =>
                 {
+                    b.Navigation("WeightTbls");
+                });
+
+            modelBuilder.Entity("aspnetcore.ntier.BLL.SiteTbl", b =>
+                {
+                    b.Navigation("CameraTbls");
+
+                    b.Navigation("ComScreenSettings");
+
+                    b.Navigation("ComSettingTbls");
+
+                    b.Navigation("DriversTbls");
+
                     b.Navigation("LogTbls");
+
+                    b.Navigation("NationTbls");
 
                     b.Navigation("PicturesTbls");
 
@@ -876,21 +1161,39 @@ namespace aspnetcore.ntier.DAL.Migrations
 
                     b.Navigation("TrucksTbls");
 
+                    b.Navigation("UsersPerTbls");
+
                     b.Navigation("UsersTbls");
 
                     b.Navigation("WeightClassTbls");
 
+                    b.Navigation("WeightTbls");
+
                     b.Navigation("WeightTicketTbls");
                 });
 
-            modelBuilder.Entity("aspnetcore.ntier.DAL.Entities.TrucksTbl", b =>
+            modelBuilder.Entity("aspnetcore.ntier.BLL.TrucksTbl", b =>
                 {
                     b.Navigation("WeightTbls");
                 });
 
-            modelBuilder.Entity("aspnetcore.ntier.DAL.Entities.UsersTbl", b =>
+            modelBuilder.Entity("aspnetcore.ntier.BLL.UserPSettingTbl", b =>
+                {
+                    b.Navigation("UsersPerTbls");
+                });
+
+            modelBuilder.Entity("aspnetcore.ntier.BLL.UsersTbl", b =>
                 {
                     b.Navigation("LogTbls");
+
+                    b.Navigation("UsersPerTbls");
+
+                    b.Navigation("WeightTbls");
+                });
+
+            modelBuilder.Entity("aspnetcore.ntier.BLL.WeightClassTbl", b =>
+                {
+                    b.Navigation("WeightTbls");
                 });
 #pragma warning restore 612, 618
         }

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace aspnetcore.ntier.DAL.Entities;
+namespace aspnetcore.ntier.BLL;
 
 public partial class CameraTbl
 {
@@ -22,4 +22,6 @@ public partial class CameraTbl
     public bool? CamState { get; set; }
 
     public decimal? SiteId { get; set; }
+
+    public virtual SiteTbl? Site { get; set; }
 }

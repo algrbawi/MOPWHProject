@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace aspnetcore.ntier.DAL.Entities;
+namespace aspnetcore.ntier.BLL;
 
 public partial class ComSettingTbl
 {
@@ -24,4 +24,6 @@ public partial class ComSettingTbl
     public string? Send { get; set; }
 
     public decimal SiteId { get; set; }
+
+    public virtual SiteTbl Site { get; set; } = null!;
 }

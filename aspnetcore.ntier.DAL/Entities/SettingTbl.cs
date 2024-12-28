@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace aspnetcore.ntier.DAL.Entities;
+namespace aspnetcore.ntier.BLL;
 
 public partial class SettingTbl
 {

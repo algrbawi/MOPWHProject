@@ -1,4 +1,5 @@
 ﻿
+using aspnetcore.ntier.BLL;
 using aspnetcore.ntier.DAL.Entities;
 using aspnetcore.ntier.DAL.Password;
 using Microsoft.EntityFrameworkCore;
@@ -19,6 +20,8 @@ public partial class AspNetCoreNTierDbContext : DbContext
     public DbSet<DashboardUser> DashboardUsers { get; set; }
     public virtual DbSet<CameraTbl> CameraTbls { get; set; }
 
+    public virtual DbSet<ComScreenSetting> ComScreenSettings { get; set; }
+
     public virtual DbSet<ComSettingTbl> ComSettingTbls { get; set; }
 
     public virtual DbSet<DriversTbl> DriversTbls { get; set; }
@@ -37,6 +40,10 @@ public partial class AspNetCoreNTierDbContext : DbContext
 
     public virtual DbSet<TrucksTbl> TrucksTbls { get; set; }
 
+    public virtual DbSet<UserPSettingTbl> UserPSettingTbls { get; set; }
+
+    public virtual DbSet<UsersPerTbl> UsersPerTbls { get; set; }
+
     public virtual DbSet<UsersTbl> UsersTbls { get; set; }
 
     public virtual DbSet<WeightClassTbl> WeightClassTbls { get; set; }
@@ -44,7 +51,6 @@ public partial class AspNetCoreNTierDbContext : DbContext
     public virtual DbSet<WeightTbl> WeightTbls { get; set; }
 
     public virtual DbSet<WeightTicketTbl> WeightTicketTbls { get; set; }
-
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
 
@@ -73,8 +79,6 @@ public partial class AspNetCoreNTierDbContext : DbContext
             PasswordSalt = passwordSalt
         }
     );
-
-
         modelBuilder.Entity<CameraTbl>(entity =>
         {
             entity.HasKey(e => e.CamId);
@@ -100,6 +104,49 @@ public partial class AspNetCoreNTierDbContext : DbContext
             entity.Property(e => e.SiteId)
                 .HasColumnType("numeric(18, 0)")
                 .HasColumnName("Site_ID");
+
+            entity.HasOne(d => d.Site).WithMany(p => p.CameraTbls)
+                .HasForeignKey(d => d.SiteId)
+                .OnDelete(DeleteBehavior.Cascade)
+                .HasConstraintName("FK_Camera_TBL_Site_TBL");
+        });
+
+        modelBuilder.Entity<ComScreenSetting>(entity =>
+        {
+            entity.HasKey(e => e.ComId);
+
+            entity.ToTable("COM_SCREEN_SETTING");
+
+            entity.Property(e => e.ComId)
+                .ValueGeneratedOnAdd()
+                .HasColumnType("numeric(20, 0)")
+                .HasColumnName("COM_ID");
+            entity.Property(e => e.Bps).HasColumnName("BPS");
+            entity.Property(e => e.ComName)
+                .HasMaxLength(50)
+                .HasColumnName("COM_NAME");
+            entity.Property(e => e.Db).HasColumnName("DB");
+            entity.Property(e => e.Hdsh)
+                .HasMaxLength(50)
+                .HasColumnName("HDSH");
+            entity.Property(e => e.Parity)
+                .HasMaxLength(50)
+                .HasColumnName("PARITY");
+            entity.Property(e => e.Sb).HasColumnName("SB");
+            entity.Property(e => e.Send)
+                .HasMaxLength(50)
+                .HasColumnName("SEND");
+            entity.Property(e => e.SiteId)
+                .HasColumnType("numeric(18, 0)")
+                .HasColumnName("SITE_ID");
+            entity.Property(e => e.Sstart)
+                .HasMaxLength(50)
+                .HasColumnName("SStart");
+
+            entity.HasOne(d => d.Site).WithMany(p => p.ComScreenSettings)
+                .HasForeignKey(d => d.SiteId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_COM_SCREEN_SETTING_Site_TBL");
         });
 
         modelBuilder.Entity<ComSettingTbl>(entity =>
@@ -133,6 +180,10 @@ public partial class AspNetCoreNTierDbContext : DbContext
             entity.Property(e => e.Sstart)
                 .HasMaxLength(50)
                 .HasColumnName("SStart");
+
+            entity.HasOne(d => d.Site).WithMany(p => p.ComSettingTbls)
+                .HasForeignKey(d => d.SiteId)
+                .HasConstraintName("FK_COM_SETTING_TBL_Site_TBL");
         });
 
         modelBuilder.Entity<DriversTbl>(entity =>
@@ -155,6 +206,11 @@ public partial class AspNetCoreNTierDbContext : DbContext
             entity.Property(e => e.SiteId)
                 .HasColumnType("numeric(18, 0)")
                 .HasColumnName("Site_ID");
+
+            entity.HasOne(d => d.Site).WithMany(p => p.DriversTbls)
+                .HasForeignKey(d => d.SiteId)
+                .OnDelete(DeleteBehavior.Cascade)
+                .HasConstraintName("FK_Drivers_TBL_Site_TBL");
         });
 
         modelBuilder.Entity<LogTbl>(entity =>
@@ -213,6 +269,11 @@ public partial class AspNetCoreNTierDbContext : DbContext
             entity.Property(e => e.SiteId)
                 .HasColumnType("numeric(18, 0)")
                 .HasColumnName("Site_ID");
+
+            entity.HasOne(d => d.Site).WithMany(p => p.NationTbls)
+                .HasForeignKey(d => d.SiteId)
+                .OnDelete(DeleteBehavior.Cascade)
+                .HasConstraintName("FK_Nation_TBL_Site_TBL");
         });
 
         modelBuilder.Entity<PicturesTbl>(entity =>
@@ -358,6 +419,77 @@ public partial class AspNetCoreNTierDbContext : DbContext
                 .HasConstraintName("FK_Trucks_TBL_Site_TBL");
         });
 
+        modelBuilder.Entity<UserPSettingTbl>(entity =>
+        {
+            entity.HasKey(e => e.UserPId);
+
+            entity.ToTable("USER_P_Setting_TBL");
+
+            entity.Property(e => e.UserPId)
+                .HasColumnType("numeric(18, 0)")
+                .HasColumnName("USER_P_ID");
+            entity.Property(e => e.SiteId)
+                .HasColumnType("numeric(18, 0)")
+                .HasColumnName("Site_ID");
+            entity.Property(e => e.UserPCode)
+                .HasColumnType("numeric(18, 0)")
+                .HasColumnName("USER_P_Code");
+            entity.Property(e => e.UserPForm)
+                .IsUnicode(false)
+                .HasColumnName("USER_P_Form");
+            entity.Property(e => e.UserPName1)
+                .IsUnicode(false)
+                .HasColumnName("USER_P_Name1");
+            entity.Property(e => e.UserPName2)
+                .IsUnicode(false)
+                .HasColumnName("USER_P_Name2");
+            entity.Property(e => e.UserPNote)
+                .IsUnicode(false)
+                .HasColumnName("USER_P_Note");
+            entity.Property(e => e.UserPState).HasColumnName("USER_P_State");
+        });
+
+        modelBuilder.Entity<UsersPerTbl>(entity =>
+        {
+            entity.HasKey(e => e.UpId);
+
+            entity.ToTable("Users_Per_TBL");
+
+            entity.Property(e => e.UpId)
+                .HasColumnType("numeric(18, 0)")
+                .HasColumnName("UP_ID");
+            entity.Property(e => e.SiteId)
+                .HasColumnType("numeric(18, 0)")
+                .HasColumnName("Site_ID");
+            entity.Property(e => e.UpCode)
+                .HasColumnType("numeric(18, 0)")
+                .HasColumnName("UP_Code");
+            entity.Property(e => e.UpNote)
+                .IsUnicode(false)
+                .HasColumnName("UP_Note");
+            entity.Property(e => e.UpState).HasColumnName("UP_State");
+            entity.Property(e => e.UserId)
+                .HasColumnType("numeric(18, 0)")
+                .HasColumnName("User_ID");
+            entity.Property(e => e.UserPId)
+                .HasColumnType("numeric(18, 0)")
+                .HasColumnName("USER_P_ID");
+
+            entity.HasOne(d => d.Site).WithMany(p => p.UsersPerTbls)
+                .HasForeignKey(d => d.SiteId)
+                .HasConstraintName("FK_Users_Per_TBL_Site_TBL");
+
+            entity.HasOne(d => d.User).WithMany(p => p.UsersPerTbls)
+                .HasForeignKey(d => d.UserId)
+                .OnDelete(DeleteBehavior.Cascade)
+                .HasConstraintName("FK_Users_Per_TBL_Users_TBL");
+
+            entity.HasOne(d => d.UserP).WithMany(p => p.UsersPerTbls)
+                .HasForeignKey(d => d.UserPId)
+                .OnDelete(DeleteBehavior.Cascade)
+                .HasConstraintName("FK_Users_Per_TBL_USER_P_Setting_TBL");
+        });
+
         modelBuilder.Entity<UsersTbl>(entity =>
         {
             entity.HasKey(e => e.UserId);
@@ -431,6 +563,10 @@ public partial class AspNetCoreNTierDbContext : DbContext
 
             entity.ToTable("Weight_TBL");
 
+            entity.HasIndex(e => e.InDate, "IN_DATE_INDEX");
+
+            entity.HasIndex(e => e.SiteId, "SITE_ID_INDEX");
+
             entity.Property(e => e.WId)
                 .HasColumnType("numeric(18, 0)")
                 .HasColumnName("W_ID");
@@ -494,9 +630,25 @@ public partial class AspNetCoreNTierDbContext : DbContext
                 .HasForeignKey(d => d.NationId)
                 .HasConstraintName("FK_Weight_TBL_Nation_TBL");
 
+            entity.HasOne(d => d.Product).WithMany(p => p.WeightTbls)
+                .HasForeignKey(d => d.ProductId)
+                .HasConstraintName("FK_Weight_TBL_Products_TBL");
+
+            entity.HasOne(d => d.Site).WithMany(p => p.WeightTbls)
+                .HasForeignKey(d => d.SiteId)
+                .HasConstraintName("FK_Weight_TBL_Site_TBL");
+
             entity.HasOne(d => d.TruckNumNavigation).WithMany(p => p.WeightTbls)
                 .HasForeignKey(d => d.TruckNum)
                 .HasConstraintName("FK_Weight_TBL_Trucks_TBL");
+
+            entity.HasOne(d => d.User).WithMany(p => p.WeightTbls)
+                .HasForeignKey(d => d.UserId)
+                .HasConstraintName("FK_Weight_TBL_Users_TBL");
+
+            entity.HasOne(d => d.WClass).WithMany(p => p.WeightTbls)
+                .HasForeignKey(d => d.WClassId)
+                .HasConstraintName("FK_Weight_TBL_Weight_Class_TBL");
         });
 
         modelBuilder.Entity<WeightTicketTbl>(entity =>
@@ -528,7 +680,8 @@ public partial class AspNetCoreNTierDbContext : DbContext
         });
 
         OnModelCreatingPartial(modelBuilder);
-    }
 
+    }
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
+
 }
