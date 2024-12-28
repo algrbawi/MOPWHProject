@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,9 +11,7 @@ namespace aspnetcore.ntier.DTO.DTOs
     {
         public decimal WId { get; set; }
         public decimal? SeqNo { get; set; }
-
         public DateOnly? InDate { get; set; }
-
         public TimeOnly? InTime { get; set; }
 
         public decimal? WClassId { get; set; }

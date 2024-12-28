@@ -17,7 +17,7 @@ namespace aspnetcore.ntier.BLL.Utilities.Swagger
             {
                 options.SwaggerDoc(desc.GroupName, new Microsoft.OpenApi.Models.OpenApiInfo
                 {
-                    Title = "aspnetcore.ntier",
+                    Title = "MeralMPWHdb2024",
                     Version = desc.ApiVersion.ToString()
                 });
             }

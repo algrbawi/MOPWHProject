@@ -2,6 +2,7 @@
 using aspnetcore.ntier.BLL.Services.Apis;
 using aspnetcore.ntier.BLL.Services.IServices;
 using aspnetcore.ntier.BLL.Utilities.AutoMapperProfiles;
+using aspnetcore.ntier.BLL.Utilities.Filters;
 using aspnetcore.ntier.BLL.Utilities.ModelStateValidation;
 using aspnetcore.ntier.BLL.Utilities.Swagger;
 using aspnetcore.ntier.BLL.Validators;
@@ -84,6 +85,8 @@ public static class DependencyInjection
             {
                 { jwtSecurityScheme, Array.Empty<string>() }
             });
+
+            options.SchemaFilter<TimeOnlySchemaFilter>();
         });
 
         services.ConfigureOptions<SwaggerConfigurationOptions>();
