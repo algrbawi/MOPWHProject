@@ -1,4 +1,5 @@
-﻿using aspnetcore.ntier.DAL.Entities;
+﻿using aspnetcore.ntier.BLL.Services.IServices;
+using aspnetcore.ntier.DAL.Entities;
 using aspnetcore.ntier.DTO.DTOs;
 using AutoMapper;
 
@@ -17,6 +18,9 @@ public class AutoMapperProfile : Profile
         CreateMap<WeightTblDto, WeightTbl>();
         CreateMap<TrucksTblDto, TrucksTbl>();
         CreateMap<ProductsTblDto, ProductsTbl>();
+        CreateMap<UsersTblDto, UsersTbl>();
+
+
 
 
     }
