@@ -1,5 +1,7 @@
 ﻿using aspnetcore.ntier.BLL.Services.Apis;
 using aspnetcore.ntier.BLL.Services.IServices;
+using aspnetcore.ntier.Dashboard.Controllers.Apis.BaseController;
+using aspnetcore.ntier.Dashboard.Filters;
 using aspnetcore.ntier.DTO.DTOs;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -7,37 +9,31 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace aspnetcore.ntier.Dashboard.Controllers.Apis
 {
-    [Route("api/v{version:apiVersion}/[controller]")]
-    [ApiVersion("1")]
-    [ApiController]
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-    public class WeightController : ControllerBase
+
+    public class WeightController : BaseApiController
     {
         private readonly IWeightService _weightService;
+        private readonly IWeightClassTblService _weightClassTblService;
 
-        public WeightController(IWeightService weightService)
+        public WeightController(IWeightService weightService, IWeightClassTblService weightClassTblService)
         {
             _weightService = weightService;
+            _weightClassTblService = weightClassTblService;
         }
 
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        [HttpPost("Add")]
-        public async Task<IActionResult> Add(WeightTblDto model)
+        [HttpPost("AddWeight")]
+        public async Task<IActionResult> AddWeight(WeightTblDto model)
         {
-            try
-            {
-                if (ModelState.IsValid)
-                {
-                    await _weightService.AddAsync(model);
-                    return Ok();
-                }
-                return BadRequest(ModelState.Keys);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.InnerException?.Message);
+            await _weightService.AddAsync(model);
+            return Ok();
+        }
 
-            }
+        [HttpPost("AddWeightClass")]
+        public async Task<IActionResult> AddWeightClass(WeightClassTblDto model)
+        {
+            await _weightClassTblService.AddAsync(model);
+            return Ok();
         }
     }
 }

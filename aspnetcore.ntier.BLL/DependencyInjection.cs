@@ -32,6 +32,7 @@ public static class DependencyInjection
         services.AddScoped<IUserTblService, UserTblService>();
         services.AddScoped<IDriverService, DriverService>();
         services.AddScoped<INationService, NationService>();
+        services.AddScoped<IWeightClassTblService, WeightClassTblService>();
         services.AddScoped<ModelStateValidation>();
 
 

@@ -7,6 +7,8 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using aspnetcore.ntier.BLL.Utilities.AutoMapperProfiles;
+using Microsoft.AspNetCore.Mvc;
+using aspnetcore.ntier.Dashboard.Filters;
 namespace aspnetcore.ntier.Dashboard
 {
     public class Program
@@ -41,6 +43,12 @@ namespace aspnetcore.ntier.Dashboard
             builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection(nameof(JwtSettings)));
             builder.Services.RegisterDALDependencies(builder.Configuration);
             builder.Services.RegisterBLLDependencies(builder.Configuration);
+            //Disable Filter in ApiControler Filter
+            builder.Services.Configure<ApiBehaviorOptions>(opt =>
+            {
+                opt.SuppressModelStateInvalidFilter = true;
+            });
+            builder.Services.AddScoped<ExceptionFilter>();
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.

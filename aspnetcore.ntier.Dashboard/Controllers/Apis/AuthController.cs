@@ -1,5 +1,6 @@
 ﻿using aspnetcore.ntier.BLL.Services.IServices;
 using aspnetcore.ntier.BLL.Utilities.CustomExceptions;
+using aspnetcore.ntier.Dashboard.Filters;
 using aspnetcore.ntier.DTO.DTOs;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -9,6 +10,8 @@ namespace aspnetcore.ntier.Dashboard.Controllers.Apis
 {
     [Route("api/v{version:apiVersion}/[controller]")]
     [ApiVersion("1")]
+    [ApiValidateModel]
+    [ServiceFilter(typeof(ExceptionFilter))]
     [ApiController]
     public class AuthController : ControllerBase
     {
@@ -17,24 +20,12 @@ namespace aspnetcore.ntier.Dashboard.Controllers.Apis
         {
             _authService = authService;
         }
- 
+
         [HttpPost("login")]
         public async Task<IActionResult> Login(UserToLoginDTO userToLoginDTO)
         {
-            try
-            {
-                var user = await _authService.LoginAsync(userToLoginDTO);
-
-                return Ok(user);
-            }
-            catch (UserNotFoundException)
-            {
-                return Unauthorized();
-            }
-            catch (Exception)
-            {
-                return BadRequest("Something went wrong");
-            }
+            var user = await _authService.LoginAsync(userToLoginDTO);
+            return Ok(user);
         }
     }
 }

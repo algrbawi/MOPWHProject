@@ -1,4 +1,5 @@
 ﻿using aspnetcore.ntier.BLL.Services.IServices;
+using aspnetcore.ntier.Dashboard.Controllers.Apis.BaseController;
 using aspnetcore.ntier.DTO.DTOs;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -6,11 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace aspnetcore.ntier.Dashboard.Controllers.Apis
 {
-    [Route("api/v{version:apiVersion}/[controller]")]
-    [ApiVersion("1")]
-    [ApiController]
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-    public class ProductController : ControllerBase
+   
+    public class ProductController : BaseApiController
     {
         private readonly IProductService _productService;
 
@@ -19,23 +17,11 @@ namespace aspnetcore.ntier.Dashboard.Controllers.Apis
             _productService = productService;
         }
 
-        [HttpPost("Add")]
-        public async Task<IActionResult> Add(ProductsTblDto model)
+        [HttpPost("AddProduct")]
+        public async Task<IActionResult> AddProduct(ProductsTblDto model)
         {
-            try
-            {
-                if (ModelState.IsValid)
-                {
-                    await _productService.AddAsync(model);
-                    return Ok();
-                }
-                return BadRequest(ModelState.Keys);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.InnerException?.Message);
-
-            }
+            await _productService.AddAsync(model);
+            return Ok();
         }
     }
 }

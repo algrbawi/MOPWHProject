@@ -21,5 +21,8 @@ public class AutoMapperProfile : Profile
         CreateMap<UsersTblDto, UsersTbl>();
         CreateMap<DriversTblDto, DriversTbl>();
         CreateMap<NationTblDto, NationTbl>();
+        CreateMap<WeightClassTblDto, WeightClassTbl>();
+
+
     }
 }
