@@ -29,23 +29,23 @@ namespace aspnetcore.ntier.DAL.Migrations
                         .HasColumnName("CamID");
 
                     b.Property<string>("CamIp")
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(max)")
+                        .IsUnicode(true)
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("CamIP");
 
                     b.Property<string>("CamModel")
                         .HasMaxLength(50)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(50)");
+                        .IsUnicode(true)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("CamName")
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(max)");
+                        .IsUnicode(true)
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("CamPassword")
                         .HasMaxLength(50)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(50)");
+                        .IsUnicode(true)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<int?>("CamPort")
                         .HasColumnType("int");
@@ -55,8 +55,8 @@ namespace aspnetcore.ntier.DAL.Migrations
 
                     b.Property<string>("CamUsername")
                         .HasMaxLength(50)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(50)");
+                        .IsUnicode(true)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<decimal?>("SiteId")
                         .HasColumnType("numeric(18, 0)")
@@ -196,8 +196,8 @@ namespace aspnetcore.ntier.DAL.Migrations
 
                     b.Property<string>("DriverName")
                         .HasMaxLength(200)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(200)")
+                        .IsUnicode(true)
+                        .HasColumnType("nvarchar(200)")
                         .HasColumnName("Driver_Name");
 
                     b.Property<bool?>("DriverState")
@@ -230,8 +230,8 @@ namespace aspnetcore.ntier.DAL.Migrations
                         .HasColumnName("Log_Date");
 
                     b.Property<string>("LogName")
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(max)")
+                        .IsUnicode(true)
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("Log_Name");
 
                     b.Property<TimeOnly?>("LogTime")
@@ -239,8 +239,8 @@ namespace aspnetcore.ntier.DAL.Migrations
                         .HasColumnName("Log_Time");
 
                     b.Property<string>("LogTrans")
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(max)")
+                        .IsUnicode(true)
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("Log_Trans");
 
                     b.Property<decimal?>("SiteId")
@@ -272,8 +272,8 @@ namespace aspnetcore.ntier.DAL.Migrations
 
                     b.Property<string>("NationName")
                         .HasMaxLength(200)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(200)")
+                        .IsUnicode(true)
+                        .HasColumnType("nvarchar(200)")
                         .HasColumnName("Nation_Name");
 
                     b.Property<bool?>("NationState")
@@ -301,8 +301,8 @@ namespace aspnetcore.ntier.DAL.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<decimal>("PicId"));
 
                     b.Property<string>("PicCamera")
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(max)")
+                        .IsUnicode(true)
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("Pic_Camera");
 
                     b.Property<DateOnly?>("PicDate")
@@ -310,8 +310,8 @@ namespace aspnetcore.ntier.DAL.Migrations
                         .HasColumnName("Pic_date");
 
                     b.Property<string>("PicImage")
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(max)")
+                        .IsUnicode(true)
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("Pic_Image");
 
                     b.Property<bool?>("PicState")
@@ -324,8 +324,8 @@ namespace aspnetcore.ntier.DAL.Migrations
 
                     b.Property<string>("PicTruckId")
                         .HasMaxLength(50)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(50)")
+                        .IsUnicode(true)
+                        .HasColumnType("nvarchar(50)")
                         .HasColumnName("Pic_Truck_ID");
 
                     b.Property<decimal?>("SiteId")
@@ -356,14 +356,14 @@ namespace aspnetcore.ntier.DAL.Migrations
                         .HasColumnName("Product_Code");
 
                     b.Property<string>("ProductLocation")
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(max)")
+                        .IsUnicode(true)
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("Product_Location");
 
                     b.Property<string>("ProductName")
                         .HasMaxLength(200)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(200)")
+                        .IsUnicode(true)
+                        .HasColumnType("nvarchar(200)")
                         .HasColumnName("Product_Name");
 
                     b.Property<bool?>("ProductState")
@@ -388,25 +388,25 @@ namespace aspnetcore.ntier.DAL.Migrations
                         .HasColumnName("ID");
 
                     b.Property<string>("Cprinter")
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(max)")
+                        .IsUnicode(true)
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("CPrinter");
 
                     b.Property<string>("Indecator")
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(max)");
+                        .IsUnicode(true)
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(max)");
+                        .IsUnicode(true)
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Note")
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(max)");
+                        .IsUnicode(true)
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Rprinter")
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(max)")
+                        .IsUnicode(true)
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("RPrinter");
 
                     b.Property<decimal?>("SiteId")
@@ -417,8 +417,8 @@ namespace aspnetcore.ntier.DAL.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("Title")
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(max)");
+                        .IsUnicode(true)
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -438,13 +438,13 @@ namespace aspnetcore.ntier.DAL.Migrations
                         .HasColumnName("Site_Code");
 
                     b.Property<string>("SiteLocation")
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(max)")
+                        .IsUnicode(true)
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("Site_Location");
 
                     b.Property<string>("SiteName")
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(max)")
+                        .IsUnicode(true)
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("Site_Name");
 
                     b.Property<bool?>("SiteState")
@@ -452,8 +452,8 @@ namespace aspnetcore.ntier.DAL.Migrations
                         .HasColumnName("Site_State");
 
                     b.Property<string>("SiteTitle")
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(max)")
+                        .IsUnicode(true)
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("Site_Title");
 
                     b.HasKey("SiteId");
@@ -465,8 +465,8 @@ namespace aspnetcore.ntier.DAL.Migrations
                 {
                     b.Property<string>("TruckNum")
                         .HasMaxLength(200)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(200)")
+                        .IsUnicode(true)
+                        .HasColumnType("nvarchar(200)")
                         .HasColumnName("Truck_Num");
 
                     b.Property<decimal?>("SiteId")
@@ -507,23 +507,23 @@ namespace aspnetcore.ntier.DAL.Migrations
                         .HasColumnName("USER_P_Code");
 
                     b.Property<string>("UserPForm")
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(max)")
+                        .IsUnicode(true)
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("USER_P_Form");
 
                     b.Property<string>("UserPName1")
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(max)")
+                        .IsUnicode(true)
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("USER_P_Name1");
 
                     b.Property<string>("UserPName2")
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(max)")
+                        .IsUnicode(true)
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("USER_P_Name2");
 
                     b.Property<string>("UserPNote")
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(max)")
+                        .IsUnicode(true)
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("USER_P_Note");
 
                     b.Property<bool?>("UserPState")
@@ -550,8 +550,8 @@ namespace aspnetcore.ntier.DAL.Migrations
                         .HasColumnName("UP_Code");
 
                     b.Property<string>("UpNote")
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(max)")
+                        .IsUnicode(true)
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("UP_Note");
 
                     b.Property<bool?>("UpState")
@@ -593,14 +593,14 @@ namespace aspnetcore.ntier.DAL.Migrations
 
                     b.Property<string>("UserName")
                         .HasMaxLength(50)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(50)")
+                        .IsUnicode(true)
+                        .HasColumnType("nvarchar(50)")
                         .HasColumnName("User_Name");
 
                     b.Property<string>("UserPassword")
                         .HasMaxLength(50)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(50)")
+                        .IsUnicode(true)
+                        .HasColumnType("nvarchar(50)")
                         .HasColumnName("User_Password");
 
                     b.Property<bool?>("UserState")
@@ -609,8 +609,8 @@ namespace aspnetcore.ntier.DAL.Migrations
 
                     b.Property<string>("UserType")
                         .HasMaxLength(50)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(50)")
+                        .IsUnicode(true)
+                        .HasColumnType("nvarchar(50)")
                         .HasColumnName("User_Type");
 
                     b.HasKey("UserId");
@@ -639,14 +639,14 @@ namespace aspnetcore.ntier.DAL.Migrations
                         .HasColumnName("W_Class_Code");
 
                     b.Property<string>("WClassImage")
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(max)")
+                        .IsUnicode(true)
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("W_Class_Image");
 
                     b.Property<string>("WClassName")
                         .HasMaxLength(200)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(200)")
+                        .IsUnicode(true)
+                        .HasColumnType("nvarchar(200)")
                         .HasColumnName("W_Class_Name");
 
                     b.Property<bool?>("WClassState")
@@ -718,8 +718,8 @@ namespace aspnetcore.ntier.DAL.Migrations
 
                     b.Property<string>("TruckNum")
                         .HasMaxLength(200)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(200)")
+                        .IsUnicode(true)
+                        .HasColumnType("nvarchar(200)")
                         .HasColumnName("Truck_Num");
 
                     b.Property<int?>("TruckWeight")
@@ -753,13 +753,13 @@ namespace aspnetcore.ntier.DAL.Migrations
                         .HasColumnName("Weight_Location");
 
                     b.Property<string>("WeightNote")
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(max)")
+                        .IsUnicode(true)
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("Weight_Note");
 
                     b.Property<string>("WeightS")
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(max)")
+                        .IsUnicode(true)
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("Weight_S");
 
                     b.Property<bool?>("WeightState")
@@ -802,8 +802,8 @@ namespace aspnetcore.ntier.DAL.Migrations
                         .HasColumnName("W_Ticket_End");
 
                     b.Property<string>("WTicketName")
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(max)")
+                        .IsUnicode(true)
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("W_Ticket_Name");
 
                     b.Property<decimal?>("WTicketPrice")
@@ -854,8 +854,8 @@ namespace aspnetcore.ntier.DAL.Migrations
                         {
                             Id = 1,
                             Email = "admin@admin.com",
-                            PasswordHash = new byte[] { 180, 241, 198, 127, 205, 166, 113, 167, 117, 152, 13, 42, 187, 128, 45, 180, 44, 196, 104, 129, 31, 24, 226, 30, 227, 148, 189, 31, 150, 158, 227, 226, 12, 225, 246, 109, 57, 100, 75, 15, 197, 95, 242, 200, 229, 63, 129, 163, 81, 26, 183, 45, 220, 84, 78, 175, 240, 123, 116, 86, 85, 51, 111, 104 },
-                            PasswordSalt = new byte[] { 197, 233, 155, 122, 47, 174, 155, 20, 112, 54, 61, 134, 33, 131, 168, 115, 115, 219, 72, 132, 104, 135, 58, 12, 76, 2, 151, 78, 56, 224, 172, 182, 115, 11, 40, 199, 233, 92, 73, 235, 220, 121, 45, 60, 56, 196, 114, 222, 86, 233, 16, 142, 57, 30, 138, 156, 60, 46, 159, 82, 239, 222, 196, 184, 224, 200, 150, 140, 24, 254, 143, 223, 4, 139, 238, 59, 103, 202, 138, 181, 144, 138, 90, 106, 238, 8, 170, 108, 135, 163, 222, 181, 112, 150, 54, 159, 71, 100, 102, 48, 103, 170, 66, 84, 176, 196, 109, 249, 193, 108, 112, 63, 189, 178, 185, 77, 14, 155, 80, 198, 82, 68, 158, 233, 112, 94, 85, 72 }
+                            PasswordHash = new byte[] { 180, 90, 202, 21, 47, 137, 87, 124, 2, 134, 198, 156, 87, 147, 14, 52, 24, 128, 17, 92, 202, 113, 106, 203, 60, 231, 84, 120, 82, 175, 96, 44, 179, 65, 208, 90, 116, 57, 14, 72, 54, 240, 120, 237, 7, 94, 204, 226, 249, 154, 192, 180, 61, 38, 28, 230, 126, 180, 6, 4, 78, 23, 35, 211 },
+                            PasswordSalt = new byte[] { 47, 199, 180, 87, 201, 189, 34, 86, 128, 24, 104, 213, 91, 17, 124, 190, 233, 78, 13, 110, 132, 76, 30, 25, 83, 22, 25, 91, 178, 243, 236, 61, 176, 6, 233, 146, 110, 172, 30, 51, 164, 79, 186, 220, 0, 223, 115, 143, 110, 18, 0, 29, 14, 145, 108, 250, 152, 89, 58, 101, 150, 252, 204, 68, 42, 91, 112, 60, 37, 106, 39, 205, 68, 104, 16, 99, 141, 77, 78, 96, 133, 148, 61, 199, 38, 18, 180, 207, 205, 66, 18, 207, 111, 162, 118, 101, 114, 84, 181, 49, 244, 135, 149, 199, 62, 90, 115, 242, 55, 29, 29, 124, 217, 246, 28, 7, 192, 66, 223, 80, 135, 195, 164, 138, 237, 239, 232, 21 }
                         });
                 });
 
@@ -893,8 +893,8 @@ namespace aspnetcore.ntier.DAL.Migrations
                             Id = 1,
                             Email = "admin@admin.com",
                             Name = "Admin",
-                            PasswordHash = new byte[] { 180, 241, 198, 127, 205, 166, 113, 167, 117, 152, 13, 42, 187, 128, 45, 180, 44, 196, 104, 129, 31, 24, 226, 30, 227, 148, 189, 31, 150, 158, 227, 226, 12, 225, 246, 109, 57, 100, 75, 15, 197, 95, 242, 200, 229, 63, 129, 163, 81, 26, 183, 45, 220, 84, 78, 175, 240, 123, 116, 86, 85, 51, 111, 104 },
-                            PasswordSalt = new byte[] { 197, 233, 155, 122, 47, 174, 155, 20, 112, 54, 61, 134, 33, 131, 168, 115, 115, 219, 72, 132, 104, 135, 58, 12, 76, 2, 151, 78, 56, 224, 172, 182, 115, 11, 40, 199, 233, 92, 73, 235, 220, 121, 45, 60, 56, 196, 114, 222, 86, 233, 16, 142, 57, 30, 138, 156, 60, 46, 159, 82, 239, 222, 196, 184, 224, 200, 150, 140, 24, 254, 143, 223, 4, 139, 238, 59, 103, 202, 138, 181, 144, 138, 90, 106, 238, 8, 170, 108, 135, 163, 222, 181, 112, 150, 54, 159, 71, 100, 102, 48, 103, 170, 66, 84, 176, 196, 109, 249, 193, 108, 112, 63, 189, 178, 185, 77, 14, 155, 80, 198, 82, 68, 158, 233, 112, 94, 85, 72 }
+                            PasswordHash = new byte[] { 180, 90, 202, 21, 47, 137, 87, 124, 2, 134, 198, 156, 87, 147, 14, 52, 24, 128, 17, 92, 202, 113, 106, 203, 60, 231, 84, 120, 82, 175, 96, 44, 179, 65, 208, 90, 116, 57, 14, 72, 54, 240, 120, 237, 7, 94, 204, 226, 249, 154, 192, 180, 61, 38, 28, 230, 126, 180, 6, 4, 78, 23, 35, 211 },
+                            PasswordSalt = new byte[] { 47, 199, 180, 87, 201, 189, 34, 86, 128, 24, 104, 213, 91, 17, 124, 190, 233, 78, 13, 110, 132, 76, 30, 25, 83, 22, 25, 91, 178, 243, 236, 61, 176, 6, 233, 146, 110, 172, 30, 51, 164, 79, 186, 220, 0, 223, 115, 143, 110, 18, 0, 29, 14, 145, 108, 250, 152, 89, 58, 101, 150, 252, 204, 68, 42, 91, 112, 60, 37, 106, 39, 205, 68, 104, 16, 99, 141, 77, 78, 96, 133, 148, 61, 199, 38, 18, 180, 207, 205, 66, 18, 207, 111, 162, 118, 101, 114, 84, 181, 49, 244, 135, 149, 199, 62, 90, 115, 242, 55, 29, 29, 124, 217, 246, 28, 7, 192, 66, 223, 80, 135, 195, 164, 138, 237, 239, 232, 21 }
                         });
                 });
 

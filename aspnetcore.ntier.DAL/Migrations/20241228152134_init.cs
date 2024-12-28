@@ -48,9 +48,9 @@ namespace aspnetcore.ntier.DAL.Migrations
                 {
                     Site_ID = table.Column<decimal>(type: "numeric(18,0)", nullable: false),
                     Site_Code = table.Column<decimal>(type: "numeric(18,0)", nullable: true),
-                    Site_Name = table.Column<string>(type: "varchar(max)", unicode: false, nullable: true),
-                    Site_Location = table.Column<string>(type: "varchar(max)", unicode: false, nullable: true),
-                    Site_Title = table.Column<string>(type: "varchar(max)", unicode: false, nullable: true),
+                    Site_Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Site_Location = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Site_Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Site_State = table.Column<bool>(type: "bit", nullable: true)
                 },
                 constraints: table =>
@@ -64,11 +64,11 @@ namespace aspnetcore.ntier.DAL.Migrations
                 {
                     USER_P_ID = table.Column<decimal>(type: "numeric(18,0)", nullable: false),
                     USER_P_Code = table.Column<decimal>(type: "numeric(18,0)", nullable: true),
-                    USER_P_Form = table.Column<string>(type: "varchar(max)", unicode: false, nullable: true),
-                    USER_P_Name1 = table.Column<string>(type: "varchar(max)", unicode: false, nullable: true),
-                    USER_P_Name2 = table.Column<string>(type: "varchar(max)", unicode: false, nullable: true),
+                    USER_P_Form = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    USER_P_Name1 = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    USER_P_Name2 = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     USER_P_State = table.Column<bool>(type: "bit", nullable: true),
-                    USER_P_Note = table.Column<string>(type: "varchar(max)", unicode: false, nullable: true),
+                    USER_P_Note = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Site_ID = table.Column<decimal>(type: "numeric(18,0)", nullable: true)
                 },
                 constraints: table =>
@@ -81,12 +81,12 @@ namespace aspnetcore.ntier.DAL.Migrations
                 columns: table => new
                 {
                     CamID = table.Column<decimal>(type: "numeric(18,0)", nullable: false),
-                    CamName = table.Column<string>(type: "varchar(max)", unicode: false, nullable: true),
-                    CamIP = table.Column<string>(type: "varchar(max)", unicode: false, nullable: true),
+                    CamName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CamIP = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CamPort = table.Column<int>(type: "int", nullable: true),
-                    CamUsername = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: true),
-                    CamPassword = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: true),
-                    CamModel = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: true),
+                    CamUsername = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    CamPassword = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    CamModel = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     CamState = table.Column<bool>(type: "bit", nullable: true),
                     Site_ID = table.Column<decimal>(type: "numeric(18,0)", nullable: true)
                 },
@@ -160,7 +160,7 @@ namespace aspnetcore.ntier.DAL.Migrations
                 {
                     Driver_ID = table.Column<decimal>(type: "numeric(18,0)", nullable: false),
                     Driver_Code = table.Column<decimal>(type: "numeric(18,0)", nullable: true),
-                    Driver_Name = table.Column<string>(type: "varchar(200)", unicode: false, maxLength: 200, nullable: true),
+                    Driver_Name = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
                     Driver_State = table.Column<bool>(type: "bit", nullable: true),
                     Site_ID = table.Column<decimal>(type: "numeric(18,0)", nullable: true)
                 },
@@ -181,7 +181,7 @@ namespace aspnetcore.ntier.DAL.Migrations
                 {
                     Nation_ID = table.Column<decimal>(type: "numeric(18,0)", nullable: false),
                     Nation_Code = table.Column<decimal>(type: "numeric(18,0)", nullable: true),
-                    Nation_Name = table.Column<string>(type: "varchar(200)", unicode: false, maxLength: 200, nullable: true),
+                    Nation_Name = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
                     Nation_State = table.Column<bool>(type: "bit", nullable: true),
                     Site_ID = table.Column<decimal>(type: "numeric(18,0)", nullable: true)
                 },
@@ -204,10 +204,10 @@ namespace aspnetcore.ntier.DAL.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Pic_date = table.Column<DateOnly>(type: "date", nullable: true),
                     Pic_Time = table.Column<TimeOnly>(type: "time", nullable: true),
-                    Pic_Camera = table.Column<string>(type: "varchar(max)", unicode: false, nullable: true),
+                    Pic_Camera = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Pic_State = table.Column<bool>(type: "bit", nullable: true),
-                    Pic_Image = table.Column<string>(type: "varchar(max)", unicode: false, nullable: true),
-                    Pic_Truck_ID = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: true),
+                    Pic_Image = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Pic_Truck_ID = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     Site_ID = table.Column<decimal>(type: "numeric(18,0)", nullable: true)
                 },
                 constraints: table =>
@@ -226,8 +226,8 @@ namespace aspnetcore.ntier.DAL.Migrations
                 {
                     Product_ID = table.Column<decimal>(type: "numeric(18,0)", nullable: false),
                     Product_Code = table.Column<decimal>(type: "numeric(18,0)", nullable: true),
-                    Product_Name = table.Column<string>(type: "varchar(200)", unicode: false, maxLength: 200, nullable: true),
-                    Product_Location = table.Column<string>(type: "varchar(max)", unicode: false, nullable: true),
+                    Product_Name = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
+                    Product_Location = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Product_State = table.Column<bool>(type: "bit", nullable: true),
                     Site_ID = table.Column<decimal>(type: "numeric(18,0)", nullable: true)
                 },
@@ -247,12 +247,12 @@ namespace aspnetcore.ntier.DAL.Migrations
                 columns: table => new
                 {
                     ID = table.Column<decimal>(type: "numeric(18,0)", nullable: false),
-                    Name = table.Column<string>(type: "varchar(max)", unicode: false, nullable: true),
-                    Title = table.Column<string>(type: "varchar(max)", unicode: false, nullable: true),
-                    CPrinter = table.Column<string>(type: "varchar(max)", unicode: false, nullable: true),
-                    RPrinter = table.Column<string>(type: "varchar(max)", unicode: false, nullable: true),
-                    Indecator = table.Column<string>(type: "varchar(max)", unicode: false, nullable: true),
-                    Note = table.Column<string>(type: "varchar(max)", unicode: false, nullable: true),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CPrinter = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    RPrinter = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Indecator = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Note = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     State = table.Column<bool>(type: "bit", nullable: true),
                     Site_ID = table.Column<decimal>(type: "numeric(18,0)", nullable: true)
                 },
@@ -270,7 +270,7 @@ namespace aspnetcore.ntier.DAL.Migrations
                 name: "Trucks_TBL",
                 columns: table => new
                 {
-                    Truck_Num = table.Column<string>(type: "varchar(200)", unicode: false, maxLength: 200, nullable: false),
+                    Truck_Num = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
                     Truck_ID = table.Column<decimal>(type: "numeric(18,0)", nullable: false),
                     Truck_Code = table.Column<decimal>(type: "numeric(18,0)", nullable: true),
                     Truck_State = table.Column<bool>(type: "bit", nullable: true),
@@ -293,9 +293,9 @@ namespace aspnetcore.ntier.DAL.Migrations
                 {
                     User_ID = table.Column<decimal>(type: "numeric(18,0)", nullable: false),
                     User_Code = table.Column<decimal>(type: "numeric(18,0)", nullable: true),
-                    User_Name = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: true),
-                    User_Password = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: true),
-                    User_Type = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: true),
+                    User_Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    User_Password = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    User_Type = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     User_State = table.Column<bool>(type: "bit", nullable: true),
                     Site_ID = table.Column<decimal>(type: "numeric(18,0)", nullable: true)
                 },
@@ -316,11 +316,11 @@ namespace aspnetcore.ntier.DAL.Migrations
                 {
                     W_Class_ID = table.Column<decimal>(type: "numeric(18,0)", nullable: false),
                     W_Class_Code = table.Column<decimal>(type: "numeric(18,0)", nullable: true),
-                    W_Class_Name = table.Column<string>(type: "varchar(200)", unicode: false, maxLength: 200, nullable: true),
+                    W_Class_Name = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
                     W_Class_Axles = table.Column<int>(type: "int", nullable: true),
                     W_Class_Weight = table.Column<int>(type: "int", nullable: true),
                     W_Class_State = table.Column<bool>(type: "bit", nullable: true),
-                    W_Class_Image = table.Column<string>(type: "varchar(max)", unicode: false, nullable: true),
+                    W_Class_Image = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Site_ID = table.Column<decimal>(type: "numeric(18,0)", nullable: true)
                 },
                 constraints: table =>
@@ -339,7 +339,7 @@ namespace aspnetcore.ntier.DAL.Migrations
                 columns: table => new
                 {
                     W_Ticket_ID = table.Column<decimal>(type: "numeric(18,0)", nullable: false),
-                    W_Ticket_Name = table.Column<string>(type: "varchar(max)", unicode: false, nullable: true),
+                    W_Ticket_Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     W_Ticket_Start = table.Column<int>(type: "int", nullable: true),
                     W_Ticket_End = table.Column<int>(type: "int", nullable: true),
                     W_Ticket_Price = table.Column<decimal>(type: "decimal(18,0)", nullable: true),
@@ -363,10 +363,10 @@ namespace aspnetcore.ntier.DAL.Migrations
                 {
                     Log_ID = table.Column<decimal>(type: "numeric(18,0)", nullable: false),
                     Log_Code = table.Column<decimal>(type: "numeric(18,0)", nullable: true),
-                    Log_Name = table.Column<string>(type: "varchar(max)", unicode: false, nullable: true),
+                    Log_Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Log_Date = table.Column<DateOnly>(type: "date", nullable: true),
                     Log_Time = table.Column<TimeOnly>(type: "time", nullable: true),
-                    Log_Trans = table.Column<string>(type: "varchar(max)", unicode: false, nullable: true),
+                    Log_Trans = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     User_ID = table.Column<decimal>(type: "numeric(18,0)", nullable: true),
                     Site_ID = table.Column<decimal>(type: "numeric(18,0)", nullable: true)
                 },
@@ -392,7 +392,7 @@ namespace aspnetcore.ntier.DAL.Migrations
                     UP_ID = table.Column<decimal>(type: "numeric(18,0)", nullable: false),
                     UP_Code = table.Column<decimal>(type: "numeric(18,0)", nullable: true),
                     UP_State = table.Column<bool>(type: "bit", nullable: true),
-                    UP_Note = table.Column<string>(type: "varchar(max)", unicode: false, nullable: true),
+                    UP_Note = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     USER_P_ID = table.Column<decimal>(type: "numeric(18,0)", nullable: true),
                     User_ID = table.Column<decimal>(type: "numeric(18,0)", nullable: true),
                     Site_ID = table.Column<decimal>(type: "numeric(18,0)", nullable: true)
@@ -433,15 +433,15 @@ namespace aspnetcore.ntier.DAL.Migrations
                     Diff_Weight = table.Column<int>(type: "int", nullable: true, defaultValue: 0),
                     Vio_Price = table.Column<decimal>(type: "decimal(18,2)", nullable: true, defaultValue: 0m),
                     Vio_Weight = table.Column<int>(type: "int", nullable: true, defaultValue: 0),
-                    Truck_Num = table.Column<string>(type: "varchar(200)", unicode: false, maxLength: 200, nullable: true),
+                    Truck_Num = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
                     Nation_ID = table.Column<decimal>(type: "numeric(18,0)", nullable: true),
                     Product_ID = table.Column<decimal>(type: "numeric(18,0)", nullable: true),
                     Driver_ID = table.Column<decimal>(type: "numeric(18,0)", nullable: true),
                     Printed = table.Column<bool>(type: "bit", nullable: true),
                     Transed = table.Column<bool>(type: "bit", nullable: true),
-                    Weight_S = table.Column<string>(type: "varchar(max)", unicode: false, nullable: true),
+                    Weight_S = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Weight_Location = table.Column<bool>(type: "bit", nullable: true),
-                    Weight_Note = table.Column<string>(type: "varchar(max)", unicode: false, nullable: true),
+                    Weight_Note = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Weight_State = table.Column<bool>(type: "bit", nullable: true),
                     User_ID = table.Column<decimal>(type: "numeric(18,0)", nullable: true),
                     Site_ID = table.Column<decimal>(type: "numeric(18,0)", nullable: true)
@@ -489,12 +489,12 @@ namespace aspnetcore.ntier.DAL.Migrations
             migrationBuilder.InsertData(
                 table: "ApiUsers",
                 columns: new[] { "Id", "Email", "PasswordHash", "PasswordSalt" },
-                values: new object[] { 1, "admin@admin.com", new byte[] { 180, 241, 198, 127, 205, 166, 113, 167, 117, 152, 13, 42, 187, 128, 45, 180, 44, 196, 104, 129, 31, 24, 226, 30, 227, 148, 189, 31, 150, 158, 227, 226, 12, 225, 246, 109, 57, 100, 75, 15, 197, 95, 242, 200, 229, 63, 129, 163, 81, 26, 183, 45, 220, 84, 78, 175, 240, 123, 116, 86, 85, 51, 111, 104 }, new byte[] { 197, 233, 155, 122, 47, 174, 155, 20, 112, 54, 61, 134, 33, 131, 168, 115, 115, 219, 72, 132, 104, 135, 58, 12, 76, 2, 151, 78, 56, 224, 172, 182, 115, 11, 40, 199, 233, 92, 73, 235, 220, 121, 45, 60, 56, 196, 114, 222, 86, 233, 16, 142, 57, 30, 138, 156, 60, 46, 159, 82, 239, 222, 196, 184, 224, 200, 150, 140, 24, 254, 143, 223, 4, 139, 238, 59, 103, 202, 138, 181, 144, 138, 90, 106, 238, 8, 170, 108, 135, 163, 222, 181, 112, 150, 54, 159, 71, 100, 102, 48, 103, 170, 66, 84, 176, 196, 109, 249, 193, 108, 112, 63, 189, 178, 185, 77, 14, 155, 80, 198, 82, 68, 158, 233, 112, 94, 85, 72 } });
+                values: new object[] { 1, "admin@admin.com", new byte[] { 180, 90, 202, 21, 47, 137, 87, 124, 2, 134, 198, 156, 87, 147, 14, 52, 24, 128, 17, 92, 202, 113, 106, 203, 60, 231, 84, 120, 82, 175, 96, 44, 179, 65, 208, 90, 116, 57, 14, 72, 54, 240, 120, 237, 7, 94, 204, 226, 249, 154, 192, 180, 61, 38, 28, 230, 126, 180, 6, 4, 78, 23, 35, 211 }, new byte[] { 47, 199, 180, 87, 201, 189, 34, 86, 128, 24, 104, 213, 91, 17, 124, 190, 233, 78, 13, 110, 132, 76, 30, 25, 83, 22, 25, 91, 178, 243, 236, 61, 176, 6, 233, 146, 110, 172, 30, 51, 164, 79, 186, 220, 0, 223, 115, 143, 110, 18, 0, 29, 14, 145, 108, 250, 152, 89, 58, 101, 150, 252, 204, 68, 42, 91, 112, 60, 37, 106, 39, 205, 68, 104, 16, 99, 141, 77, 78, 96, 133, 148, 61, 199, 38, 18, 180, 207, 205, 66, 18, 207, 111, 162, 118, 101, 114, 84, 181, 49, 244, 135, 149, 199, 62, 90, 115, 242, 55, 29, 29, 124, 217, 246, 28, 7, 192, 66, 223, 80, 135, 195, 164, 138, 237, 239, 232, 21 } });
 
             migrationBuilder.InsertData(
                 table: "DashboardUsers",
                 columns: new[] { "Id", "Email", "Name", "PasswordHash", "PasswordSalt" },
-                values: new object[] { 1, "admin@admin.com", "Admin", new byte[] { 180, 241, 198, 127, 205, 166, 113, 167, 117, 152, 13, 42, 187, 128, 45, 180, 44, 196, 104, 129, 31, 24, 226, 30, 227, 148, 189, 31, 150, 158, 227, 226, 12, 225, 246, 109, 57, 100, 75, 15, 197, 95, 242, 200, 229, 63, 129, 163, 81, 26, 183, 45, 220, 84, 78, 175, 240, 123, 116, 86, 85, 51, 111, 104 }, new byte[] { 197, 233, 155, 122, 47, 174, 155, 20, 112, 54, 61, 134, 33, 131, 168, 115, 115, 219, 72, 132, 104, 135, 58, 12, 76, 2, 151, 78, 56, 224, 172, 182, 115, 11, 40, 199, 233, 92, 73, 235, 220, 121, 45, 60, 56, 196, 114, 222, 86, 233, 16, 142, 57, 30, 138, 156, 60, 46, 159, 82, 239, 222, 196, 184, 224, 200, 150, 140, 24, 254, 143, 223, 4, 139, 238, 59, 103, 202, 138, 181, 144, 138, 90, 106, 238, 8, 170, 108, 135, 163, 222, 181, 112, 150, 54, 159, 71, 100, 102, 48, 103, 170, 66, 84, 176, 196, 109, 249, 193, 108, 112, 63, 189, 178, 185, 77, 14, 155, 80, 198, 82, 68, 158, 233, 112, 94, 85, 72 } });
+                values: new object[] { 1, "admin@admin.com", "Admin", new byte[] { 180, 90, 202, 21, 47, 137, 87, 124, 2, 134, 198, 156, 87, 147, 14, 52, 24, 128, 17, 92, 202, 113, 106, 203, 60, 231, 84, 120, 82, 175, 96, 44, 179, 65, 208, 90, 116, 57, 14, 72, 54, 240, 120, 237, 7, 94, 204, 226, 249, 154, 192, 180, 61, 38, 28, 230, 126, 180, 6, 4, 78, 23, 35, 211 }, new byte[] { 47, 199, 180, 87, 201, 189, 34, 86, 128, 24, 104, 213, 91, 17, 124, 190, 233, 78, 13, 110, 132, 76, 30, 25, 83, 22, 25, 91, 178, 243, 236, 61, 176, 6, 233, 146, 110, 172, 30, 51, 164, 79, 186, 220, 0, 223, 115, 143, 110, 18, 0, 29, 14, 145, 108, 250, 152, 89, 58, 101, 150, 252, 204, 68, 42, 91, 112, 60, 37, 106, 39, 205, 68, 104, 16, 99, 141, 77, 78, 96, 133, 148, 61, 199, 38, 18, 180, 207, 205, 66, 18, 207, 111, 162, 118, 101, 114, 84, 181, 49, 244, 135, 149, 199, 62, 90, 115, 242, 55, 29, 29, 124, 217, 246, 28, 7, 192, 66, 223, 80, 135, 195, 164, 138, 237, 239, 232, 21 } });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Camera_TBL_Site_ID",

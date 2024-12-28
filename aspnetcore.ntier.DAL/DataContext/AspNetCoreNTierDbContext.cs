@@ -89,18 +89,18 @@ public partial class AspNetCoreNTierDbContext : DbContext
                 .HasColumnType("numeric(18, 0)")
                 .HasColumnName("CamID");
             entity.Property(e => e.CamIp)
-                .IsUnicode(false)
+                .IsUnicode(true)
                 .HasColumnName("CamIP");
             entity.Property(e => e.CamModel)
                 .HasMaxLength(50)
-                .IsUnicode(false);
-            entity.Property(e => e.CamName).IsUnicode(false);
+                .IsUnicode(true);
+            entity.Property(e => e.CamName).IsUnicode(true);
             entity.Property(e => e.CamPassword)
                 .HasMaxLength(50)
-                .IsUnicode(false);
+                .IsUnicode(true);
             entity.Property(e => e.CamUsername)
                 .HasMaxLength(50)
-                .IsUnicode(false);
+                .IsUnicode(true);
             entity.Property(e => e.SiteId)
                 .HasColumnType("numeric(18, 0)")
                 .HasColumnName("Site_ID");
@@ -200,7 +200,7 @@ public partial class AspNetCoreNTierDbContext : DbContext
                 .HasColumnName("Driver_Code");
             entity.Property(e => e.DriverName)
                 .HasMaxLength(200)
-                .IsUnicode(false)
+                .IsUnicode(true)
                 .HasColumnName("Driver_Name");
             entity.Property(e => e.DriverState).HasColumnName("Driver_State");
             entity.Property(e => e.SiteId)
@@ -227,11 +227,11 @@ public partial class AspNetCoreNTierDbContext : DbContext
                 .HasColumnName("Log_Code");
             entity.Property(e => e.LogDate).HasColumnName("Log_Date");
             entity.Property(e => e.LogName)
-                .IsUnicode(false)
+                .IsUnicode(true)
                 .HasColumnName("Log_Name");
             entity.Property(e => e.LogTime).HasColumnName("Log_Time");
             entity.Property(e => e.LogTrans)
-                .IsUnicode(false)
+                .IsUnicode(true)
                 .HasColumnName("Log_Trans");
             entity.Property(e => e.SiteId)
                 .HasColumnType("numeric(18, 0)")
@@ -263,7 +263,7 @@ public partial class AspNetCoreNTierDbContext : DbContext
                 .HasColumnName("Nation_Code");
             entity.Property(e => e.NationName)
                 .HasMaxLength(200)
-                .IsUnicode(false)
+                .IsUnicode(true)
                 .HasColumnName("Nation_Name");
             entity.Property(e => e.NationState).HasColumnName("Nation_State");
             entity.Property(e => e.SiteId)
@@ -291,17 +291,17 @@ public partial class AspNetCoreNTierDbContext : DbContext
                 .HasColumnType("numeric(18, 0)")
                 .HasColumnName("Pic_ID");
             entity.Property(e => e.PicCamera)
-                .IsUnicode(false)
+                .IsUnicode(true)
                 .HasColumnName("Pic_Camera");
             entity.Property(e => e.PicDate).HasColumnName("Pic_date");
             entity.Property(e => e.PicImage)
-                .IsUnicode(false)
+                .IsUnicode(true)
                 .HasColumnName("Pic_Image");
             entity.Property(e => e.PicState).HasColumnName("Pic_State");
             entity.Property(e => e.PicTime).HasColumnName("Pic_Time");
             entity.Property(e => e.PicTruckId)
                 .HasMaxLength(50)
-                .IsUnicode(false)
+                .IsUnicode(true)
                 .HasColumnName("Pic_Truck_ID");
             entity.Property(e => e.SiteId)
                 .HasColumnType("numeric(18, 0)")
@@ -325,11 +325,11 @@ public partial class AspNetCoreNTierDbContext : DbContext
                 .HasColumnType("numeric(18, 0)")
                 .HasColumnName("Product_Code");
             entity.Property(e => e.ProductLocation)
-                .IsUnicode(false)
+                .IsUnicode(true)
                 .HasColumnName("Product_Location");
             entity.Property(e => e.ProductName)
                 .HasMaxLength(200)
-                .IsUnicode(false)
+                .IsUnicode(true)
                 .HasColumnName("Product_Name");
             entity.Property(e => e.ProductState).HasColumnName("Product_State");
             entity.Property(e => e.SiteId)
@@ -350,18 +350,18 @@ public partial class AspNetCoreNTierDbContext : DbContext
                 .HasColumnType("numeric(18, 0)")
                 .HasColumnName("ID");
             entity.Property(e => e.Cprinter)
-                .IsUnicode(false)
+                .IsUnicode(true)
                 .HasColumnName("CPrinter");
-            entity.Property(e => e.Indecator).IsUnicode(false);
-            entity.Property(e => e.Name).IsUnicode(false);
-            entity.Property(e => e.Note).IsUnicode(false);
+            entity.Property(e => e.Indecator).IsUnicode(true);
+            entity.Property(e => e.Name).IsUnicode(true);
+            entity.Property(e => e.Note).IsUnicode(true);
             entity.Property(e => e.Rprinter)
-                .IsUnicode(false)
+                .IsUnicode(true)
                 .HasColumnName("RPrinter");
             entity.Property(e => e.SiteId)
                 .HasColumnType("numeric(18, 0)")
                 .HasColumnName("Site_ID");
-            entity.Property(e => e.Title).IsUnicode(false);
+            entity.Property(e => e.Title).IsUnicode(true);
 
             entity.HasOne(d => d.Site).WithMany(p => p.SettingTbls)
                 .HasForeignKey(d => d.SiteId)
@@ -381,14 +381,14 @@ public partial class AspNetCoreNTierDbContext : DbContext
                 .HasColumnType("numeric(18, 0)")
                 .HasColumnName("Site_Code");
             entity.Property(e => e.SiteLocation)
-                .IsUnicode(false)
+                .IsUnicode(true)
                 .HasColumnName("Site_Location");
             entity.Property(e => e.SiteName)
-                .IsUnicode(false)
+                .IsUnicode(true)
                 .HasColumnName("Site_Name");
             entity.Property(e => e.SiteState).HasColumnName("Site_State");
             entity.Property(e => e.SiteTitle)
-                .IsUnicode(false)
+                .IsUnicode(true)
                 .HasColumnName("Site_Title");
         });
 
@@ -400,7 +400,7 @@ public partial class AspNetCoreNTierDbContext : DbContext
 
             entity.Property(e => e.TruckNum)
                 .HasMaxLength(200)
-                .IsUnicode(false)
+                .IsUnicode(true)
                 .HasColumnName("Truck_Num");
             entity.Property(e => e.SiteId)
                 .HasColumnType("numeric(18, 0)")
@@ -435,16 +435,16 @@ public partial class AspNetCoreNTierDbContext : DbContext
                 .HasColumnType("numeric(18, 0)")
                 .HasColumnName("USER_P_Code");
             entity.Property(e => e.UserPForm)
-                .IsUnicode(false)
+                .IsUnicode(true)
                 .HasColumnName("USER_P_Form");
             entity.Property(e => e.UserPName1)
-                .IsUnicode(false)
+                .IsUnicode(true)
                 .HasColumnName("USER_P_Name1");
             entity.Property(e => e.UserPName2)
-                .IsUnicode(false)
+                .IsUnicode(true)
                 .HasColumnName("USER_P_Name2");
             entity.Property(e => e.UserPNote)
-                .IsUnicode(false)
+                .IsUnicode(true)
                 .HasColumnName("USER_P_Note");
             entity.Property(e => e.UserPState).HasColumnName("USER_P_State");
         });
@@ -465,7 +465,7 @@ public partial class AspNetCoreNTierDbContext : DbContext
                 .HasColumnType("numeric(18, 0)")
                 .HasColumnName("UP_Code");
             entity.Property(e => e.UpNote)
-                .IsUnicode(false)
+                .IsUnicode(true)
                 .HasColumnName("UP_Note");
             entity.Property(e => e.UpState).HasColumnName("UP_State");
             entity.Property(e => e.UserId)
@@ -507,16 +507,16 @@ public partial class AspNetCoreNTierDbContext : DbContext
                 .HasColumnName("User_Code");
             entity.Property(e => e.UserName)
                 .HasMaxLength(50)
-                .IsUnicode(false)
+                .IsUnicode(true)
                 .HasColumnName("User_Name");
             entity.Property(e => e.UserPassword)
                 .HasMaxLength(50)
-                .IsUnicode(false)
+                .IsUnicode(true)
                 .HasColumnName("User_Password");
             entity.Property(e => e.UserState).HasColumnName("User_State");
             entity.Property(e => e.UserType)
                 .HasMaxLength(50)
-                .IsUnicode(false)
+                .IsUnicode(true)
                 .HasColumnName("User_Type");
 
             entity.HasOne(d => d.Site).WithMany(p => p.UsersTbls)
@@ -542,11 +542,11 @@ public partial class AspNetCoreNTierDbContext : DbContext
                 .HasColumnType("numeric(18, 0)")
                 .HasColumnName("W_Class_Code");
             entity.Property(e => e.WClassImage)
-                .IsUnicode(false)
+                .IsUnicode(true)
                 .HasColumnName("W_Class_Image");
             entity.Property(e => e.WClassName)
                 .HasMaxLength(200)
-                .IsUnicode(false)
+                .IsUnicode(true)
                 .HasColumnName("W_Class_Name");
             entity.Property(e => e.WClassState).HasColumnName("W_Class_State");
             entity.Property(e => e.WClassWeight).HasColumnName("W_Class_Weight");
@@ -595,7 +595,7 @@ public partial class AspNetCoreNTierDbContext : DbContext
                 .HasColumnName("Site_ID");
             entity.Property(e => e.TruckNum)
                 .HasMaxLength(200)
-                .IsUnicode(false)
+                .IsUnicode(true)
                 .HasColumnName("Truck_Num");
             entity.Property(e => e.TruckWeight)
                 .HasDefaultValue(0)
@@ -615,10 +615,10 @@ public partial class AspNetCoreNTierDbContext : DbContext
                 .HasColumnName("W_Class_ID");
             entity.Property(e => e.WeightLocation).HasColumnName("Weight_Location");
             entity.Property(e => e.WeightNote)
-                .IsUnicode(false)
+                .IsUnicode(true)
                 .HasColumnName("Weight_Note");
             entity.Property(e => e.WeightS)
-                .IsUnicode(false)
+                .IsUnicode(true)
                 .HasColumnName("Weight_S");
             entity.Property(e => e.WeightState).HasColumnName("Weight_State");
 
@@ -665,7 +665,7 @@ public partial class AspNetCoreNTierDbContext : DbContext
                 .HasColumnName("Site_ID");
             entity.Property(e => e.WTicketEnd).HasColumnName("W_Ticket_End");
             entity.Property(e => e.WTicketName)
-                .IsUnicode(false)
+                .IsUnicode(true)
                 .HasColumnName("W_Ticket_Name");
             entity.Property(e => e.WTicketPrice)
                 .HasColumnType("decimal(18, 0)")
