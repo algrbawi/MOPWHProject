@@ -19,6 +19,7 @@ public class AutoMapperProfile : Profile
         CreateMap<TrucksTblDto, TrucksTbl>();
         CreateMap<ProductsTblDto, ProductsTbl>();
         CreateMap<UsersTblDto, UsersTbl>();
+        CreateMap<DriversTblDto, DriversTbl>();
 
 
 

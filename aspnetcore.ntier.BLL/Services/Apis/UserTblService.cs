@@ -15,10 +15,10 @@ namespace aspnetcore.ntier.BLL.Services.Apis
         private readonly IMapper _mapper;
         private readonly IGenericRepository<UsersTbl> _userTblRepository;
 
-        public UserTblService(IMapper mapper, IGenericRepository<UsersTbl> productTblRepository)
+        public UserTblService(IMapper mapper, IGenericRepository<UsersTbl> userTblRepository)
         {
             _mapper = mapper;
-            _userTblRepository = productTblRepository;
+            _userTblRepository = userTblRepository;
         }
         public async Task AddAsync(UsersTblDto model)
         {

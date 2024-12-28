@@ -29,6 +29,7 @@ public static class DependencyInjection
         services.AddScoped<ITruckService, TruckService>();
         services.AddScoped<IProductService, ProductService>();
         services.AddScoped<IUserTblService, UserTblService>();
+        services.AddScoped<IDriverService, DriverService>();
         services.AddScoped<ModelStateValidation>();
 
 
