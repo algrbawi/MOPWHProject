@@ -4,17 +4,16 @@ using AutoMapper;
 
 namespace aspnetcore.ntier.BLL.Utilities.AutoMapperProfiles;
 
-public static class AutoMapperProfiles
+public class AutoMapperProfile : Profile
 {
-    public class AutoMapperProfile : Profile
+    public AutoMapperProfile()
     {
-        public AutoMapperProfile()
-        {
-            //CreateMap<ApiUser, UserDTO>().ReverseMap();
-            //CreateMap<ApiUser, UserToAddDTO>().ReverseMap();
-            //CreateMap<ApiUser, UserToUpdateDTO>().ReverseMap();
-            //CreateMap<ApiUser, UserToRegisterDTO>().ReverseMap();
-            //CreateMap<ApiUser, UserToReturnDTO>().ReverseMap();
-        }
+        //CreateMap<ApiUser, UserDTO>().ReverseMap();
+        //CreateMap<ApiUser, UserToAddDTO>().ReverseMap();
+        //CreateMap<ApiUser, UserToUpdateDTO>().ReverseMap();
+        //CreateMap<ApiUser, UserToRegisterDTO>().ReverseMap();
+        //CreateMap<ApiUser, UserToReturnDTO>().ReverseMap();
+        //CreateMap<WeightTbl, WeightTblDto>();
+        CreateMap<WeightTblDto, WeightTbl>();
     }
 }

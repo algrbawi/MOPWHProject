@@ -23,11 +23,9 @@ public class AuthService : IAuthService
     public AuthService(
         IGenericRepository<ApiUser> userRepository,
 
-        IMapper mapper,
         IOptions<JwtSettings> jwtSettings)
     {
         _apiUserRepository = userRepository;
-        _mapper = mapper;
         _jwtSettings = jwtSettings.Value;
     }
 

@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using aspnetcore.ntier.BLL.Utilities.AutoMapperProfiles;
 namespace aspnetcore.ntier.Dashboard
 {
     public class Program

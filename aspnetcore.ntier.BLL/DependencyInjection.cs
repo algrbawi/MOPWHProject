@@ -21,10 +21,11 @@ public static class DependencyInjection
 {
     public static void RegisterBLLDependencies(this IServiceCollection services, IConfiguration Configuration)
     {
-        services.AddAutoMapper(typeof(AutoMapperProfiles));
+        services.AddAutoMapper(typeof(AutoMapperProfile));
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<IAuthService, AuthService>();
         services.AddScoped<IAccountService, AccountService>();
+        services.AddScoped<IWeightService, WeightService>();
         services.AddScoped<ModelStateValidation>();
 
 
