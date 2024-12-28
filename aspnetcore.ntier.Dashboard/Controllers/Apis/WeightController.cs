@@ -10,6 +10,7 @@ namespace aspnetcore.ntier.Dashboard.Controllers.Apis
     [Route("api/v{version:apiVersion}/[controller]")]
     [ApiVersion("1")]
     [ApiController]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class WeightController : ControllerBase
     {
         private readonly IWeightService _weightService;
@@ -20,8 +21,8 @@ namespace aspnetcore.ntier.Dashboard.Controllers.Apis
         }
 
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        [HttpPost("AddWeight")]
-        public async Task<IActionResult> AddWeight(WeightTblDto model)
+        [HttpPost("Add")]
+        public async Task<IActionResult> Add(WeightTblDto model)
         {
             try
             {
@@ -34,7 +35,7 @@ namespace aspnetcore.ntier.Dashboard.Controllers.Apis
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.InnerException.Message);
+                return BadRequest(ex.InnerException?.Message);
 
             }
         }

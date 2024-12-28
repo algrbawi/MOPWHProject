@@ -13,18 +13,18 @@ namespace aspnetcore.ntier.BLL.Services.Apis
     public class WeightService : IWeightService
     {
         private readonly IMapper _mapper;
-        private readonly IGenericRepository<WeightTbl> _WeightClassTblRepository;
+        private readonly IGenericRepository<WeightTbl> _weightTblRepository;
 
         public WeightService(IMapper mapper, IGenericRepository<WeightTbl> weightClassTblRepository)
         {
             _mapper = mapper;
-            _WeightClassTblRepository = weightClassTblRepository;
+            _weightTblRepository = weightClassTblRepository;
         }
 
         public async Task AddAsync(WeightTblDto model)
         {
             var weightTbl = _mapper.Map<WeightTbl>(model);
-            await _WeightClassTblRepository.AddAsync(weightTbl);
+            await _weightTblRepository.AddAsync(weightTbl);
         }
     }
 }
