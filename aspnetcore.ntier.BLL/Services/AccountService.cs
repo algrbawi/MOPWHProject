@@ -13,6 +13,7 @@ using System.Net;
 using aspnetcore.ntier.DAL.Repositories.IRepositories;
 using aspnetcore.ntier.DAL.Entities;
 using aspnetcore.ntier.DAL.Password;
+using Microsoft.EntityFrameworkCore;
 
 namespace aspnetcore.ntier.BLL.Services
 {
@@ -29,7 +30,7 @@ namespace aspnetcore.ntier.BLL.Services
 
         public async Task<LoginResponseDto> Login(string Email, string Password, bool IsPersistent)
         {
-            var user = await _dashboardUser.GetAsync(x => x.Email == Email);
+            var user = await _dashboardUser.GetAsync(x => x.Email == Email, include: ac => ac.Include(x => x.AccessUsers));
 
             var result = new LoginResponseDto()
             {
@@ -58,7 +59,7 @@ namespace aspnetcore.ntier.BLL.Services
                 {
                     foreach (var item in user.AccessUsers)
                     {
-                        claims.Add(new Claim(ClaimTypes.Role, item.Id.ToString()));
+                        claims.Add(new Claim(ClaimTypes.Role, item.SiteTblId.ToString()));
                     }
                 }
 

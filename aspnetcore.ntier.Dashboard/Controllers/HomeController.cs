@@ -21,16 +21,24 @@ namespace aspnetcore.ntier.Dashboard.Controllers
 
         public async Task<IActionResult> Index(string siteName = "")
         {
+            ViewBag.IsSubSite = false;
             var isSuperAdmin = isTheUserSuperAdmin();
             var sites = new List<SiteTblDto>();
             if (isSuperAdmin)
             {
                 sites = await _siteService.GetListAsync();
             }
+            else
+            {
+                var accessSites = GetUserAccessToSites();
+                sites = await _siteService.GetListAsync(Ids: accessSites);
+            }
             var results = new List<SiteTblDto>();
             if (!string.IsNullOrEmpty(siteName))
             {
                 results = sites.Where(s => s.SiteName.ToLower() == siteName.ToLower()).ToList();
+                ViewBag.IsSubSite = true;
+
             }
             else
             {
@@ -54,6 +62,11 @@ namespace aspnetcore.ntier.Dashboard.Controllers
         {
             var role = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role && x.Value == "SuperAdmin");
             return role is not null ? true : false;
+        }
+        private List<decimal> GetUserAccessToSites()
+        {
+            var role = User.Claims.Where(x => x.Type == ClaimTypes.Role && decimal.TryParse(x.Value, out _) == true).Select(x => Convert.ToDecimal(x.Value)).ToList();
+            return role;
         }
     }
 }

@@ -4,7 +4,7 @@
     ViewData["Title"] = "Home Page";
 }
 @section Styles {
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <style>
         .square-box {
             width: 150px; /* Set desired width */
@@ -24,12 +24,35 @@
 
             @foreach (var item in Model)
             {
-                <a asp-action="index" asp-route-siteName="@item.SiteName" class="col-6 mt-3" style="text-decoration:none">
-                    <div class="p-3 text-white text-center border border-dark border-2" style="background-color:#4472c4">@item.SiteName</div>
-                </a>
+                if (ViewBag.IsSubSite)
+                {
+                    <a asp-action="index" asp-controller="Pdf" asp-route-siteId="@item.SiteId" class="col-6 mt-3" style="text-decoration:none">
+                        <div class="p-3 text-white text-center border border-dark border-2" style="background-color:#4472c4">@item.SiteTitle</div>
+                    </a>
+                }
+                else
+                {
+                    <a asp-action="index" asp-route-siteName="@item.SiteName" class="col-6 mt-3" style="text-decoration:none">
+                        <div class="p-3 text-white text-center border border-dark border-2" style="background-color:#4472c4">@item.SiteName</div>
+                    </a>
+                }
+
             }
 
         </div>
+        @if (ViewBag.IsSubSite)
+        {
+            <div class="row">
+                <div class="d-flex flex-row justify-content-end mt-5">
+                    <a asp-action="index" class="btn btn-primary">
+                        عودة
+                        <i class="fa fa-arrow-circle-left" aria-hidden="true"></i>
+                    </a>
+                </div>
+
+            </div>
+        }
+
     </div>
 </div>
 

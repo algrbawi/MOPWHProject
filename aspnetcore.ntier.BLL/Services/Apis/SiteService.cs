@@ -32,7 +32,7 @@ namespace aspnetcore.ntier.BLL.Services.Apis
         }
         public async Task<List<SiteTblDto>> GetListAsync(List<decimal>? Ids = null)
         {
-            var results = await _siteTblRepository.GetListAsync(s => Ids == null ? true : Ids.Contains(s.SiteId));
+            var results = await _siteTblRepository.GetListAsync(s => (Ids == null ? true : Ids.Contains(s.SiteId)));
             return _mapper.Map<List<SiteTblDto>>(results);
         }
 
