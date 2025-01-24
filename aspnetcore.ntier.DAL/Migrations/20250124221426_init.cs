@@ -35,7 +35,8 @@ namespace aspnetcore.ntier.DAL.Migrations
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PasswordHash = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
-                    PasswordSalt = table.Column<byte[]>(type: "varbinary(max)", nullable: false)
+                    PasswordSalt = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
+                    IsSuperAdmin = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -74,6 +75,32 @@ namespace aspnetcore.ntier.DAL.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_USER_P_Setting_TBL", x => x.USER_P_ID);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AccessUser",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    DashboardUserId = table.Column<int>(type: "int", nullable: false),
+                    SiteTblId = table.Column<decimal>(type: "numeric(18,0)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AccessUser", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AccessUser_DashboardUsers_DashboardUserId",
+                        column: x => x.DashboardUserId,
+                        principalTable: "DashboardUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_AccessUser_Site_TBL_SiteTblId",
+                        column: x => x.SiteTblId,
+                        principalTable: "Site_TBL",
+                        principalColumn: "Site_ID",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -200,8 +227,7 @@ namespace aspnetcore.ntier.DAL.Migrations
                 name: "Pictures_TBL",
                 columns: table => new
                 {
-                    Pic_ID = table.Column<decimal>(type: "numeric(18,0)", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Pic_ID = table.Column<decimal>(type: "numeric(18,0)", nullable: false),
                     Pic_date = table.Column<DateOnly>(type: "date", nullable: true),
                     Pic_Time = table.Column<TimeOnly>(type: "time", nullable: true),
                     Pic_Camera = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -489,12 +515,23 @@ namespace aspnetcore.ntier.DAL.Migrations
             migrationBuilder.InsertData(
                 table: "ApiUsers",
                 columns: new[] { "Id", "Email", "PasswordHash", "PasswordSalt" },
-                values: new object[] { 1, "admin@admin.com", new byte[] { 180, 90, 202, 21, 47, 137, 87, 124, 2, 134, 198, 156, 87, 147, 14, 52, 24, 128, 17, 92, 202, 113, 106, 203, 60, 231, 84, 120, 82, 175, 96, 44, 179, 65, 208, 90, 116, 57, 14, 72, 54, 240, 120, 237, 7, 94, 204, 226, 249, 154, 192, 180, 61, 38, 28, 230, 126, 180, 6, 4, 78, 23, 35, 211 }, new byte[] { 47, 199, 180, 87, 201, 189, 34, 86, 128, 24, 104, 213, 91, 17, 124, 190, 233, 78, 13, 110, 132, 76, 30, 25, 83, 22, 25, 91, 178, 243, 236, 61, 176, 6, 233, 146, 110, 172, 30, 51, 164, 79, 186, 220, 0, 223, 115, 143, 110, 18, 0, 29, 14, 145, 108, 250, 152, 89, 58, 101, 150, 252, 204, 68, 42, 91, 112, 60, 37, 106, 39, 205, 68, 104, 16, 99, 141, 77, 78, 96, 133, 148, 61, 199, 38, 18, 180, 207, 205, 66, 18, 207, 111, 162, 118, 101, 114, 84, 181, 49, 244, 135, 149, 199, 62, 90, 115, 242, 55, 29, 29, 124, 217, 246, 28, 7, 192, 66, 223, 80, 135, 195, 164, 138, 237, 239, 232, 21 } });
+                values: new object[] { 1, "admin@admin.com", new byte[] { 104, 136, 143, 19, 91, 5, 225, 182, 216, 68, 5, 115, 218, 150, 94, 159, 191, 141, 248, 163, 232, 71, 30, 153, 214, 80, 47, 192, 8, 145, 71, 249, 190, 24, 27, 7, 106, 166, 118, 135, 165, 169, 143, 163, 31, 23, 152, 100, 79, 110, 228, 225, 240, 16, 200, 173, 29, 142, 211, 253, 255, 82, 16, 97 }, new byte[] { 218, 41, 250, 3, 4, 72, 102, 113, 5, 134, 173, 68, 162, 218, 93, 198, 22, 180, 85, 173, 60, 242, 199, 254, 97, 8, 94, 144, 125, 214, 128, 39, 177, 255, 224, 218, 108, 38, 245, 243, 208, 203, 91, 11, 188, 249, 129, 161, 190, 87, 63, 83, 182, 112, 60, 6, 67, 66, 212, 55, 15, 25, 215, 50, 151, 219, 194, 22, 135, 232, 14, 178, 85, 175, 251, 202, 48, 67, 113, 113, 244, 107, 166, 193, 218, 172, 218, 137, 186, 116, 223, 232, 123, 148, 173, 121, 208, 147, 24, 133, 241, 42, 170, 40, 235, 98, 222, 132, 241, 72, 80, 43, 36, 132, 98, 218, 150, 169, 10, 230, 247, 28, 52, 138, 249, 206, 233, 59 } });
 
             migrationBuilder.InsertData(
                 table: "DashboardUsers",
-                columns: new[] { "Id", "Email", "Name", "PasswordHash", "PasswordSalt" },
-                values: new object[] { 1, "admin@admin.com", "Admin", new byte[] { 180, 90, 202, 21, 47, 137, 87, 124, 2, 134, 198, 156, 87, 147, 14, 52, 24, 128, 17, 92, 202, 113, 106, 203, 60, 231, 84, 120, 82, 175, 96, 44, 179, 65, 208, 90, 116, 57, 14, 72, 54, 240, 120, 237, 7, 94, 204, 226, 249, 154, 192, 180, 61, 38, 28, 230, 126, 180, 6, 4, 78, 23, 35, 211 }, new byte[] { 47, 199, 180, 87, 201, 189, 34, 86, 128, 24, 104, 213, 91, 17, 124, 190, 233, 78, 13, 110, 132, 76, 30, 25, 83, 22, 25, 91, 178, 243, 236, 61, 176, 6, 233, 146, 110, 172, 30, 51, 164, 79, 186, 220, 0, 223, 115, 143, 110, 18, 0, 29, 14, 145, 108, 250, 152, 89, 58, 101, 150, 252, 204, 68, 42, 91, 112, 60, 37, 106, 39, 205, 68, 104, 16, 99, 141, 77, 78, 96, 133, 148, 61, 199, 38, 18, 180, 207, 205, 66, 18, 207, 111, 162, 118, 101, 114, 84, 181, 49, 244, 135, 149, 199, 62, 90, 115, 242, 55, 29, 29, 124, 217, 246, 28, 7, 192, 66, 223, 80, 135, 195, 164, 138, 237, 239, 232, 21 } });
+                columns: new[] { "Id", "Email", "IsSuperAdmin", "Name", "PasswordHash", "PasswordSalt" },
+                values: new object[] { 1, "admin@admin.com", true, "Admin", new byte[] { 104, 136, 143, 19, 91, 5, 225, 182, 216, 68, 5, 115, 218, 150, 94, 159, 191, 141, 248, 163, 232, 71, 30, 153, 214, 80, 47, 192, 8, 145, 71, 249, 190, 24, 27, 7, 106, 166, 118, 135, 165, 169, 143, 163, 31, 23, 152, 100, 79, 110, 228, 225, 240, 16, 200, 173, 29, 142, 211, 253, 255, 82, 16, 97 }, new byte[] { 218, 41, 250, 3, 4, 72, 102, 113, 5, 134, 173, 68, 162, 218, 93, 198, 22, 180, 85, 173, 60, 242, 199, 254, 97, 8, 94, 144, 125, 214, 128, 39, 177, 255, 224, 218, 108, 38, 245, 243, 208, 203, 91, 11, 188, 249, 129, 161, 190, 87, 63, 83, 182, 112, 60, 6, 67, 66, 212, 55, 15, 25, 215, 50, 151, 219, 194, 22, 135, 232, 14, 178, 85, 175, 251, 202, 48, 67, 113, 113, 244, 107, 166, 193, 218, 172, 218, 137, 186, 116, 223, 232, 123, 148, 173, 121, 208, 147, 24, 133, 241, 42, 170, 40, 235, 98, 222, 132, 241, 72, 80, 43, 36, 132, 98, 218, 150, 169, 10, 230, 247, 28, 52, 138, 249, 206, 233, 59 } });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AccessUser_DashboardUserId_SiteTblId",
+                table: "AccessUser",
+                columns: new[] { "DashboardUserId", "SiteTblId" },
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AccessUser_SiteTblId",
+                table: "AccessUser",
+                column: "SiteTblId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Camera_TBL_Site_ID",
@@ -638,6 +675,9 @@ namespace aspnetcore.ntier.DAL.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "AccessUser");
+
+            migrationBuilder.DropTable(
                 name: "ApiUsers");
 
             migrationBuilder.DropTable(
@@ -648,9 +688,6 @@ namespace aspnetcore.ntier.DAL.Migrations
 
             migrationBuilder.DropTable(
                 name: "COM_SETTING_TBL");
-
-            migrationBuilder.DropTable(
-                name: "DashboardUsers");
 
             migrationBuilder.DropTable(
                 name: "Log_TBL");
@@ -669,6 +706,9 @@ namespace aspnetcore.ntier.DAL.Migrations
 
             migrationBuilder.DropTable(
                 name: "Weight_Ticket_TBL");
+
+            migrationBuilder.DropTable(
+                name: "DashboardUsers");
 
             migrationBuilder.DropTable(
                 name: "USER_P_Setting_TBL");
