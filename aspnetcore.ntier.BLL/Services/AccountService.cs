@@ -39,7 +39,7 @@ namespace aspnetcore.ntier.BLL.Services
 
             if (user is null || !isValidPassword)
             {
-                result.ErrorMessage = "invalid credentials";
+                result.ErrorMessage = "البريد الالكتروني او كلمة المرور غير صحيحة";
                 result.StatusCode = HttpStatusCode.BadRequest;
             }
 

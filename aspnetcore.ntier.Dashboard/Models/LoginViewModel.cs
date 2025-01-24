@@ -4,10 +4,10 @@ namespace aspnetcore.ntier.Dashboard.Models
 {
     public class LoginViewModel
     {
-        [Required]
-        [RegularExpression(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$", ErrorMessage = "Invalid Email Address")]
+        [Required(ErrorMessage = "يرجى إدخال البريد الألكتروني")]
+        [RegularExpression(pattern: @"^[\w-_]+(\.[\w!#$%'*+\/=?\^`{|}]+)*@((([\-\w]+\.)+[a-zA-Z]{2,20})|(([0-9]{1,3}\.){3}[0-9]{1,3}))$", ErrorMessage = "صيغة البريد الألكتروني غير صحيحة")]
         public string Email { get; set; }
-        [Required]
+        [Required(ErrorMessage = "يرجى إدخال كلمة المرور")]
         public string Password { get; set; }
         public bool RemmberMe { get; set; }
         public string ReturnUrl { get; set; } = "/";
