@@ -19,5 +19,7 @@ namespace aspnetcore.ntier.DTO.DTOs
         public string? SiteTitle { get; set; }
 
         public bool? SiteState { get; set; }
+        public virtual ICollection<AccessUserDto> AccessUsers { get; set; } = new List<AccessUserDto>();
+
     }
 }

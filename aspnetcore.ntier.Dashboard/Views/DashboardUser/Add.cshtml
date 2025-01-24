@@ -1,0 +1,92 @@
+﻿@using aspnetcore.ntier.Dashboard.Models.DashboardUser
+@model AddEditViewModel
+@section Styles {
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+}
+@{
+
+    ViewBag.Title = "إضافة";
+}
+<div class="container mt-5">
+    @if (ViewBag.MessageStatus is not null)
+    {
+        <div class="alert alert-success" role="alert">
+            @ViewBag.MessageStatus
+        </div>
+        @(ViewBag.MessageStatus = null)
+
+    }
+    <h2 class="mb-4">إنشاء مستخدم جديد</h2>
+    <form asp-action="Add" method="post">
+        <!-- Name -->
+        <input asp-for="Id" hidden />
+        <div class="mb-3">
+            <label asp-for="Name" class="form-label">الأسم</label>
+            <input asp-for="Name" class="form-control" placeholder="الأسم" value="">
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+
+        <!-- Email -->
+        <div class="mb-3">
+            <label asp-for="Email" class="form-label">البريد الالكتروني</label>
+            <input asp-for="Email" class="form-control" placeholder="البريد الالكتروني" value="">
+            <span asp-validation-for="Email" class="text-danger"></span>
+
+        </div>
+
+        <!-- Password -->
+        <div class="mb-3">
+            <label asp-for="Password" class="form-label">كلمة المرور</label>
+            <input asp-for="Password" class="form-control" placeholder="كلمة المرور" value="@Model.Password">
+            <span asp-validation-for="Password" class="text-danger"></span>
+
+        </div>
+
+        <!-- Dropdown -->
+        <div class="mb-3">
+            <label asp-for="IsSuperAdmin" class="form-label">نوع المستخدم</label>
+            <select class="form-select" asp-for="IsSuperAdmin">
+                <option value="true" selected>مدير</option>
+                <option value="false">مستخدم</option>
+            </select>
+            <span asp-validation-for="IsSuperAdmin" class="text-danger"></span>
+
+        </div>
+
+
+        <!-- Dropdown -->
+        <div class="mb-3 permissions" style="display:@(Model.IsSuperAdmin?"none":"block")">
+            <label asp-for="SiteItems" class="form-label">الصلاحيات</label>
+            <select class="form-select" asp-for="SitePermissions" asp-items="@Model.SiteItems" multiple="multiple">
+            </select>
+            <span asp-validation-for="SitePermissions" class="text-danger"></span>
+
+        </div>
+
+
+        <!-- Submit Button -->
+        <button type="submit" class="btn btn-primary">إضافة</button>
+        <a class="btn btn-primary" asp-action="index">إالغاء</a>
+    </form>
+
+</div>
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script>
+          $(document).ready(function() {
+            $('#SitePermissions').select2();
+            $("#IsSuperAdmin").on("change" , function(e){
+                    var isAdmin = $('#IsSuperAdmin').find(":selected").val();
+                    $(".permissions").hide();
+                    if(isAdmin=='false'){
+                    $(".permissions").show();
+
+                    }
+            $('#SitePermissions').select2();
+            })
+                setTimeout( "$('.alert').alert('close')",5000 );
+        });
+
+    </script>
+}
+

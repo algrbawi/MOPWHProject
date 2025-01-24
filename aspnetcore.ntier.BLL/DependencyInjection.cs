@@ -1,5 +1,6 @@
 ﻿using aspnetcore.ntier.BLL.Services;
 using aspnetcore.ntier.BLL.Services.Apis;
+using aspnetcore.ntier.BLL.Services.Dashboard;
 using aspnetcore.ntier.BLL.Services.IServices;
 using aspnetcore.ntier.BLL.Utilities.AutoMapperProfiles;
 using aspnetcore.ntier.BLL.Utilities.Filters;
@@ -23,7 +24,6 @@ public static class DependencyInjection
     public static void RegisterBLLDependencies(this IServiceCollection services, IConfiguration Configuration)
     {
         services.AddAutoMapper(typeof(AutoMapperProfile));
-        services.AddScoped<IUserService, UserService>();
         services.AddScoped<IAuthService, AuthService>();
         services.AddScoped<IAccountService, AccountService>();
         services.AddScoped<IWeightService, WeightService>();
@@ -35,6 +35,7 @@ public static class DependencyInjection
         services.AddScoped<ISiteService, SiteService>();
         services.AddScoped<IPictureService, PictureService>();
         services.AddScoped<IWeightClassTblService, WeightClassTblService>();
+        services.AddScoped<IDashboardUserService, DashboardUserService>();
         services.AddScoped<ModelStateValidation>();
 
 

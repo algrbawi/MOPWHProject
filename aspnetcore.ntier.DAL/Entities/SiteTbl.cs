@@ -1,4 +1,5 @@
-﻿using System;
+﻿using aspnetcore.ntier.DAL.Entities;
+using System;
 using System.Collections.Generic;
 
 namespace aspnetcore.ntier.BLL;
@@ -46,4 +47,7 @@ public partial class SiteTbl
     public virtual ICollection<WeightTbl> WeightTbls { get; set; } = new List<WeightTbl>();
 
     public virtual ICollection<WeightTicketTbl> WeightTicketTbls { get; set; } = new List<WeightTicketTbl>();
+
+    public virtual ICollection<AccessUser> AccessUsers { get; set; } = new List<AccessUser>();
+
 }

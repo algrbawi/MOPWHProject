@@ -1,3 +1,4 @@
+using aspnetcore.ntier.Dashboard.Controllers.Base;
 using aspnetcore.ntier.Dashboard.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -5,8 +6,7 @@ using System.Diagnostics;
 
 namespace aspnetcore.ntier.Dashboard.Controllers
 {
-    [Authorize]
-    public class HomeController : Controller
+    public class HomeController : BaseController
     {
         private readonly ILogger<HomeController> _logger;
 

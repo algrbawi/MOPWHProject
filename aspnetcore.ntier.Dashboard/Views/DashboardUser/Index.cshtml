@@ -1,0 +1,71 @@
+﻿@using aspnetcore.ntier.DTO.DTOs
+@model List<DashboardUserDto>
+@{
+    ViewBag.Title = "المستخدمين";
+}
+<a asp-action="Add" class="btn btn-dark mb-3 mt-3">مستخدم جديد</a>
+<div class="container">
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">الأسم</th>
+                <th scope="col">البريد الألكتروني</th>
+                <th scope="col">نوع المستخدم</th>
+                <th scope="col">الأجراء</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <th scope="row">@item.Id</th>
+                    <td>@item.Name</td>
+                    <td>@item.Email</td>
+                    <td>@(item.IsSuperAdmin ? "مدير" : "مستخدم")</td>
+                    <td>
+                        <a asp-action="Edit" asp-route-Id="@item.Id" class="btn btn-primary">تعديل</a>
+                        <button class="btn btn-danger" onclick="removeUser('@item.Name' , '@item.Id')">حذف</button>
+                    </td>
+                </tr>
+            }
+
+
+        </tbody>
+    </table>
+
+
+</div>
+
+<div class="modal" tabindex="-1" role="dialog" style="display:none">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">حذف مستخدم</h5>
+            </div>
+            <div class="modal-body">
+                <p>هل أنت متأكد من حذف <b><span id="user-name"></span></b>؟</p>
+            </div>
+            <div class="modal-footer">
+                <form asp-action="Remove" method="post">
+                    <input id="userId" name="userId" hidden />
+                    <button type="submit" class="btn btn-danger">حذف</button>
+                    <button class="btn btn-secondary" data-dismiss="modal">إغلاق</button>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    <script>
+        function removeUser(name,id){
+            $(".modal").modal("show");
+            $("#user-name").text(name)
+            $("#userId").val(id)
+        }
+    </script>
+}

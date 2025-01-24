@@ -22,8 +22,13 @@ public class AutoMapperProfile : Profile
         CreateMap<DriversTblDto, DriversTbl>();
         CreateMap<NationTblDto, NationTbl>();
         CreateMap<WeightClassTblDto, WeightClassTbl>();
-        CreateMap<SiteTblDto, SiteTbl>();
+        CreateMap<SiteTblDto, SiteTbl>().ReverseMap();
         CreateMap<PictureTblDto, PicturesTbl>();
+        CreateMap<DashboardUserDto, DashboardUser>().ReverseMap();
+        CreateMap<AccessUserDto, AccessUser>().ReverseMap();
+
+
+
 
 
     }
