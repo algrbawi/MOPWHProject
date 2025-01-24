@@ -50,6 +50,18 @@ namespace aspnetcore.ntier.BLL.Services
                                             new Claim("FullName", Email),
                 };
 
+                if (user.IsSuperAdmin)
+                {
+                    claims.Add(new Claim(ClaimTypes.Role, "SuperAdmin"));
+                }
+                else
+                {
+                    foreach (var item in user.AccessUsers)
+                    {
+                        claims.Add(new Claim(ClaimTypes.Role, item.Id.ToString()));
+                    }
+                }
+
                 var claimsIdentity = new ClaimsIdentity(
                claims, CookieAuthenticationDefaults.AuthenticationScheme);
                 var authProperties = new AuthenticationProperties

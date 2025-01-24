@@ -2,11 +2,13 @@
 using aspnetcore.ntier.Dashboard.Controllers.Base;
 using aspnetcore.ntier.Dashboard.Models.DashboardUser;
 using aspnetcore.ntier.DTO.DTOs;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace aspnetcore.ntier.Dashboard.Controllers
 {
+    [Authorize(Roles = "SuperAdmin")]
     public class DashboardUserController : BaseController
     {
         private readonly IDashboardUserService _dashboardUserService;
