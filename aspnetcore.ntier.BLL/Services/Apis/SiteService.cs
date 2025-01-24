@@ -29,7 +29,17 @@ namespace aspnetcore.ntier.BLL.Services.Apis
         {
             var results = await _siteTblRepository.GetListAsync();
             return _mapper.Map<List<SiteTblDto>>(results);
+        }
+        public async Task<List<SiteTblDto>> GetListAsync(List<decimal>? Ids = null)
+        {
+            var results = await _siteTblRepository.GetListAsync(s => Ids == null ? true : Ids.Contains(s.SiteId));
+            return _mapper.Map<List<SiteTblDto>>(results);
+        }
 
+        public async Task<List<SiteTblDto>> GetListAsync(string name)
+        {
+            var results = await _siteTblRepository.GetListAsync(s => s.SiteName == name);
+            return _mapper.Map<List<SiteTblDto>>(results);
         }
     }
 }

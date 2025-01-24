@@ -11,5 +11,7 @@ namespace aspnetcore.ntier.BLL.Services.IServices
     {
         Task AddAsync(SiteTblDto model);
         Task<List<SiteTblDto>> GetListAsync();
+        Task<List<SiteTblDto>> GetListAsync(List<decimal>? Ids = null);
+        Task<List<SiteTblDto>> GetListAsync(string name);
     }
 }
