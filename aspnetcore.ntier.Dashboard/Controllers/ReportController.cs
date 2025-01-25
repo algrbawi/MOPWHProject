@@ -19,7 +19,7 @@ namespace aspnetcore.ntier.Dashboard.Controllers
             _weightService = weightService;
             _siteService = siteService;
         }
-        public async Task<IActionResult> Index(int SiteId)
+        public async Task<IActionResult> ReportDetails(int SiteId)
         {
             if (SiteId == 0)
             {
@@ -43,7 +43,7 @@ namespace aspnetcore.ntier.Dashboard.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> GetReportResult(IndexReportViewModel model)
+        public async Task<IActionResult> ReportDetails(IndexReportViewModel model)
         {
 
             var filterDates = GetFilterDate(model.DateType, model.Date);
@@ -65,7 +65,7 @@ namespace aspnetcore.ntier.Dashboard.Controllers
                 Site = site,
                 Weights = weightResults
             };
-            return View("index", results);
+            return View(results);
         }
 
         public IActionResult GenerateReportAsHTML()
