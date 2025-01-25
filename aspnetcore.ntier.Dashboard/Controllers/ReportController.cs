@@ -1,4 +1,5 @@
-﻿using aspnetcore.ntier.BLL.Services.IServices;
+﻿using aspnetcore.ntier.BLL;
+using aspnetcore.ntier.BLL.Services.IServices;
 using aspnetcore.ntier.Dashboard.Controllers.Base;
 using aspnetcore.ntier.Dashboard.Models.DashboardUser;
 using aspnetcore.ntier.DTO.DTOs;
@@ -19,52 +20,39 @@ namespace aspnetcore.ntier.Dashboard.Controllers
             _weightService = weightService;
             _siteService = siteService;
         }
-        public async Task<IActionResult> ReportDetails(int SiteId)
+        public async Task<IActionResult> ReportDetails(ReportDetailsRequestViewModel model)
         {
-            if (SiteId == 0)
+            if (model.SiteId == 0)
             {
                 return RedirectToAction("index", "home");
             }
-            var site = await _siteService.GetAsync(SiteId);
-            if (!isTheUserSuperAdmin())
+
+            var site = await GetSiteAsync(model.SiteId);
+            var results = new ReportDetailsResponseViewModel();
+            if (model.Date.HasValue && model.DateType.HasValue)
             {
-                if (!GetUserAccessToSites().Contains(site.SiteId))
+                var filterDates = GetFilterDate(model.DateType.Value, model.Date.Value);
+
+                var weightResults = await _weightService.GetWeightBySiteIdAsync(model.SiteId, filterDates.Item1, filterDates.Item2);
+
+                if (!isTheUserSuperAdmin())
                 {
-                    site = new SiteTblDto();
+                    if (!GetUserAccessToSites().Contains(model.SiteId))
+                    {
+                        site = new SiteTblDto();
+                    }
+                    var userAccess = GetUserAccessToSites();
+                    weightResults = weightResults.Where(x => userAccess.Contains(x.SiteId.Value)).ToList();
                 }
+                results.Site = site;
+                results.Weights = weightResults;
             }
-            var model = new IndexReportViewModel
+            else
             {
-                Site = site,
-                Weights = new List<WeightTblDto>()
-            };
-            return View(model);
-        }
+                results.Site = site;
+                results.Weights = new List<WeightTblDto>();
 
-
-        [HttpPost]
-        public async Task<IActionResult> ReportDetails(IndexReportViewModel model)
-        {
-
-            var filterDates = GetFilterDate(model.DateType, model.Date);
-            var site = await _siteService.GetAsync(model.SiteId);
-            var weightResults = await _weightService.GetWeightBySiteIdAsync(model.SiteId, filterDates.Item1, filterDates.Item2);
-
-            if (!isTheUserSuperAdmin())
-            {
-                if (!GetUserAccessToSites().Contains(model.SiteId))
-                {
-                    site = new SiteTblDto();
-                }
-                var userAccess = GetUserAccessToSites();
-                weightResults = weightResults.Where(x => userAccess.Contains(x.SiteId.Value)).ToList();
             }
-
-            var results = new IndexReportViewModel
-            {
-                Site = site,
-                Weights = weightResults
-            };
             return View(results);
         }
 
@@ -106,6 +94,19 @@ namespace aspnetcore.ntier.Dashboard.Controllers
         {
             var role = User.Claims.Where(x => x.Type == ClaimTypes.Role && decimal.TryParse(x.Value, out _) == true).Select(x => Convert.ToDecimal(x.Value)).ToList();
             return role;
+        }
+
+        private async Task<SiteTblDto> GetSiteAsync(int siteId)
+        {
+            var site = await _siteService.GetAsync(siteId);
+            if (!isTheUserSuperAdmin())
+            {
+                if (!GetUserAccessToSites().Contains(site.SiteId))
+                {
+                    site = new SiteTblDto();
+                }
+            }
+            return site;
         }
     }
 }

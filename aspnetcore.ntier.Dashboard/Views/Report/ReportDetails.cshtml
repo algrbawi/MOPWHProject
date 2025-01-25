@@ -1,5 +1,5 @@
 ﻿@using aspnetcore.ntier.Dashboard.Models.DashboardUser
-@model IndexReportViewModel
+@model ReportDetailsResponseViewModel
 
 @section Styles {
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
@@ -25,7 +25,7 @@
         <div class="text-center">
             <h4>المملكة الاردنية الهاشمية</h4>
             <h4>وزارة الاشغال العامة و الاسكان - وحدة الاوزان المحورية</h4>
-            <h4>(@Model.Site.SiteTitle)</h4>
+            <h4>( @Model.Site.SiteTitle )</h4>
             <h4>تقرير سنوي</h4>
         </div>
     </div>
@@ -39,12 +39,11 @@
     <div class="container mt-5 col-4">
         <div class="card shadow p-4">
             @* <h2 class="text-center mb-4">Simple Search</h2> *@
-            <form asp-action="ReportDetails" method="post">
+            <form asp-action="ReportDetails" method="get">
                 <input asp-for="SiteId" hidden />
                 <div class="mb-3">
                     <label for="input1" class="form-label">التاريخ</label>
                     <input class="form-control" asp-for="Date" type="date" />
-
                 </div>
                 <div class="mb-3">
                     <label asp-for="DateType" class="form-label">نوع البحث</label>
@@ -97,11 +96,11 @@
 
 
 @section Scripts {
+    @await Html.PartialAsync("_PdfScripts.cshtml")
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script>
           $(document).ready(function() {
             $('#DateType').select2();
         });
-
     </script>
 }

@@ -2,7 +2,7 @@
 
 namespace aspnetcore.ntier.Dashboard.Models.DashboardUser
 {
-    public class IndexReportViewModel
+    public class ReportDetailsResponseViewModel
     {
         public List<WeightTblDto> Weights { get; set; }
         public SiteTblDto Site { get; set; }
