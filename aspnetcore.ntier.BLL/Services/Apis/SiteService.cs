@@ -25,6 +25,11 @@ namespace aspnetcore.ntier.BLL.Services.Apis
             var siteTbl = _mapper.Map<SiteTbl>(model);
             await _siteTblRepository.AddAsync(siteTbl);
         }
+        public async Task<SiteTblDto> GetAsync(decimal Id)
+        {
+            var results = await _siteTblRepository.GetAsync(s => s.SiteId == Id);
+            return _mapper.Map<SiteTblDto>(results);
+        }
         public async Task<List<SiteTblDto>> GetListAsync()
         {
             var results = await _siteTblRepository.GetListAsync();

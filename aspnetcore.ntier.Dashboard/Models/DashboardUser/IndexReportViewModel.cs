@@ -1,0 +1,18 @@
+﻿using aspnetcore.ntier.DTO.DTOs;
+
+namespace aspnetcore.ntier.Dashboard.Models.DashboardUser
+{
+    public class IndexReportViewModel
+    {
+        public List<WeightTblDto> Weights { get; set; }
+        public SiteTblDto Site { get; set; }
+        public int SiteId { get; set; }
+        public DateOnly Date { get; set; } = DateOnly.FromDateTime(DateTime.Now);
+        public DateType DateType { get; set; }
+    }
+    public enum DateType
+    {
+
+        daily, monthly, yearly
+    }
+}

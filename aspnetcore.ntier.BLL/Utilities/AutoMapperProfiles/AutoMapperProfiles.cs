@@ -15,7 +15,7 @@ public class AutoMapperProfile : Profile
         //CreateMap<ApiUser, UserToRegisterDTO>().ReverseMap();
         //CreateMap<ApiUser, UserToReturnDTO>().ReverseMap();
         //CreateMap<WeightTbl, WeightTblDto>();
-        CreateMap<WeightTblDto, WeightTbl>();
+        CreateMap<WeightTblDto, WeightTbl>().ReverseMap();
         CreateMap<TrucksTblDto, TrucksTbl>();
         CreateMap<ProductsTblDto, ProductsTbl>();
         CreateMap<UsersTblDto, UsersTbl>();

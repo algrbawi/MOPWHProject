@@ -26,5 +26,14 @@ namespace aspnetcore.ntier.BLL.Services.Apis
             var weightTbl = _mapper.Map<WeightTbl>(model);
             await _weightTblRepository.AddAsync(weightTbl);
         }
+
+        public async Task<List<WeightTblDto>> GetWeightBySiteIdAsync(int SiteId, DateOnly From, DateOnly To)
+        {
+
+            var results = await _weightTblRepository.GetListAsync(
+                x => x.SiteId == SiteId && x.InDate >= From && x.InDate <= To);
+
+            return _mapper.Map<List<WeightTblDto>>(results);
+        }
     }
 }

@@ -10,5 +10,6 @@ namespace aspnetcore.ntier.BLL.Services.IServices
     public interface IWeightService
     {
         Task AddAsync(WeightTblDto model);
+        Task<List<WeightTblDto>> GetWeightBySiteIdAsync(int SiteId, DateOnly From, DateOnly To);
     }
 }
