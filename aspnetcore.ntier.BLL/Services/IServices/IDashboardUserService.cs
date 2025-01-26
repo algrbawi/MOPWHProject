@@ -12,6 +12,7 @@ namespace aspnetcore.ntier.BLL.Services.IServices
         Task AddUserAsync(DashboardUserDto model, string password);
         Task EditUserAsync(DashboardUserDto model, string password);
         Task<List<DashboardUserDto>> GetAllAsync();
+        Task<DashboardUserDto> GetByEmailAsync(string email);
         Task<DashboardUserDto> GetByIdAsync(int Id);
         Task RemoveUserAsync(int Id);
     }

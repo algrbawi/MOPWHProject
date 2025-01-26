@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Authentication.Cookies;
+﻿using aspnetcore.ntier.Dashboard.Filters;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace aspnetcore.ntier.Dashboard.Controllers.Base
 {
     [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme)]
+    [CheckUserCredentials]
     public class BaseController : Controller
     {
 

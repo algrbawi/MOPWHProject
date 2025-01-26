@@ -37,6 +37,11 @@ namespace aspnetcore.ntier.BLL.Services.Dashboard
             var user = await _dashboardRepository.GetAsync(x => x.Id == Id, include: inc => inc.Include(ac => ac.AccessUsers));
             return _mapper.Map<DashboardUserDto>(user);
         }
+        public async Task<DashboardUserDto> GetByEmailAsync(string email)
+        {
+            var user = await _dashboardRepository.GetAsync(x => x.Email == email, include: inc => inc.Include(ac => ac.AccessUsers));
+            return _mapper.Map<DashboardUserDto>(user);
+        }
         public async Task EditUserAsync(DashboardUserDto model, string password)
         {
 

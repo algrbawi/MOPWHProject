@@ -27,6 +27,7 @@ namespace aspnetcore.ntier.Dashboard.Controllers.Apis
                 SiteName = model.SiteName,
                 SiteState = model.SiteState,
                 SiteTitle = model.SiteTitle
+            });
             return Ok();
         }
     }
