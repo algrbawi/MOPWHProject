@@ -2,6 +2,7 @@
 using aspnetcore.ntier.DAL.Repositories.IRepositories;
 using aspnetcore.ntier.DTO.DTOs;
 using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,7 +32,8 @@ namespace aspnetcore.ntier.BLL.Services.Apis
         {
 
             var results = await _weightTblRepository.GetListAsync(
-                x => x.SiteId == SiteId && x.InDate >= From && x.InDate <= To);
+                x => x.SiteId == SiteId && x.InDate >= From && x.InDate <= To,
+                include: x => x.Include(n => n.Nation).Include(p => p.Product).Include(d => d.Driver).Include(u => u.User));
 
             return _mapper.Map<List<WeightTblDto>>(results);
         }

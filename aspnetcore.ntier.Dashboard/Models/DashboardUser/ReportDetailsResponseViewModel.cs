@@ -7,8 +7,8 @@ namespace aspnetcore.ntier.Dashboard.Models.DashboardUser
         public List<WeightTblDto> Weights { get; set; }
         public SiteTblDto Site { get; set; }
         public int SiteId { get; set; }
-        public DateOnly Date { get; set; } = DateOnly.FromDateTime(DateTime.Now);
-        public DateType DateType { get; set; }
+        public DateOnly? Date { get; set; }
+        public DateType? DateType { get; set; }
     }
     public enum DateType
     {

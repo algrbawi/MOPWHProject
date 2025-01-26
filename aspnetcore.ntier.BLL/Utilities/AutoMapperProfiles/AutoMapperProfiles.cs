@@ -16,14 +16,14 @@ public class AutoMapperProfile : Profile
         //CreateMap<ApiUser, UserToReturnDTO>().ReverseMap();
         //CreateMap<WeightTbl, WeightTblDto>();
         CreateMap<WeightTblDto, WeightTbl>().ReverseMap();
-        CreateMap<TrucksTblDto, TrucksTbl>();
-        CreateMap<ProductsTblDto, ProductsTbl>();
-        CreateMap<UsersTblDto, UsersTbl>();
-        CreateMap<DriversTblDto, DriversTbl>();
-        CreateMap<NationTblDto, NationTbl>();
+        CreateMap<TrucksTblDto, TrucksTbl>().ReverseMap();
+        CreateMap<ProductsTblDto, ProductsTbl>().ReverseMap();
+        CreateMap<UsersTblDto, UsersTbl>().ReverseMap();
+        CreateMap<DriversTblDto, DriversTbl>().ReverseMap();
+        CreateMap<NationTblDto, NationTbl>().ReverseMap();
         CreateMap<WeightClassTblDto, WeightClassTbl>();
         CreateMap<SiteTblDto, SiteTbl>().ReverseMap();
-        CreateMap<PictureTblDto, PicturesTbl>();
+        CreateMap<PictureTblDto, PicturesTbl>().ReverseMap();
         CreateMap<DashboardUserDto, DashboardUser>().ReverseMap();
         CreateMap<AccessUserDto, AccessUser>().ReverseMap();
 

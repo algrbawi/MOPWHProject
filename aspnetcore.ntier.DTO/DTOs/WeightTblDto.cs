@@ -49,5 +49,10 @@ namespace aspnetcore.ntier.DTO.DTOs
         public decimal? UserId { get; set; }
 
         public decimal? SiteId { get; set; }
+
+        public NationTblDto? Nation { get; set; }
+        public ProductsTblDto? Product { get; set; }
+        public DriversTblDto? Driver { get; set; }
+        public UsersTblDto? User { get; set; }
     }
 }

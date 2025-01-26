@@ -1,10 +1,13 @@
 ﻿@using aspnetcore.ntier.Dashboard.Models.DashboardUser
+@using aspnetcore.ntier.Dashboard.Models.DashboardUser.Views
 @model ReportDetailsResponseViewModel
-
+@{
+    var tableContent = GetResults();
+}
 @section Styles {
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <style>
-        td {
+        .first-table > td {
             padding: 10px;
             width: 50%;
         }
@@ -14,10 +17,106 @@
             text-align: center
         }
 
+        .second-table-header {
+            background-color: #dcdcdc;
+        }
+
     </style>
-
 }
+@functions {
 
+    List<ReportContentViewModel> GetResults()
+    {
+        var result = new List<ReportContentViewModel>();
+        if (Model.DateType == DateType.daily)
+        {
+            int counter = 1;
+            foreach (var item in Model.Weights)
+            {
+                var obj = new ReportContentViewModel
+                    {
+                        Number = counter,
+                        OperationNumber = item.WId,
+                        DateOnly = item.InDate,
+                        TimeOnly = FixTimeFormat(item.InTime),
+                        TruckNumber = item.TruckNum,
+                        Nationality = item.Nation?.NationName,
+                        Classification = item.SeqNo,
+                        TruckWeiht = item.TruckWeight,
+                        AllowedWeight = item.ClassWeight,
+                        DiifWeight = item.DiffWeight,
+                        Violation = item.VioPrice,
+                        ProductName = item.Product?.ProductName,
+                        DriverName = item.Driver?.DriverName,
+                        UserName = item.User?.UserName,
+
+                    };
+
+                result.Add(obj);
+
+                counter++;
+            }
+
+        }
+        else if (Model.DateType == DateType.monthly)
+        {
+
+            int counter = 1;
+            foreach (var item in Model.Weights.GroupBy(d => d.InDate?.Day).OrderBy(x => x.Key))
+            {
+                var obj = new ReportContentViewModel
+                    {
+                        Number = counter,
+                        DateOnly = item.Key,
+                        TotalNumberWeights = item.Count(),
+                        TotalTruckesNotInViolation = item.Where(x => x.VioPrice == 0).Count(),
+                        TotalTruckesViolation = item.Where(x => x.VioPrice > 0).Count(),
+                        TotalTruckesViolationGreaterThan5 = Model.Weights.Where(v => v.VioWeight >= 6000 && v.VioPrice > 0).Count(),
+                        TotalTruckesViolationLessThan5 = Model.Weights.Where(v => v.VioWeight < 6000 && v.VioPrice > 0).Count(),
+                        TotalViolationWeights = item.Where(x => x.VioPrice > 0).Sum(x => x.VioWeight),
+                        TotalViolationPrice = item.Where(x => x.VioPrice > 0).Sum(x => x.VioPrice)
+
+                    };
+                result.Add(obj);
+                counter++;
+            }
+
+        }
+        else
+        {
+            int counter = 1;
+            foreach (var item in Model.Weights.GroupBy(d => d.InDate?.Month).OrderBy(x => x.Key))
+            {
+                var obj = new ReportContentViewModel
+                    {
+                        Number = counter,
+                        DateOnly = item.Key,
+                        TotalNumberWeights = item.Count(),
+                        TotalTruckesNotInViolation = item.Where(x => x.VioPrice == 0).Count(),
+                        TotalTruckesViolation = item.Where(x => x.VioPrice > 0).Count(),
+                        TotalTruckesViolationGreaterThan5 = Model.Weights.Where(v => v.VioWeight >= 6000 && v.VioPrice > 0).Count(),
+                        TotalTruckesViolationLessThan5 = Model.Weights.Where(v => v.VioWeight < 6000 && v.VioPrice > 0).Count(),
+                        TotalViolationWeights = item.Where(x => x.VioPrice > 0).Sum(x => x.VioWeight),
+                        TotalViolationPrice = item.Where(x => x.VioPrice > 0).Sum(x => x.VioPrice)
+
+                    };
+                result.Add(obj);
+                counter++;
+            }
+        }
+
+        return result;
+    }
+
+    string FixTimeFormat(TimeOnly? time)
+    {
+        if (time is not null)
+        {
+            return time.Value.ToString("HH:mm");
+        }
+        return null;
+    }
+}
 
 
 <div class="d-flex justify-content-around">
@@ -69,7 +168,7 @@
 @if (Model.Weights.Count() > 0)
 {
     <div class="container d-flex justify-content-center w-50 mt-5">
-        <table class="table">
+        <table class="table first-table">
             <tr>
                 <td><h5>عدد الشاحنات</h5></td>
                 <td><h5>@Model.Weights.Count()</h5></td>
@@ -92,6 +191,97 @@
             </tr>
         </table>
     </div>
+
+
+
+    @if (Model.DateType == DateType.daily)
+    {
+        <div class="container d-flex justify-content-center mt-5">
+
+            <table class="table mt-5 second-table">
+                <tr class="second-table-header">
+                    <th>الرقم</th>
+                    <th>رقم العملية</th>
+                    <th>التاريخ</th>
+                    <th>الوقت</th>
+                    <th>رقم المركبة</th>
+                    <th>الجنسية</th>
+                    <th>التصنيف</th>
+                    <th>وزن المركبة</th>
+                    <th>الوزن المسموح</th>
+                    <th>فرق الوزن</th>
+                    <th>المخالفة</th>
+                    <th>الحمولة</th>
+                    <th>السائق</th>
+                    <th>المستخدم</th>
+                </tr>
+                @foreach (var item in tableContent)
+                {
+                    <tr>
+                        <td>@item.Number</td>
+                        <td> @item.OperationNumber</td>
+                        <td>@item.DateOnly</td>
+                        <td>@item.TimeOnly</td>
+                        <td>@item.TruckNumber </td>
+                        <td>@item.Nationality</td>
+                        <td>@item.Classification</td>
+                        <td> @item.TruckWeiht</td>
+                        <td>@item.AllowedWeight </td>
+                        <td> @item.DiifWeight</td>
+                        <td>@item.Violation</td>
+                        <td>@item.ProductName</td>
+                        <td>@item.DriverName</td>
+                        <td>@item.UserName</td>
+                    </tr>
+                }
+
+            </table>
+        </div>
+    }
+    else
+    {
+
+        <div class="container d-flex justify-content-center mt-5">
+
+            <table class="table mt-5 second-table">
+                <tr class="second-table-header">
+                    <th>الرقم</th>
+                    <th>التاريخ</th>
+                    <th>عدد عمليات التوزين</th>
+                    <th>عدد المركبات غير المخالفة </th>
+                    <th>عدد المركبات المخالفة</th>
+                    <th>عدد المركبات المخالفة <span> &gt; </span> 5 </th>
+                    <th>عدد المركبات المخالفة <span> &lt; </span> 5 </th>
+                    <th>مجموع الاوزان المخالف عليها</th>
+                    <th>مجموع المخالفات دينار</th>
+                </tr>
+                @foreach (var item in tableContent)
+                {
+                    <tr>
+                        <td>@item.Number</td>
+                        <td>@item.DateOnly</td>
+                        <td>@item.TotalNumberWeights</td>
+                        <td>@item.TotalTruckesNotInViolation</td>
+                        <td>@item.TotalTruckesViolation</td>
+                        <td>@item.TotalTruckesViolationGreaterThan5</td>
+                        <td>@item.TotalTruckesViolationLessThan5</td>
+                        <td>@item.TotalViolationWeights</td>
+                        <td>@item.TotalViolationPrice</td>
+                    </tr>
+                }
+
+            </table>
+
+
+
+
+
+
+
+
+        </div>
+
+    }
 }
 
 

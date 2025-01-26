@@ -53,6 +53,9 @@ namespace aspnetcore.ntier.Dashboard.Controllers
                 results.Weights = new List<WeightTblDto>();
 
             }
+            results.SiteId = model.SiteId;
+            results.Date = model.Date;
+            results.DateType = model.DateType;
             return View(results);
         }
 
@@ -73,13 +76,13 @@ namespace aspnetcore.ntier.Dashboard.Controllers
             }
             else if (dateType == DateType.monthly)
             {
-                filterDateFrom = date;
-                filterDateTo = date.AddMonths(1);
+                filterDateFrom = new DateOnly(date.Year, date.Month, 1);
+                filterDateTo = filterDateFrom.AddMonths(1).AddDays(-1);
             }
             else
             {
-                filterDateFrom = date;
-                filterDateTo = date.AddYears(1);
+                filterDateFrom = new DateOnly(date.Year, 1, 1);
+                filterDateTo = filterDateFrom.AddYears(1).AddDays(-1);
             }
             return (filterDateFrom, filterDateTo);
 
