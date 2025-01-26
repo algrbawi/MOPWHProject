@@ -2,6 +2,7 @@
 using aspnetcore.ntier.BLL.Services.IServices;
 using aspnetcore.ntier.Dashboard.Controllers.Apis.BaseController;
 using aspnetcore.ntier.Dashboard.Filters;
+using aspnetcore.ntier.Dashboard.Models.Api;
 using aspnetcore.ntier.DTO.DTOs;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -23,9 +24,32 @@ namespace aspnetcore.ntier.Dashboard.Controllers.Apis
 
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [HttpPost("AddWeight")]
-        public async Task<IActionResult> AddWeight(WeightTblDto model)
+        public async Task<IActionResult> AddWeight(WeightRequestViewModel model)
         {
-            await _weightService.AddAsync(model);
+            await _weightService.AddAsync(new WeightTblDto
+            {
+                SiteId = model.SiteId,
+                ClassWeight = model.ClassWeight,
+                DiffWeight = model.DiffWeight,
+                DriverId = model.DriverId,
+                InDate = model.InDate,
+                InTime = model.InTime,
+                NationId = model.NationId,
+                ProductId = model.ProductId,
+                SeqNo = model.SeqNo,
+                Transed = model.Transed,
+                TruckNum = model.TruckNum,
+                UserId = model.UserId,
+                VioPrice = model.VioPrice,
+                WeightLocation = model.WeightLocation,
+                WeightNote = model.WeightNote,
+                WId = model.WId,
+                WeightState = model.WeightState,
+                WeightS = model.WeightS,
+                VioWeight = model.VioWeight,
+                TruckWeight = model.TruckWeight,
+                WClassId = model.WClassId
+            });
             return Ok();
         }
 
