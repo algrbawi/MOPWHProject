@@ -1,44 +1,44 @@
-﻿<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.2/jspdf.min.js"></script>
+﻿  <!-- Include html2canvas -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<!-- Include jsPDF -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
 <script>
-    function pdfFromHTML(html) {
-        var pdf = new jsPDF('p', 'pt', 'letter');
-        // source can be HTML-formatted string, or a reference
-        // to an actual DOM element from which the text will be scraped.
-        source = html;
+    function pdfFromHTML(html){
+      const { jsPDF } = window.jspdf;
 
-        // we support special element handlers. Register them with jQuery-style
-        // ID selector for either ID or node name. ("#iAmID", "div", "span" etc.)
-        // There is no support for any other type of selectors
-        // (class, of compound) at this time.
-        specialElementHandlers = {
-            // element with id of "bypass" - jQuery style selector
-            '#bypassme': function (element, renderer) {
-                // true = "handled elsewhere, bypass text extraction"
-                return true
-            }
-        };
-        margins = {
-            top: 80,
-            bottom: 60,
-            left: 40,
-            width: 522
-        };
-        // all coords and widths are in jsPDF instance's declared units
-        // 'inches' in this case
-        pdf.fromHTML(
-            source, // HTML string or DOM elem ref.
-            margins.left, // x coord
-            margins.top, { // y coord
-            'width': margins.width, // max width of content on PDF
-            'elementHandlers': specialElementHandlers
-        },
+      // Create a new PDF document
+      const pdf = new jsPDF();
 
-            function (dispose) {
-                // dispose: object with X, Y of the last line add to the PDF
-                //          this allow the insertion of new lines after html
-                pdf.save('template.pdf');
-            }, margins
-        );
+      // Get the HTML content
+          const htmlString = html
+                // Create a temporary DOM element from the HTML string
+      const tempElement = document.createElement("div");
+      tempElement.innerHTML = htmlString;
+      document.body.appendChild(tempElement);
+
+      // Use html2canvas to render the content into an image
+      html2canvas(tempElement, {
+        scale: 2, // Increase resolution
+        useCORS: true, // Handle cross-origin images
+      }).then((canvas) => {
+        const imgData = canvas.toDataURL("image/png");
+
+        // Add the image to the PDF
+        const pageWidth = pdf.internal.pageSize.getWidth();
+        const pageHeight = pdf.internal.pageSize.getHeight();
+        const imgWidth = canvas.width;
+        const imgHeight = canvas.height;
+        const ratio = Math.min(pageWidth / imgWidth, pageHeight / imgHeight);
+
+        const finalWidth = imgWidth * ratio;
+        const finalHeight = imgHeight * ratio;
+
+        pdf.addImage(imgData, "PNG", 0, 0, finalWidth, finalHeight);
+
+        // Save the PDF
+        pdf.save("arabic-content.pdf");
+      });
     }
 </script>
 <script>
