@@ -17,7 +17,7 @@ namespace aspnetcore.ntier.Dashboard.Filters
             var user = userService.GetByEmailAsync(userEmail).Result;
             var controller = (BaseController)context.Controller;
 
-            if (user.IsSuperAdmin != isTheUserSuperAdmin(userPrinciples))
+            if (user is null || user.IsSuperAdmin != isTheUserSuperAdmin(userPrinciples))
             {
                 context.Result = controller.RedirectToAction("logout", "account");
             }
