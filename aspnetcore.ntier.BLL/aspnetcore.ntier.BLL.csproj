@@ -17,6 +17,7 @@
 		<PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning" Version="5.0.0" />
 		<PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer" Version="5.0.0" />
 		<PackageReference Include="Microsoft.IdentityModel.Tokens" Version="6.26.0" />
+		<PackageReference Include="QuestPDF" Version="2024.12.3" />
 		<PackageReference Include="Select.HtmlToPdf.NetCore" Version="24.1.0" />
 		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
 		<PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="6.4.0" />
@@ -26,6 +27,12 @@
 	<ItemGroup>
 		<ProjectReference Include="..\aspnetcore.ntier.DAL\aspnetcore.ntier.DAL.csproj" />
 		<ProjectReference Include="..\aspnetcore.ntier.DTO\aspnetcore.ntier.DTO.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Update="Services\PDF\Images\img1.png">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </None>
 	</ItemGroup>
 
 </Project>

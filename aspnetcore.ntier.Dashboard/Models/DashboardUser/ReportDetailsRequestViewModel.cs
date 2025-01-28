@@ -1,4 +1,6 @@
-﻿namespace aspnetcore.ntier.Dashboard.Models.DashboardUser
+﻿using aspnetcore.ntier.DTO.DTOs;
+
+namespace aspnetcore.ntier.Dashboard.Models.DashboardUser
 {
     public class ReportDetailsRequestViewModel
     {

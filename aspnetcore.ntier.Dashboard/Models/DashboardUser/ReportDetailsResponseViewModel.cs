@@ -9,10 +9,20 @@ namespace aspnetcore.ntier.Dashboard.Models.DashboardUser
         public int SiteId { get; set; }
         public DateOnly? Date { get; set; }
         public DateType? DateType { get; set; }
-    }
-    public enum DateType
-    {
+        public string DateTypeText
+        {
+            get
+            {
+                return this.DateType switch
+                {
 
-        daily, monthly, yearly
+                    null => "",
+                    DTO.DTOs.DateType.daily => "يومي",
+                    DTO.DTOs.DateType.monthly => "شهري",
+                    DTO.DTOs.DateType.yearly => "سنوي"
+                };
+
+            }
+        }
     }
 }
