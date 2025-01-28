@@ -68,10 +68,13 @@ namespace aspnetcore.ntier.Dashboard.Controllers
         {
             var filterDates = GetFilterDate(model.DateType.Value, model.Date.Value);
             var weightResults = await _weightService.GetWeightBySiteIdAsync(model.SiteId, filterDates.Item1, filterDates.Item2);
+            var site = await GetSiteAsync(model.SiteId);
 
             var pdfDto = new PdfDto
             {
                 DateType = model.DateType.Value,
+                SiteName = site.SiteName,
+                SiteTitle = site.SiteTitle
             };
             if (model.DateType == DateType.daily)
             {
@@ -133,6 +136,7 @@ namespace aspnetcore.ntier.Dashboard.Controllers
 
             pdfDto.HeaderTable = new ReportHeaderContentDto
             {
+
                 TotalTrucks = weightResults.Count(),
                 TotalViolationTrucks = weightResults.Where(v => v.VioPrice > 0).Count(),
                 TotalViolationWeight = weightResults.Where(v => v.VioPrice > 0).Sum(x => x.VioWeight),

@@ -11,8 +11,8 @@ namespace aspnetcore.ntier.DTO.DTOs
         public ReportHeaderContentDto HeaderTable { get; set; }
         public List<ReportMainContentDto> MainTable { get; set; }
         public DateType DateType { get; set; }
-        public string SiteName { get; set; } = "محمد البيطار";
-        public string SiteTitle { get; set; } = "محمد البيطار";
+        public string SiteName { get; set; }
+        public string SiteTitle { get; set; }
 
         public string ReportDateType
         {
