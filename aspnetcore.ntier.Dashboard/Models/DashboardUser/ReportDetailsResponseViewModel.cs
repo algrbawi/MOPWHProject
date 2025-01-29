@@ -1,25 +1,26 @@
 ﻿using aspnetcore.ntier.DTO.DTOs;
+using aspnetcore.ntier.DTO.Enum;
 
 namespace aspnetcore.ntier.Dashboard.Models.DashboardUser
 {
     public class ReportDetailsResponseViewModel
     {
-        public List<WeightTblDto> Weights { get; set; }
+        public WeightReportDto ReportData { get; set; }
         public SiteTblDto Site { get; set; }
         public int SiteId { get; set; }
-        public DateOnly? Date { get; set; }
-        public DateType? DateType { get; set; }
+        public DateOnly? SearchDate { get; set; }
+        public ReportType? ReportType { get; set; }
         public string DateTypeText
         {
             get
             {
-                return this.DateType switch
+                return this.ReportType switch
                 {
 
-                    null => "",
-                    DTO.DTOs.DateType.daily => "يومي",
-                    DTO.DTOs.DateType.monthly => "شهري",
-                    DTO.DTOs.DateType.yearly => "سنوي"
+                    DTO.Enum.ReportType.daily => "يومي",
+                    DTO.Enum.ReportType.monthly => "شهري",
+                    DTO.Enum.ReportType.yearly => "سنوي",
+                    _ => ""
                 };
 
             }

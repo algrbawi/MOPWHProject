@@ -1,4 +1,5 @@
-﻿using System;
+﻿using aspnetcore.ntier.DTO.Enum;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,7 +11,7 @@ namespace aspnetcore.ntier.DTO.DTOs
     {
         public ReportHeaderContentDto HeaderTable { get; set; }
         public List<ReportMainContentDto> MainTable { get; set; }
-        public DateType DateType { get; set; }
+        public ReportType DateType { get; set; }
         public string SiteName { get; set; }
         public string SiteTitle { get; set; }
 
@@ -20,8 +21,8 @@ namespace aspnetcore.ntier.DTO.DTOs
             {
                 return this.DateType switch
                 {
-                    DateType.daily => "يومي",
-                    DateType.monthly => "شهري",
+                    ReportType.daily => "يومي",
+                    ReportType.monthly => "شهري",
                     _ => "سنوي"
                 };
             }

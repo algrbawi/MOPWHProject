@@ -32,175 +32,101 @@ namespace aspnetcore.ntier.Dashboard.Controllers
                 return RedirectToAction("index", "home");
             }
 
-            var site = await GetSiteAsync(model.SiteId);
+            var site = await _siteService.GetUserSiteAsync(User.Identity.Name, model.SiteId);
             var results = new ReportDetailsResponseViewModel();
-            if (model.Date.HasValue && model.DateType.HasValue)
+            if (model.SearchDate.HasValue && model.ReportType.HasValue)
             {
-                var filterDates = GetFilterDate(model.DateType.Value, model.Date.Value);
-
-                var weightResults = await _weightService.GetWeightBySiteIdAsync(model.SiteId, filterDates.Item1, filterDates.Item2);
-
-                if (!isTheUserSuperAdmin())
-                {
-                    if (!GetUserAccessToSites().Contains(model.SiteId))
-                    {
-                        site = new SiteTblDto();
-                    }
-                    var userAccess = GetUserAccessToSites();
-                    weightResults = weightResults.Where(x => userAccess.Contains(x.SiteId.Value)).ToList();
-                }
-                results.Site = site;
-                results.Weights = weightResults;
+                results.ReportData = await _weightService.GetWeightReportData(model.SiteId, model.SearchDate.Value, model.ReportType.Value, User.Identity.Name);
             }
-            else
-            {
-                results.Site = site;
-                results.Weights = new List<WeightTblDto>();
 
-            }
             results.SiteId = model.SiteId;
-            results.Date = model.Date;
-            results.DateType = model.DateType;
+            results.SearchDate = model.SearchDate;
+            results.ReportType = model.ReportType;
+            results.Site = site;
             return View(results);
         }
 
-        public async Task<IActionResult> DownloadReport(ReportDetailsRequestViewModel model)
-        {
-            var filterDates = GetFilterDate(model.DateType.Value, model.Date.Value);
-            var weightResults = await _weightService.GetWeightBySiteIdAsync(model.SiteId, filterDates.Item1, filterDates.Item2);
-            var site = await GetSiteAsync(model.SiteId);
+        //public async Task<IActionResult> DownloadReport(ReportDetailsRequestViewModel model)
+        //{
+        //    var filterDates = GetFilterDate(model.ReportType.Value, model.Date.Value);
+        //    var weightResults = await _weightService.GetWeightBySiteIdAsync(model.SiteId, filterDates.Item1, filterDates.Item2);
+        //    var site = await GetSiteAsync(model.SiteId);
 
-            var pdfDto = new PdfDto
-            {
-                DateType = model.DateType.Value,
-                SiteName = site.SiteName,
-                SiteTitle = site.SiteTitle
-            };
-            if (model.DateType == DateType.daily)
-            {
-                pdfDto.MainTable = weightResults.Select((x, i) => new ReportMainContentDto
-                {
-                    Number = i + 1,
-                    OperationNumber = x.WId,
-                    DateOnly = x.InDate,
-                    TimeOnly = FixTimeFormat(x.InTime),
-                    TruckNumber = x.TruckNum,
-                    Nationality = x.Nation?.NationName,
-                    Classification = x.SeqNo,
-                    TruckWeiht = x.TruckWeight,
-                    AllowedWeight = x.ClassWeight,
-                    DiifWeight = x.DiffWeight,
-                    Violation = x.VioPrice,
-                    ProductName = x.Product?.ProductName,
-                    DriverName = x.Driver?.DriverName,
-                    UserName = x.User?.UserName,
-                }).ToList();
+        //    var pdfDto = new PdfDto
+        //    {
+        //        DateType = model.ReportType.Value,
+        //        SiteName = site.SiteName,
+        //        SiteTitle = site.SiteTitle
+        //    };
+        //    if (model.ReportType == ReportType.daily)
+        //    {
+        //        pdfDto.MainTable = weightResults.Select((x, i) => new ReportMainContentDto
+        //        {
+        //            Number = i + 1,
+        //            OperationNumber = x.WId,
+        //            DateOnly = x.InDate,
+        //            TimeOnly = FixTimeFormat(x.InTime),
+        //            TruckNumber = x.TruckNum,
+        //            Nationality = x.Nation?.NationName,
+        //            Classification = x.SeqNo,
+        //            TruckWeiht = x.TruckWeight,
+        //            AllowedWeight = x.ClassWeight,
+        //            DiifWeight = x.DiffWeight,
+        //            Violation = x.VioPrice,
+        //            ProductName = x.Product?.ProductName,
+        //            DriverName = x.Driver?.DriverName,
+        //            UserName = x.User?.UserName,
+        //        }).ToList();
 
-            }
-            else if (model.DateType == DateType.monthly)
-            {
-                pdfDto.MainTable = weightResults.GroupBy(d => d.InDate?.Day).OrderBy(x => x.Key).Select((x, i) => new ReportMainContentDto
-                {
-                    Number = i + 1,
-                    DateOnly = x.Key,
-                    TotalNumberWeights = x.Count(),
-                    TotalTruckesNotInViolation = x.Where(x => x.VioPrice == 0).Count(),
-                    TotalTruckesViolation = x.Where(x => x.VioPrice > 0).Count(),
-                    TotalTruckesViolationGreaterThan5 = x.Where(v => v.VioWeight >= 6000 && v.VioPrice > 0).Count(),
-                    TotalTruckesViolationLessThan5 = x.Where(v => v.VioWeight < 6000 && v.VioPrice > 0).Count(),
-                    TotalViolationWeights = x.Where(x => x.VioPrice > 0).Sum(x => x.VioWeight),
-                    TotalViolationPrice = x.Where(x => x.VioPrice > 0).Sum(x => x.VioPrice)
+        //    }
+        //    else if (model.ReportType == ReportType.monthly)
+        //    {
+        //        pdfDto.MainTable = weightResults.GroupBy(d => d.InDate?.Day).OrderBy(x => x.Key).Select((x, i) => new ReportMainContentDto
+        //        {
+        //            Number = i + 1,
+        //            DateOnly = x.Key,
+        //            TotalNumberWeights = x.Count(),
+        //            TotalTruckesNotInViolation = x.Where(x => x.VioPrice == 0).Count(),
+        //            TotalTruckesViolation = x.Where(x => x.VioPrice > 0).Count(),
+        //            TotalTruckesViolationGreaterThan5 = x.Where(v => v.VioWeight >= 6000 && v.VioPrice > 0).Count(),
+        //            TotalTruckesViolationLessThan5 = x.Where(v => v.VioWeight < 6000 && v.VioPrice > 0).Count(),
+        //            TotalViolationWeights = x.Where(x => x.VioPrice > 0).Sum(x => x.VioWeight),
+        //            TotalViolationPrice = x.Where(x => x.VioPrice > 0).Sum(x => x.VioPrice)
 
-                }
-                ).ToList();
-            }
-            else
-            {
-                pdfDto.MainTable = weightResults.GroupBy(d => d.InDate?.Month).OrderBy(x => x.Key).Select((x, i) => new ReportMainContentDto
-                {
-                    Number = i + 1,
-                    DateOnly = x.Key,
-                    TotalNumberWeights = x.Count(),
-                    TotalTruckesNotInViolation = x.Where(x => x.VioPrice == 0).Count(),
-                    TotalTruckesViolation = x.Where(x => x.VioPrice > 0).Count(),
-                    TotalTruckesViolationGreaterThan5 = x.Where(v => v.VioWeight >= 6000 && v.VioPrice > 0).Count(),
-                    TotalTruckesViolationLessThan5 = x.Where(v => v.VioWeight < 6000 && v.VioPrice > 0).Count(),
-                    TotalViolationWeights = x.Where(x => x.VioPrice > 0).Sum(x => x.VioWeight),
-                    TotalViolationPrice = x.Where(x => x.VioPrice > 0).Sum(x => x.VioPrice)
+        //        }
+        //        ).ToList();
+        //    }
+        //    else
+        //    {
+        //        pdfDto.MainTable = weightResults.GroupBy(d => d.InDate?.Month).OrderBy(x => x.Key).Select((x, i) => new ReportMainContentDto
+        //        {
+        //            Number = i + 1,
+        //            DateOnly = x.Key,
+        //            TotalNumberWeights = x.Count(),
+        //            TotalTruckesNotInViolation = x.Where(x => x.VioPrice == 0).Count(),
+        //            TotalTruckesViolation = x.Where(x => x.VioPrice > 0).Count(),
+        //            TotalTruckesViolationGreaterThan5 = x.Where(v => v.VioWeight >= 6000 && v.VioPrice > 0).Count(),
+        //            TotalTruckesViolationLessThan5 = x.Where(v => v.VioWeight < 6000 && v.VioPrice > 0).Count(),
+        //            TotalViolationWeights = x.Where(x => x.VioPrice > 0).Sum(x => x.VioWeight),
+        //            TotalViolationPrice = x.Where(x => x.VioPrice > 0).Sum(x => x.VioPrice)
 
-                }
-            ).ToList();
-            }
-            PDFService pDFService = new PDFService(pdfDto);
+        //        }
+        //    ).ToList();
+        //    }
+        //    PDFService pDFService = new PDFService(pdfDto);
 
 
-            pdfDto.HeaderTable = new ReportHeaderContentDto
-            {
+        //    pdfDto.HeaderTable = new ReportHeaderContentDto
+        //    {
 
-                TotalTrucks = weightResults.Count(),
-                TotalViolationTrucks = weightResults.Where(v => v.VioPrice > 0).Count(),
-                TotalViolationWeight = weightResults.Where(v => v.VioPrice > 0).Sum(x => x.VioWeight),
-                TotlaViolationPrice = weightResults.Where(v => v.VioPrice > 0).Sum(x => x.VioPrice),
-                TotlaViolationNumberMoreThan5 = weightResults.Where(v => v.VioWeight >= 6000 && v.VioPrice > 0).Count()
-            };
-            var reportPdf = pDFService.GeneratePdf();
-            return File(reportPdf, "application/octet-stream", model.DateType.ToString() + ".pdf");
-        }
-
-        private (DateOnly, DateOnly) GetFilterDate(DateType dateType, DateOnly date)
-        {
-            DateOnly filterDateFrom = DateOnly.FromDateTime(DateTime.Now);
-            DateOnly filterDateTo = DateOnly.FromDateTime(DateTime.Now);
-
-            if (dateType == DateType.daily)
-            {
-                filterDateFrom = date;
-                filterDateTo = date;
-            }
-            else if (dateType == DateType.monthly)
-            {
-                filterDateFrom = new DateOnly(date.Year, date.Month, 1);
-                filterDateTo = filterDateFrom.AddMonths(1).AddDays(-1);
-            }
-            else
-            {
-                filterDateFrom = new DateOnly(date.Year, 1, 1);
-                filterDateTo = filterDateFrom.AddYears(1).AddDays(-1);
-            }
-            return (filterDateFrom, filterDateTo);
-
-        }
-
-        private bool isTheUserSuperAdmin()
-        {
-            var role = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role && x.Value == "SuperAdmin");
-            return role is not null ? true : false;
-        }
-        private List<decimal> GetUserAccessToSites()
-        {
-            var role = User.Claims.Where(x => x.Type == ClaimTypes.Role && decimal.TryParse(x.Value, out _) == true).Select(x => Convert.ToDecimal(x.Value)).ToList();
-            return role;
-        }
-
-        private async Task<SiteTblDto> GetSiteAsync(int siteId)
-        {
-            var site = await _siteService.GetAsync(siteId);
-            if (!isTheUserSuperAdmin())
-            {
-                if (!GetUserAccessToSites().Contains(site.SiteId))
-                {
-                    site = new SiteTblDto();
-                }
-            }
-            return site;
-        }
-        private string FixTimeFormat(TimeOnly? time)
-        {
-            if (time is not null)
-            {
-                return time.Value.ToString("HH:mm");
-            }
-            return null;
-        }
+        //        TotalTrucks = weightResults.Count(),
+        //        TotalViolationTrucks = weightResults.Where(v => v.VioPrice > 0).Count(),
+        //        TotalViolationWeight = weightResults.Where(v => v.VioPrice > 0).Sum(x => x.VioWeight),
+        //        TotlaViolationPrice = weightResults.Where(v => v.VioPrice > 0).Sum(x => x.VioPrice),
+        //        TotlaViolationNumberMoreThan5 = weightResults.Where(v => v.VioWeight >= 6000 && v.VioPrice > 0).Count()
+        //    };
+        //    var reportPdf = pDFService.GeneratePdf();
+        //    return File(reportPdf, "application/octet-stream", model.ReportType.ToString() + ".pdf");
+        //}
     }
 }

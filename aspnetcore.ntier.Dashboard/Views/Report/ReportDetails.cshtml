@@ -1,9 +1,10 @@
-﻿@using aspnetcore.ntier.DTO.DTOs
+﻿@using aspnetcore.ntier.DTO.Enum
 @using aspnetcore.ntier.Dashboard.Models.DashboardUser
 @using aspnetcore.ntier.Dashboard.Models.DashboardUser.Views
 @model ReportDetailsResponseViewModel
 @{
-    var tableContent = GetResults();
+    var report = Model.ReportData;
+    var IsReportDataNotNull = report?.ReportData is not null && report.ReportData.Count() > 0;
 }
 @section Styles {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -25,108 +26,13 @@
 
     </style>
 }
-@functions {
-
-    List<ReportContentViewModel> GetResults()
-    {
-        var result = new List<ReportContentViewModel>();
-        if (Model.DateType == DateType.daily)
-        {
-            int counter = 1;
-            foreach (var item in Model.Weights)
-            {
-                var obj = new ReportContentViewModel
-                    {
-                        Number = counter,
-                        OperationNumber = item.WId,
-                        DateOnly = item.InDate,
-                        TimeOnly = FixTimeFormat(item.InTime),
-                        TruckNumber = item.TruckNum,
-                        Nationality = item.Nation?.NationName,
-                        Classification = item.SeqNo,
-                        TruckWeiht = item.TruckWeight,
-                        AllowedWeight = item.ClassWeight,
-                        DiifWeight = item.DiffWeight,
-                        Violation = item.VioPrice,
-                        ProductName = item.Product?.ProductName,
-                        DriverName = item.Driver?.DriverName,
-                        UserName = item.User?.UserName,
-
-                    };
-
-                result.Add(obj);
-
-                counter++;
-            }
-
-        }
-        else if (Model.DateType == DateType.monthly)
-        {
-
-            int counter = 1;
-            foreach (var item in Model.Weights.GroupBy(d => d.InDate?.Day).OrderBy(x => x.Key))
-            {
-                var obj = new ReportContentViewModel
-                    {
-                        Number = counter,
-                        DateOnly = item.Key,
-                        TotalNumberWeights = item.Count(),
-                        TotalTruckesNotInViolation = item.Where(x => x.VioPrice == 0).Count(),
-                        TotalTruckesViolation = item.Where(x => x.VioPrice > 0).Count(),
-                        TotalTruckesViolationGreaterThan5 = Model.Weights.Where(v => v.VioWeight >= 6000 && v.VioPrice > 0).Count(),
-                        TotalTruckesViolationLessThan5 = Model.Weights.Where(v => v.VioWeight < 6000 && v.VioPrice > 0).Count(),
-                        TotalViolationWeights = item.Where(x => x.VioPrice > 0).Sum(x => x.VioWeight),
-                        TotalViolationPrice = item.Where(x => x.VioPrice > 0).Sum(x => x.VioPrice)
-
-                    };
-                result.Add(obj);
-                counter++;
-            }
-
-        }
-        else
-        {
-            int counter = 1;
-            foreach (var item in Model.Weights.GroupBy(d => d.InDate?.Month).OrderBy(x => x.Key))
-            {
-                var obj = new ReportContentViewModel
-                    {
-                        Number = counter,
-                        DateOnly = item.Key,
-                        TotalNumberWeights = item.Count(),
-                        TotalTruckesNotInViolation = item.Where(x => x.VioPrice == 0).Count(),
-                        TotalTruckesViolation = item.Where(x => x.VioPrice > 0).Count(),
-                        TotalTruckesViolationGreaterThan5 = Model.Weights.Where(v => v.VioWeight >= 6000 && v.VioPrice > 0).Count(),
-                        TotalTruckesViolationLessThan5 = Model.Weights.Where(v => v.VioWeight < 6000 && v.VioPrice > 0).Count(),
-                        TotalViolationWeights = item.Where(x => x.VioPrice > 0).Sum(x => x.VioWeight),
-                        TotalViolationPrice = item.Where(x => x.VioPrice > 0).Sum(x => x.VioPrice)
-
-                    };
-                result.Add(obj);
-                counter++;
-            }
-        }
-
-        return result;
-    }
-
-    string FixTimeFormat(TimeOnly? time)
-    {
-        if (time is not null)
-        {
-            return time.Value.ToString("HH:mm");
-        }
-        return null;
-    }
-}
-
 
 <div class="d-flex justify-content-around">
     <div>
         <div class="text-center">
             <h4>المملكة الاردنية الهاشمية</h4>
             <h4>وزارة الاشغال العامة و الاسكان - وحدة الاوزان المحورية</h4>
-            <h4> @Model.Site.SiteName (@Model.Site.SiteTitle)</h4>
+            <h4> @Model.Site?.SiteName (@Model.Site?.SiteTitle)</h4>
             <h4>تقرير @Model.DateTypeText</h4>
         </div>
     </div>
@@ -144,11 +50,11 @@
                 <input asp-for="SiteId" hidden />
                 <div class="mb-3">
                     <label for="input1" class="form-label">التاريخ</label>
-                    <input class="form-control" asp-for="Date" type="date" />
+                    <input class="form-control" asp-for="SearchDate" type="date" />
                 </div>
                 <div class="mb-3">
-                    <label asp-for="DateType" class="form-label">نوع البحث</label>
-                    <select class="form-select" asp-for="DateType">
+                    <label asp-for="ReportType" class="form-label">نوع البحث</label>
+                    <select class="form-select" asp-for="ReportType">
                         <option value="0" selected>يومي</option>
                         <option value="1">شهري</option>
                         <option value="2">سنوي</option>
@@ -164,7 +70,7 @@
                         بحث
                     </button>
 
-                    @if (Model.Weights.Count() > 0)
+                    @if (IsReportDataNotNull)
                     {
                         <a class="btn btn-primary" onclick="downloadPDF()">
                             <i class="fa fa-regular fa-download"></i>
@@ -177,36 +83,36 @@
     </div>
 
 </div>
-@if (Model.Weights.Count() > 0)
+@if (IsReportDataNotNull)
 {
     <div class="container d-flex justify-content-center w-50 mt-5">
         <table class="table first-table">
             <tr>
                 <td><h5>عدد الشاحنات</h5></td>
-                <td><h5>@Model.Weights.Count()</h5></td>
+                <td><h5>@report.TotalTrucks</h5></td>
             </tr>
             <tr>
                 <td><h5> عدد الشاحنات المخالفة</h5></td>
-                <td><h5>@Model.Weights.Where(v => v.VioPrice > 0).Count()</h5></td>
+                <td><h5>@report.TotalViolationTrucks</h5></td>
             </tr>
             <tr>
                 <td><h5>مجموع الاوزان المخالفة بالطن</h5></td>
-                <td><h5>@Model.Weights.Where(v => v.VioPrice > 0).Sum(x => x.VioWeight)</h5></td>
+                <td><h5>@report.TotalViolationWeight</h5></td>
             </tr>
             <tr>
                 <td><h5>قيمة المخالفات بالدينار</h5></td>
-                <td><h5>@Model.Weights.Where(v => v.VioPrice > 0).Sum(x => x.VioPrice)</h5></td>
+                <td><h5>@report.TotlaViolationPrice</h5></td>
             </tr>
             <tr>
                 <td><h5>مخالفات أكثر من 5 طن</h5></td>
-                <td><h5>@Model.Weights.Where(v => v.VioWeight >= 6000 && v.VioPrice > 0).Count()</h5></td>
+                <td><h5>@report.TotlaViolationNumberMoreThan5</h5></td>
             </tr>
         </table>
     </div>
 
 
 
-    @if (Model.DateType == DateType.daily)
+    @if (Model.ReportType == ReportType.daily)
     {
         <div class="container d-flex justify-content-center mt-5">
 
@@ -227,7 +133,7 @@
                     <th>السائق</th>
                     <th>المستخدم</th>
                 </tr>
-                @foreach (var item in tableContent)
+                @foreach (var item in report.ReportData)
                 {
                     <tr>
                         <td>@item.Number</td>
@@ -267,7 +173,7 @@
                     <th>مجموع الاوزان المخالف عليها</th>
                     <th>مجموع المخالفات دينار</th>
                 </tr>
-                @foreach (var item in tableContent)
+                @foreach (var item in report.ReportData)
                 {
                     <tr>
                         <td>@item.Number</td>
@@ -283,16 +189,7 @@
                 }
 
             </table>
-
-
-
-
-
-
-
-
         </div>
-
     }
 }
 
@@ -302,7 +199,7 @@
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script>
           $(document).ready(function() {
-            $('#DateType').select2();
+            $('#ReportType').select2();
         });
 
         function downloadPDF(){

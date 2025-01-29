@@ -14,5 +14,9 @@ namespace aspnetcore.ntier.BLL.Services.IServices
         Task<List<SiteTblDto>> GetListAsync();
         Task<List<SiteTblDto>> GetListAsync(List<decimal>? Ids = null);
         Task<List<SiteTblDto>> GetListAsync(string name);
+        Task<List<SiteTblDto>> GetUserSitesListAsync(string email, string siteName = "");
+        Task<SiteTblDto> GetUserSiteAsync(string email, int siteId);
+        Task<bool> IsUserAutorized(string emailAddress, int siteId);
+        Task<bool> IsUserAutorized(string emailAddress, string siteName);
     }
 }

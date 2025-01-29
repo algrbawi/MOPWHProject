@@ -1,4 +1,5 @@
 ﻿using aspnetcore.ntier.DTO.DTOs;
+using aspnetcore.ntier.DTO.Enum;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,5 +12,6 @@ namespace aspnetcore.ntier.BLL.Services.IServices
     {
         Task AddAsync(WeightTblDto model);
         Task<List<WeightTblDto>> GetWeightBySiteIdAsync(int SiteId, DateOnly From, DateOnly To);
+        Task<WeightReportDto> GetWeightReportData(int SiteId, DateOnly Date, ReportType ReportType, string userEmail);
     }
 }

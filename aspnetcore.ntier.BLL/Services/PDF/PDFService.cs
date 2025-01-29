@@ -1,4 +1,5 @@
 ﻿using aspnetcore.ntier.DTO.DTOs;
+using aspnetcore.ntier.DTO.Enum;
 using QuestPDF.Fluent;
 using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
@@ -75,7 +76,7 @@ namespace aspnetcore.ntier.BLL.Services.PDF
                 page.Margin(30);
                 page.MarginRight(60);
                 page.ContentFromRightToLeft();
-                page.Size(pdfDto.DateType == DateType.daily ? PageSizes.A3 : PageSizes.A4);
+                page.Size(pdfDto.DateType == ReportType.daily ? PageSizes.A3 : PageSizes.A4);
                 page.Header().Element(GetHeader);
                 page.Content().Grid(grid =>
                 {
@@ -96,7 +97,7 @@ namespace aspnetcore.ntier.BLL.Services.PDF
                             columns.RelativeColumn();
                             columns.RelativeColumn();
                             columns.RelativeColumn();
-                            if (pdfDto.DateType == DateType.daily)
+                            if (pdfDto.DateType == ReportType.daily)
                             {
 
                                 columns.RelativeColumn();
@@ -106,7 +107,7 @@ namespace aspnetcore.ntier.BLL.Services.PDF
                                 columns.RelativeColumn();
                             }
                         });
-                        if (pdfDto.DateType == DateType.daily)
+                        if (pdfDto.DateType == ReportType.daily)
                         {
                             table.Cell().Row(1).Column(1).Background(Color.FromHex("#dcdcdc")).Element(CellStyle).AlignTop().Text("الرقم").Bold().FontSize(7);
                             table.Cell().Row(1).Column(2).Background(Color.FromHex("#dcdcdc")).Element(CellStyle).AlignTop().Text("رقم العملية").Bold().FontSize(7);
@@ -138,7 +139,7 @@ namespace aspnetcore.ntier.BLL.Services.PDF
                         uint counter = 2;
                         foreach (var item in pdfDto.MainTable)
                         {
-                            if (pdfDto.DateType == DateType.daily)
+                            if (pdfDto.DateType == ReportType.daily)
                             {
                                 table.Cell().Row(counter).Column(1).Element(CellStyle).AlignTop().Text(item.Number).Bold().FontSize(7);
                                 table.Cell().Row(counter).Column(2).Element(CellStyle).AlignTop().Text(item.OperationNumber).Bold().FontSize(7);
