@@ -48,7 +48,7 @@ namespace aspnetcore.ntier.BLL.Services.Apis
         public async Task<SiteTblDto> GetUserSiteAsync(string email, int siteId)
         {
             var user = await _dashboardUserRepository.GetAsync(x => x.Email == email);
-            var results = await _siteTblRepository.GetAsync(x => (user.IsSuperAdmin || x.AccessUsers.Any(x => x.SiteTblId == siteId && x.DashboardUserId == user.Id)), inc => inc.Include(ua => ua.AccessUsers));
+            var results = await _siteTblRepository.GetAsync(x =>x.SiteId == siteId && (user.IsSuperAdmin || x.AccessUsers.Any(x => x.SiteTblId == siteId && x.DashboardUserId == user.Id)), inc => inc.Include(ua => ua.AccessUsers));
             return _mapper.Map<SiteTblDto>(results);
         }
         public async Task<List<SiteTblDto>> GetListAsync(List<decimal>? Ids = null)

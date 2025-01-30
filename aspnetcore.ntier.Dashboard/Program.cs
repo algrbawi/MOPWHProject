@@ -24,6 +24,7 @@ namespace aspnetcore.ntier.Dashboard
                     options.SlidingExpiration = true;
                     //options.AccessDeniedPath = "/Forbidden/";
                     options.LoginPath = "/account/login";
+                    options.AccessDeniedPath = "/account/logout";
                 }
                 ).AddJwtBearer(options =>
                 {
