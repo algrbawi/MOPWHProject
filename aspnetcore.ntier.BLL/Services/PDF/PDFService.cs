@@ -24,7 +24,6 @@ namespace aspnetcore.ntier.BLL.Services.PDF
 
         public void Compose(IDocumentContainer container)
         {
-            var headerModel = pdfDto.HeaderTable;
             container.Page(page =>
             {
                 page.Margin(30);
@@ -48,19 +47,19 @@ namespace aspnetcore.ntier.BLL.Services.PDF
                             columns.RelativeColumn();
                         });
                         table.Cell().Row(1).Column(1).Element(CellStyle).Height(30).AlignTop().Text("عدد الشاحنات").Bold().FontSize(15);
-                        table.Cell().Row(1).Column(2).Element(CellStyle).Height(30).AlignTop().Text(headerModel.TotalTrucks).Bold().FontSize(15);
+                        table.Cell().Row(1).Column(2).Element(CellStyle).Height(30).AlignTop().Text(pdfDto.TotalTrucks).Bold().FontSize(15);
 
                         table.Cell().Row(2).Column(1).Element(CellStyle).Height(30).AlignTop().Text("عدد الشاحنات المخالفة").Bold().FontSize(15);
-                        table.Cell().Row(2).Column(2).Element(CellStyle).Height(30).AlignTop().Text(headerModel.TotalViolationTrucks).Bold().FontSize(15);
+                        table.Cell().Row(2).Column(2).Element(CellStyle).Height(30).AlignTop().Text(pdfDto.TotalViolationTrucks).Bold().FontSize(15);
 
                         table.Cell().Row(3).Column(1).Element(CellStyle).Height(30).AlignTop().Text("مجموع الاوزان المخالفة بالطن").Bold().FontSize(15);
-                        table.Cell().Row(3).Column(2).Element(CellStyle).Height(30).AlignTop().Text(headerModel.TotalViolationWeight).Bold().FontSize(15);
+                        table.Cell().Row(3).Column(2).Element(CellStyle).Height(30).AlignTop().Text(pdfDto.TotalViolationWeight).Bold().FontSize(15);
 
                         table.Cell().Row(4).Column(1).Element(CellStyle).Height(30).AlignTop().Text("قيمة المخالفات بالدينار").Bold().FontSize(15);
-                        table.Cell().Row(4).Column(2).Element(CellStyle).Height(30).AlignTop().Text(headerModel.TotlaViolationPrice).Bold().FontSize(15);
+                        table.Cell().Row(4).Column(2).Element(CellStyle).Height(30).AlignTop().Text(pdfDto.TotlaViolationPrice).Bold().FontSize(15);
 
                         table.Cell().Row(5).Column(1).Element(CellStyle).Height(30).AlignTop().Text("مخالفات أكثر من 5 طن").Bold().FontSize(15);
-                        table.Cell().Row(5).Column(2).Element(CellStyle).Height(30).AlignTop().Text(headerModel.TotlaViolationNumberMoreThan5).Bold().FontSize(15);
+                        table.Cell().Row(5).Column(2).Element(CellStyle).Height(30).AlignTop().Text(pdfDto.TotlaViolationNumberMoreThan5).Bold().FontSize(15);
 
                         // Add more rows as necessary
                     });
@@ -76,7 +75,7 @@ namespace aspnetcore.ntier.BLL.Services.PDF
                 page.Margin(30);
                 page.MarginRight(60);
                 page.ContentFromRightToLeft();
-                page.Size(pdfDto.DateType == ReportType.daily ? PageSizes.A3 : PageSizes.A4);
+                page.Size(pdfDto.reportType == ReportType.daily ? PageSizes.A3 : PageSizes.A4);
                 page.Header().Element(GetHeader);
                 page.Content().Grid(grid =>
                 {
@@ -97,7 +96,7 @@ namespace aspnetcore.ntier.BLL.Services.PDF
                             columns.RelativeColumn();
                             columns.RelativeColumn();
                             columns.RelativeColumn();
-                            if (pdfDto.DateType == ReportType.daily)
+                            if (pdfDto.reportType == ReportType.daily)
                             {
 
                                 columns.RelativeColumn();
@@ -107,7 +106,7 @@ namespace aspnetcore.ntier.BLL.Services.PDF
                                 columns.RelativeColumn();
                             }
                         });
-                        if (pdfDto.DateType == ReportType.daily)
+                        if (pdfDto.reportType == ReportType.daily)
                         {
                             table.Cell().Row(1).Column(1).Background(Color.FromHex("#dcdcdc")).Element(CellStyle).AlignTop().Text("الرقم").Bold().FontSize(7);
                             table.Cell().Row(1).Column(2).Background(Color.FromHex("#dcdcdc")).Element(CellStyle).AlignTop().Text("رقم العملية").Bold().FontSize(7);
@@ -137,9 +136,9 @@ namespace aspnetcore.ntier.BLL.Services.PDF
                             table.Cell().Row(1).Column(9).Background(Color.FromHex("#dcdcdc")).Element(CellStyle).AlignTop().Text("مجموع المخالفات دينار").Bold().FontSize(7);
                         }
                         uint counter = 2;
-                        foreach (var item in pdfDto.MainTable)
+                        foreach (var item in pdfDto.ReportData)
                         {
-                            if (pdfDto.DateType == ReportType.daily)
+                            if (pdfDto.reportType == ReportType.daily)
                             {
                                 table.Cell().Row(counter).Column(1).Element(CellStyle).AlignTop().Text(item.Number).Bold().FontSize(7);
                                 table.Cell().Row(counter).Column(2).Element(CellStyle).AlignTop().Text(item.OperationNumber).Bold().FontSize(7);
@@ -177,10 +176,6 @@ namespace aspnetcore.ntier.BLL.Services.PDF
             });
 
         }
-        private string GetTotalPages(int currentPage)
-        {
-            return currentPage + " / " + (Math.Ceiling(pdfDto.MainTable.Count() / 51.0) + 1);
-        }
         private void GetHeader(IContainer container)
         {
             container.Grid(grid =>
@@ -193,7 +188,7 @@ namespace aspnetcore.ntier.BLL.Services.PDF
                grid.Item(8).Text(@$"المملكة الأردنية الهاشمية
 وزارة الأشغال العامة والإسكان - وحدة الأوزان المحورية
 {pdfDto.SiteName} ({pdfDto.SiteTitle})
-تقرير {pdfDto.ReportDateType}
+تقرير {pdfDto.ReportTypeText}
 ").AlignCenter().Bold().FontSize(13).ParagraphSpacing(3);
                grid.Item(4).Width(130).AlignLeft().Image(Path.Combine(Environment.CurrentDirectory, "wwwroot", "images", "PDF", "img1.png"));
 

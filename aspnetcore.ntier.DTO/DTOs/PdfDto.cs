@@ -9,26 +9,28 @@ namespace aspnetcore.ntier.DTO.DTOs
 {
     public class PdfDto
     {
-        public ReportHeaderContentDto HeaderTable { get; set; }
-        public List<ReportMainContentDto> MainTable { get; set; }
-        public ReportType DateType { get; set; }
+        public int TotalTrucks { get; set; }
+        public int TotalViolationTrucks { get; set; }
+        public int TotalViolationWeight { get; set; }
+        public decimal TotlaViolationPrice { get; set; }
+        public int TotlaViolationNumberMoreThan5 { get; set; }
         public string SiteName { get; set; }
         public string SiteTitle { get; set; }
-
-        public string ReportDateType
+        public ReportType reportType { get; set; }
+        public string ReportTypeText
         {
             get
             {
-                return this.DateType switch
+                return this.reportType switch
                 {
                     ReportType.daily => "يومي",
                     ReportType.monthly => "شهري",
-                    _ => "سنوي"
+                    _ => "سنوي",
+
                 };
+
             }
         }
-
-
-
+        public List<ReportData> ReportData { get; set; }
     }
 }

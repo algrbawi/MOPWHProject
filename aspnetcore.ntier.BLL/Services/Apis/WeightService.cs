@@ -132,7 +132,7 @@ namespace aspnetcore.ntier.BLL.Services.Apis
                 {
                     Number = i + 1,
                     OperationNumber = v.WId,
-                    DateOnly = v.InDate,
+                    DateOnly = v.InDate is null ? null : v.InDate.Value.ToString("dd/MM/yyyy"),
                     TimeOnly = FixTimeFormat(v.InTime),
                     TruckNumber = v.TruckNum,
                     Nationality = v.Nation?.NationName,
