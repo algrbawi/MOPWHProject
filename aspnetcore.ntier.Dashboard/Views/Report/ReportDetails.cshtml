@@ -5,6 +5,7 @@
 @{
     var report = Model.ReportData;
     var IsReportDataNotNull = report?.ReportData is not null && report.ReportData.Count() > 0;
+    ViewBag.Title = "التقرير";
 }
 @section Styles {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -67,6 +68,7 @@
                 </div> *@
                 <div class="text-center">
                     <button type="submit" class="btn btn-primary">
+                        <i class="fa fas fa-search"></i>
                         بحث
                     </button>
 
@@ -75,6 +77,10 @@
                         <a class="btn btn-primary" onclick="downloadPDF()">
                             <i class="fa fa-regular fa-download"></i>
                             تحميل
+                        </a>
+                        <a class="btn btn-primary" asp-action="Edit" asp-controller="Weight" asp-route-SiteId="@Model.SiteId">
+                            <i class="fa fas fa-edit"></i>
+                            تعديل
                         </a>
                     }
                 </div>

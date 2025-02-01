@@ -45,6 +45,20 @@ namespace aspnetcore.ntier.BLL.Services.Apis
 
             return _mapper.Map<List<WeightTblDto>>(results);
         }
+        public async Task<WeightTblDto> GetBySiteIdAsync(int SiteId, decimal WID, string email)
+        {
+            var user = await _dashboardUserRepository.GetAsync(x => x.Email == email);
+            var results = await _weightTblRepository.GetAsync(
+                x => x.SiteId == SiteId && x.WId == WID && (user.IsSuperAdmin || x.Site.AccessUsers.Any(x => x.DashboardUserId == user.Id)), include: inc => inc.Include(x => x.Site).ThenInclude(x => x.AccessUsers).ThenInclude(ds => ds.DashboardUser));
+            return _mapper.Map<WeightTblDto>(results);
+        }
+
+        public async Task UpdateAsync(EditWeightTblDto model)
+        {
+            var weight = await _weightTblRepository.GetAsync(x => x.WId == model.WID);
+            weight.ClassWeight = model.ClassWeight;
+            await _weightTblRepository.UpdateAsync(weight);
+        }
 
 
         public async Task<WeightReportDto> GetWeightReportData(int SiteId, DateOnly Date, ReportType ReportType, string userEmail)
