@@ -39,12 +39,12 @@
 <div class="container mt-5">
     @if (Model.WId > 0)
     {
-        @if (ViewBag.MessageStatus is not null)
+        @if (TempData["MessageStatus"] is not null)
         {
             <div class="alert alert-success" role="alert">
-                @ViewBag.MessageStatus
+                @TempData["MessageStatus"]
             </div>
-            @(ViewBag.MessageStatus = null)
+            @(TempData["MessageStatus"] = null)
 
         }
         <form asp-action="Edit" method="post">

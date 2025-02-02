@@ -47,6 +47,7 @@ namespace aspnetcore.ntier.Dashboard.Controllers
                     WID = mdoel.WId.Value
                 };
                 await _weightService.UpdateAsync(editModel);
+                TempData["MessageStatus"] = "تم الحفظ بنجاح";
             }
             return RedirectToAction(nameof(Edit), new { siteId = mdoel.SiteId, WId = mdoel.WId });
         }
