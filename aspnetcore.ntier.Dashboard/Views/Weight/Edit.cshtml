@@ -51,10 +51,22 @@
             <!-- Name -->
             <input asp-for="WId" hidden />
             <input asp-for="SiteId" hidden />
+
             <div class="mb-3">
-                <label asp-for="ClassWeight" class="form-label">الأسم</label>
-                <input asp-for="ClassWeight" class="form-control" placeholder="الأسم">
-                <span asp-validation-for="ClassWeight" class="text-danger"></span>
+                <label asp-for="Bill_Name" class="form-label">إسم الفاتورة</label>
+                <input asp-for="Bill_Name" class="form-control" placeholder="إسم الفاتورة">
+                <span asp-validation-for="Bill_Name" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Bill_Num" class="form-label">رقم الفاتورة</label>
+                <input asp-for="Bill_Num" class="form-control" placeholder="رقم الفاتورة">
+                <span asp-validation-for="Bill_Num" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Vio_Num" class="form-label">رقم المخالفة</label>
+                <input asp-for="Vio_Num" class="form-control" placeholder="رقم المخالفة">
+                <span asp-validation-for="Vio_Num" class="text-danger"></span>
             </div>
 
             <!-- Submit Button -->
