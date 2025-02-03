@@ -19,22 +19,28 @@ namespace aspnetcore.ntier.Dashboard.Controllers
         public async Task<IActionResult> Edit(int siteId, decimal? WId)
         {
             EditWeightViewModel weight = new EditWeightViewModel();
-            if (WId.HasValue)
-            {
-                var result = await _weightService.GetBySiteIdAsync(siteId, WId.Value, User.Identity.Name);
-                if (result is not null)
-                {
-                    weight = new EditWeightViewModel
-                    {
-                        Bill_Name = result.Bill_Name,
-                        Bill_Num = result.Bill_Num,
-                        Vio_Num = result.Vio_Num,
-                        WId = result.WId
-                    };
-                }
 
+            if (ModelState.IsValid)
+            {
+
+                if (WId.HasValue)
+                {
+                    var result = await _weightService.GetBySiteIdAsync(siteId, WId.Value, User.Identity.Name);
+                    if (result is not null)
+                    {
+                        weight = new EditWeightViewModel
+                        {
+                            Bill_Name = result.Bill_Name,
+                            Bill_Num = result.Bill_Num,
+                            Vio_Num = result.Vio_Num,
+                            WId = result.WId
+                        };
+                    }
+
+                }
+                weight.SiteId = siteId;
+                return View(weight);
             }
-            weight.SiteId = siteId;
             return View(weight);
         }
 

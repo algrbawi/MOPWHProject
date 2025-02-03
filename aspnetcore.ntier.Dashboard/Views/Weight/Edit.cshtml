@@ -15,7 +15,7 @@
 
                 <div class="mb-3">
                     <label asp-for="WId" class="form-label">رقم الوزن</label>
-                    <input asp-for="WId" class="form-control" />
+                    <input asp-for="WId" class="form-control" max="@decimal.MaxValue" />
                     <span asp-validation-for="WId" class="text-danger"></span>
 
                 </div>
@@ -25,7 +25,7 @@
                         بحث
                     </button>
                     <a class="btn btn-primary" asp-controller="Report" asp-action="ReportDetails" asp-route-SiteId="@Model.SiteId">
-                        عودة
+                        رجوع
                         <i class="fa fa-arrow-circle-left" aria-hidden="true"></i>
                     </a>
 
