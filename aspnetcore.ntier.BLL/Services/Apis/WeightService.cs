@@ -56,7 +56,9 @@ namespace aspnetcore.ntier.BLL.Services.Apis
         public async Task UpdateAsync(EditWeightTblDto model)
         {
             var weight = await _weightTblRepository.GetAsync(x => x.WId == model.WID);
-            weight.ClassWeight = model.ClassWeight;
+            weight.Vio_Num = model.Vio_Num;
+            weight.Bill_Name = model.Bill_Name;
+            weight.Bill_Num = model.Bill_Num;
             await _weightTblRepository.UpdateAsync(weight);
         }
 

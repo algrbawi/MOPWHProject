@@ -10,7 +10,9 @@ namespace aspnetcore.ntier.DTO.DTOs
     {
         public decimal WID { get; set; }
 
-        public int? ClassWeight { get; set; }
+        public string? Bill_Num { get; set; }
+        public string? Vio_Num { get; set; }
+        public string? Bill_Name { get; set; }
 
     }
 }

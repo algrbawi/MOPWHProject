@@ -46,6 +46,9 @@ public partial class WeightTbl
     public bool? WeightState { get; set; }
 
     public decimal? UserId { get; set; }
+    public string? Bill_Num { get; set; }
+    public string? Vio_Num { get; set; }
+    public string? Bill_Name { get; set; }
 
     public decimal? SiteId { get; set; }
 

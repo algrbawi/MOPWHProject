@@ -26,7 +26,9 @@ namespace aspnetcore.ntier.Dashboard.Controllers
                 {
                     weight = new EditWeightViewModel
                     {
-                        ClassWeight = result.ClassWeight,
+                        Bill_Name = result.Bill_Name,
+                        Bill_Num = result.Bill_Num,
+                        Vio_Num = result.Vio_Num,
                         WId = result.WId
                     };
                 }
@@ -43,7 +45,9 @@ namespace aspnetcore.ntier.Dashboard.Controllers
             {
                 var editModel = new EditWeightTblDto
                 {
-                    ClassWeight = mdoel.ClassWeight,
+                    Bill_Name = mdoel.Bill_Name,
+                    Bill_Num = mdoel.Bill_Num,
+                    Vio_Num = mdoel.Vio_Num,
                     WID = mdoel.WId.Value
                 };
                 await _weightService.UpdateAsync(editModel);

@@ -6,8 +6,9 @@ namespace aspnetcore.ntier.Dashboard.Models.DashboardUser
     {
         [Required(ErrorMessage = "يرجى إدخال رقم الوزن")]
         public decimal? WId { get; set; }
-        [Range(0 , double.MaxValue , ErrorMessage ="القيمة المدخلة غير صحيحة")]
-        public int? ClassWeight { get; set; }
+        public string? Bill_Num { get; set; }
+        public string? Vio_Num { get; set; }
+        public string? Bill_Name { get; set; }
         public int SiteId { get; set; }
     }
 }
