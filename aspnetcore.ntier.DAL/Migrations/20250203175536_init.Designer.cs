@@ -12,7 +12,7 @@ using aspnetcore.ntier.DAL.DataContext;
 namespace aspnetcore.ntier.DAL.Migrations
 {
     [DbContext(typeof(AspNetCoreNTierDbContext))]
-    [Migration("20250124221426_init")]
+    [Migration("20250203175536_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -670,6 +670,12 @@ namespace aspnetcore.ntier.DAL.Migrations
                         .HasColumnType("numeric(18, 0)")
                         .HasColumnName("W_ID");
 
+                    b.Property<string>("Bill_Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Bill_Num")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int?>("ClassWeight")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
@@ -743,6 +749,9 @@ namespace aspnetcore.ntier.DAL.Migrations
                         .HasColumnType("int")
                         .HasDefaultValue(0)
                         .HasColumnName("Vio_Weight");
+
+                    b.Property<string>("Vio_Num")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal?>("WClassId")
                         .HasColumnType("numeric(18, 0)")

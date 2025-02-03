@@ -470,6 +470,9 @@ namespace aspnetcore.ntier.DAL.Migrations
                     Weight_Note = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Weight_State = table.Column<bool>(type: "bit", nullable: true),
                     User_ID = table.Column<decimal>(type: "numeric(18,0)", nullable: true),
+                    Bill_Num = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Vio_Num = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Bill_Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Site_ID = table.Column<decimal>(type: "numeric(18,0)", nullable: true)
                 },
                 constraints: table =>
