@@ -81,6 +81,24 @@ namespace aspnetcore.ntier.BLL.Services.Apis
 
         }
 
+        public async Task<WeightReportDto> GetWeightReportData(int SiteId, decimal WId, string userEmail)
+        {
+            var user = await _dashboardUserRepository.GetAsync(x => x.Email.ToLower() == userEmail.ToLower());
+            var results = await _weightTblRepository.GetListAsync(
+                                                                    x => x.SiteId == SiteId && x.WId == WId && (user.IsSuperAdmin || x.Site.AccessUsers.Any(x => x.Id == user.Id)),
+
+                                                                    include: x => x.Include(n => n.Nation)
+                                                                                    .Include(p => p.Product)
+                                                                                    .Include(d => d.Driver)
+                                                                                    .Include(u => u.User)
+                                                                                    .Include(s => s.Site)
+                                                                                    .ThenInclude(uac => uac.AccessUsers));
+
+            var weightReport = new WeightReportDto();
+            return GetReportDataType(results, ReportType.bill);
+
+        }
+
         private string FixTimeFormat(TimeOnly? time)
         {
             if (time is not null)
@@ -117,7 +135,35 @@ namespace aspnetcore.ntier.BLL.Services.Apis
         {
             IEnumerable<IGrouping<int?, WeightTbl>> weights = null;
             var weightReportDto = new WeightReportDto();
-            if (reportType != ReportType.daily)
+
+            if (reportType == ReportType.bill)
+            {
+                weightReportDto.ReportData = weightTbls.OrderBy(x => x.InDate == null).ThenBy(x => x.InDate).Select((v, i) => new ReportData
+                {
+                    Number = i + 1,
+                    OperationNumber = v.WId,
+                    DateOnly = v.InDate is null ? null : v.InDate.Value.ToString("dd/MM/yyyy"),
+                    TimeOnly = FixTimeFormat(v.InTime),
+                    TruckNumber = v.TruckNum,
+                    Nationality = v.Nation?.NationName,
+                    Classification = v.SeqNo,
+                    TruckWeiht = v.TruckWeight,
+                    AllowedWeight = v.ClassWeight,
+                    DiifWeight = v.DiffWeight,
+                    Violation = v.VioPrice,
+                    ProductName = v.Product?.ProductName,
+                    DriverName = v.Driver?.DriverName,
+                    UserName = v.User?.UserName,
+                    Bill_Name = v.Bill_Name,
+                    Bill_Num = v.Bill_Num,
+                    Vio_Num = v.Vio_Num
+
+                }).ToList();
+
+            }
+
+
+            else if (reportType != ReportType.daily)
             {
                 if (reportType == ReportType.monthly)
                 {
@@ -130,6 +176,7 @@ namespace aspnetcore.ntier.BLL.Services.Apis
 
                 weightReportDto.ReportData = weights.OrderBy(x => x.Key).Select((v, i) => new ReportData
                 {
+                    Number = i + 1,
                     DateOnly = v.Key,
                     TotalNumberWeights = v.Count(),
                     TotalTruckesNotInViolation = v.Where(x => x.VioPrice == 0).Count(),

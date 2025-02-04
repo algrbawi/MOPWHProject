@@ -9,6 +9,6 @@ namespace aspnetcore.ntier.DTO.Enum
     public enum ReportType
     {
 
-        daily, monthly, yearly
+        daily, monthly, yearly, bill
     }
 }

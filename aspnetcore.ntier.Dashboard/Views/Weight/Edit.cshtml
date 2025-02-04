@@ -14,8 +14,8 @@
                 <input asp-for="SiteId" hidden />
 
                 <div class="mb-3">
-                    <label asp-for="WId" class="form-label">رقم الوزن</label>
-                    <input asp-for="WId" class="form-control" max="@decimal.MaxValue" />
+                    <label asp-for="WId" class="form-label">رقم العملية</label>
+                    <input asp-for="WId" class="form-control" maxlength="18" />
                     <span asp-validation-for="WId" class="text-danger"></span>
 
                 </div>
@@ -24,6 +24,14 @@
                         <i class="fa fas fa-search"></i>
                         بحث
                     </button>
+                    @if (Model.WId is not null)
+                    {
+                        <a class="btn btn-primary" onclick="downloadPDF()">
+                            <i class="fa fa-regular fa-download"></i>
+                            تحميل
+                        </a>
+                    }
+
                     <a class="btn btn-primary" asp-controller="Report" asp-action="ReportDetails" asp-route-SiteId="@Model.SiteId">
                         رجوع
                         <i class="fa fa-arrow-circle-left" aria-hidden="true"></i>
@@ -53,8 +61,8 @@
             <input asp-for="SiteId" hidden />
 
             <div class="mb-3">
-                <label asp-for="Bill_Name" class="form-label">إسم الفاتورة</label>
-                <input asp-for="Bill_Name" class="form-control" placeholder="إسم الفاتورة">
+                <label asp-for="Bill_Name" class="form-label">إسم صاحب الفاتورة</label>
+                <input asp-for="Bill_Name" class="form-control" placeholder="إسم  صاحب الفاتورة">
                 <span asp-validation-for="Bill_Name" class="text-danger"></span>
             </div>
             <div class="mb-3">
@@ -85,6 +93,9 @@
           $(document).ready(function() {
                 setTimeout( "$('.alert').alert('close')",5000 );
         });
+
+        function downloadPDF(){
+        window.open("@Html.Raw(Url.Action("DownloadReport", "Weight", new { siteId = Model.SiteId, WId = Model.WId }))", '_blank');
+        }
     </script>
 }
-

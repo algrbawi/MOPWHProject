@@ -28,6 +28,11 @@ namespace aspnetcore.ntier.DTO.DTOs
         public object? TruckWeiht { get; set; }
         public object? AllowedWeight { get; set; }
         public object? DiifWeight { get; set; }
+
+        public object? Bill_Num { get; set; }
+        public object? Vio_Num { get; set; }
+        public object? Bill_Name { get; set; }
+
         public object? Violation { get; set; }
         public object? ProductName { get; set; }
         public object? DriverName { get; set; }

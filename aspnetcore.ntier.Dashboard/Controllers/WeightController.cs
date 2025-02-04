@@ -1,8 +1,12 @@
-﻿using aspnetcore.ntier.BLL.Services.IServices;
+﻿using aspnetcore.ntier.BLL.Services.Apis;
+using aspnetcore.ntier.BLL.Services.IServices;
+using aspnetcore.ntier.BLL.Services.PDF;
 using aspnetcore.ntier.Dashboard.Controllers.Base;
 using aspnetcore.ntier.Dashboard.Models.DashboardUser;
 using aspnetcore.ntier.DTO.DTOs;
+using aspnetcore.ntier.DTO.Enum;
 using Microsoft.AspNetCore.Mvc;
+using QuestPDF.Fluent;
 using System.Security.Cryptography;
 
 namespace aspnetcore.ntier.Dashboard.Controllers
@@ -10,10 +14,12 @@ namespace aspnetcore.ntier.Dashboard.Controllers
     public class WeightController : BaseController
     {
         private readonly IWeightService _weightService;
+        private readonly ISiteService _siteService;
 
-        public WeightController(IWeightService weightService)
+        public WeightController(IWeightService weightService, ISiteService siteService)
         {
             _weightService = weightService;
+            _siteService = siteService;
         }
 
         public async Task<IActionResult> Edit(int siteId, decimal? WId)
@@ -60,6 +66,44 @@ namespace aspnetcore.ntier.Dashboard.Controllers
                 TempData["MessageStatus"] = "تم الحفظ بنجاح";
             }
             return RedirectToAction(nameof(Edit), new { siteId = mdoel.SiteId, WId = mdoel.WId });
+        }
+
+        public async Task<IActionResult> DownloadReport(int siteId, decimal WId)
+        {
+
+            try
+            {
+
+                var weightReport = await _weightService.GetWeightReportData(siteId, WId, User.Identity.Name);
+
+                if (weightReport.ReportData?.Count() > 0)
+                {
+                    var site = await _siteService.GetUserSiteAsync(User.Identity.Name, siteId);
+                    var pdfDto = new PdfDto
+                    {
+                        ReportData = weightReport.ReportData,
+                        TotalTrucks = weightReport.TotalTrucks,
+                        TotalViolationTrucks = weightReport.TotalViolationTrucks,
+                        TotalViolationWeight = weightReport.TotalViolationWeight,
+                        TotlaViolationNumberMoreThan5 = weightReport.TotlaViolationNumberMoreThan5,
+                        TotlaViolationPrice = weightReport.TotlaViolationPrice,
+                        reportType = DTO.Enum.ReportType.bill,
+                        SiteName = site.SiteName,
+                        SiteTitle = site.SiteTitle
+                    };
+                    PDFService pDFService = new PDFService(pdfDto);
+
+                    var reportPdf = pDFService.GeneratePdf();
+                    return File(reportPdf, "application/octet-stream", ReportType.bill + ".pdf");
+                }
+
+            }
+            catch (Exception)
+            {
+
+            }
+            return RedirectToAction("index", "home");
+
         }
     }
 }
