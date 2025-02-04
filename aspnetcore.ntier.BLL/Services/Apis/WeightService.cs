@@ -68,7 +68,10 @@ namespace aspnetcore.ntier.BLL.Services.Apis
             var user = await _dashboardUserRepository.GetAsync(x => x.Email.ToLower() == userEmail.ToLower());
             var date = GetFilterDate(ReportType, Date);
             var results = await _weightTblRepository.GetListAsync(
-                                                                    x => x.SiteId == SiteId && x.InDate >= date.Item1 && x.InDate <= date.Item2 && (user.IsSuperAdmin || x.Site.AccessUsers.Any(x => x.Id == user.Id)),
+                                                                    x => x.SiteId == SiteId &&
+                                                                    x.InDate >= date.Item1 && x.InDate <= date.Item2 &&
+                                                                    (user.IsSuperAdmin || x.Site.AccessUsers.Any(x => x.Id == user.Id)) &&
+                                                                    (ReportType != ReportType.bill ? true : x.VioPrice > 0),
                                                                     include: x => x.Include(n => n.Nation)
                                                                                     .Include(p => p.Product)
                                                                                     .Include(d => d.Driver)
@@ -117,6 +120,11 @@ namespace aspnetcore.ntier.BLL.Services.Apis
                 filterDateFrom = date;
                 filterDateTo = date;
             }
+            else if (reportType == ReportType.bill)
+            {
+                filterDateFrom = DateOnly.FromDateTime(DateTime.MinValue);
+                filterDateTo = date;
+            }
             else if (reportType == ReportType.monthly)
             {
                 filterDateFrom = new DateOnly(date.Year, date.Month, 1);
@@ -135,9 +143,9 @@ namespace aspnetcore.ntier.BLL.Services.Apis
         {
             IEnumerable<IGrouping<int?, WeightTbl>> weights = null;
             var weightReportDto = new WeightReportDto();
-
-            if (reportType == ReportType.bill)
+            if (reportType == ReportType.daily || reportType == ReportType.bill)
             {
+
                 weightReportDto.ReportData = weightTbls.OrderBy(x => x.InDate == null).ThenBy(x => x.InDate).Select((v, i) => new ReportData
                 {
                     Number = i + 1,
@@ -162,8 +170,7 @@ namespace aspnetcore.ntier.BLL.Services.Apis
 
             }
 
-
-            else if (reportType != ReportType.daily)
+            else
             {
                 if (reportType == ReportType.monthly)
                 {
@@ -185,29 +192,6 @@ namespace aspnetcore.ntier.BLL.Services.Apis
                     TotalTruckesViolationLessThan5 = v.Where(v => v.VioWeight < 6000 && v.VioPrice > 0).Count(),
                     TotalViolationWeights = v.Where(x => x.VioPrice > 0).Sum(x => x.VioWeight),
                     TotalViolationPrice = v.Where(x => x.VioPrice > 0).Sum(x => x.VioPrice)
-                }).ToList();
-
-            }
-
-            else
-            {
-                weightReportDto.ReportData = weightTbls.OrderBy(x => x.InDate == null).ThenBy(x => x.InDate).Select((v, i) => new ReportData
-                {
-                    Number = i + 1,
-                    OperationNumber = v.WId,
-                    DateOnly = v.InDate is null ? null : v.InDate.Value.ToString("dd/MM/yyyy"),
-                    TimeOnly = FixTimeFormat(v.InTime),
-                    TruckNumber = v.TruckNum,
-                    Nationality = v.Nation?.NationName,
-                    Classification = v.SeqNo,
-                    TruckWeiht = v.TruckWeight,
-                    AllowedWeight = v.ClassWeight,
-                    DiifWeight = v.DiffWeight,
-                    Violation = v.VioPrice,
-                    ProductName = v.Product?.ProductName,
-                    DriverName = v.Driver?.DriverName,
-                    UserName = v.User?.UserName,
-
                 }).ToList();
             }
 

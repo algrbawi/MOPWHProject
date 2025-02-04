@@ -24,54 +24,51 @@ namespace aspnetcore.ntier.BLL.Services.PDF
 
         public void Compose(IDocumentContainer container)
         {
-            if (pdfDto.reportType != ReportType.bill)
+
+            container.Page(page =>
             {
-
-                container.Page(page =>
+                page.Margin(30);
+                page.MarginRight(60);
+                page.ContentFromRightToLeft();
+                page.Size(PageSizes.A4);
+                page.Header().Element(GetHeader);
+                page.Content().Grid(grid =>
                 {
-                    page.Margin(30);
-                    page.MarginRight(60);
-                    page.ContentFromRightToLeft();
-                    page.Size(PageSizes.A4);
-                    page.Header().Element(GetHeader);
-                    page.Content().Grid(grid =>
+
+                    grid.VerticalSpacing(15);
+                    grid.HorizontalSpacing(15);
+                    grid.AlignCenter();
+
+
+                    grid.Item(12).Table(table =>
                     {
-
-                        grid.VerticalSpacing(15);
-                        grid.HorizontalSpacing(15);
-                        grid.AlignCenter();
-
-
-                        grid.Item(12).Table(table =>
+                        table.ColumnsDefinition(columns =>
                         {
-                            table.ColumnsDefinition(columns =>
-                            {
-                                columns.RelativeColumn();
-                                columns.RelativeColumn();
-                            });
-                            table.Cell().Row(1).Column(1).Element(CellStyle).Height(30).AlignTop().Text("عدد الشاحنات").Bold().FontSize(15);
-                            table.Cell().Row(1).Column(2).Element(CellStyle).Height(30).AlignTop().Text(pdfDto.TotalTrucks).Bold().FontSize(15);
-
-                            table.Cell().Row(2).Column(1).Element(CellStyle).Height(30).AlignTop().Text("عدد الشاحنات المخالفة").Bold().FontSize(15);
-                            table.Cell().Row(2).Column(2).Element(CellStyle).Height(30).AlignTop().Text(pdfDto.TotalViolationTrucks).Bold().FontSize(15);
-
-                            table.Cell().Row(3).Column(1).Element(CellStyle).Height(30).AlignTop().Text("مجموع الاوزان المخالفة بالطن").Bold().FontSize(15);
-                            table.Cell().Row(3).Column(2).Element(CellStyle).Height(30).AlignTop().Text(pdfDto.TotalViolationWeight).Bold().FontSize(15);
-
-                            table.Cell().Row(4).Column(1).Element(CellStyle).Height(30).AlignTop().Text("قيمة المخالفات بالدينار").Bold().FontSize(15);
-                            table.Cell().Row(4).Column(2).Element(CellStyle).Height(30).AlignTop().Text(pdfDto.TotlaViolationPrice).Bold().FontSize(15);
-
-                            table.Cell().Row(5).Column(1).Element(CellStyle).Height(30).AlignTop().Text("مخالفات أكثر من 5 طن").Bold().FontSize(15);
-                            table.Cell().Row(5).Column(2).Element(CellStyle).Height(30).AlignTop().Text(pdfDto.TotlaViolationNumberMoreThan5).Bold().FontSize(15);
-
-                            // Add more rows as necessary
+                            columns.RelativeColumn();
+                            columns.RelativeColumn();
                         });
+                        table.Cell().Row(1).Column(1).Element(CellStyle).Height(30).AlignTop().Text("عدد الشاحنات").Bold().FontSize(15);
+                        table.Cell().Row(1).Column(2).Element(CellStyle).Height(30).AlignTop().Text(pdfDto.TotalTrucks).Bold().FontSize(15);
 
+                        table.Cell().Row(2).Column(1).Element(CellStyle).Height(30).AlignTop().Text("عدد الشاحنات المخالفة").Bold().FontSize(15);
+                        table.Cell().Row(2).Column(2).Element(CellStyle).Height(30).AlignTop().Text(pdfDto.TotalViolationTrucks).Bold().FontSize(15);
+
+                        table.Cell().Row(3).Column(1).Element(CellStyle).Height(30).AlignTop().Text("مجموع الاوزان المخالفة بالطن").Bold().FontSize(15);
+                        table.Cell().Row(3).Column(2).Element(CellStyle).Height(30).AlignTop().Text(pdfDto.TotalViolationWeight).Bold().FontSize(15);
+
+                        table.Cell().Row(4).Column(1).Element(CellStyle).Height(30).AlignTop().Text("قيمة المخالفات بالدينار").Bold().FontSize(15);
+                        table.Cell().Row(4).Column(2).Element(CellStyle).Height(30).AlignTop().Text(pdfDto.TotlaViolationPrice).Bold().FontSize(15);
+
+                        table.Cell().Row(5).Column(1).Element(CellStyle).Height(30).AlignTop().Text("مخالفات أكثر من 5 طن").Bold().FontSize(15);
+                        table.Cell().Row(5).Column(2).Element(CellStyle).Height(30).AlignTop().Text(pdfDto.TotlaViolationNumberMoreThan5).Bold().FontSize(15);
+
+                        // Add more rows as necessary
                     });
-                    page.Footer().AlignCenter();
-                    //page.Footer().AlignCenter().Text("وزارة الأشغال العامة والإسكان - 2024");
+
                 });
-            }
+                page.Footer().AlignCenter();
+                //page.Footer().AlignCenter().Text("وزارة الأشغال العامة والإسكان - 2024");
+            });
 
             int rowCounter = 1;
             container.Page(page =>
@@ -126,7 +123,6 @@ namespace aspnetcore.ntier.BLL.Services.PDF
                                 columns.RelativeColumn();
                                 columns.RelativeColumn();
                                 columns.RelativeColumn();
-                                columns.RelativeColumn();
                             }
                         });
                         if (pdfDto.reportType == ReportType.daily)
@@ -163,9 +159,7 @@ namespace aspnetcore.ntier.BLL.Services.PDF
                             table.Cell().Row(1).Column(12).Background(Color.FromHex("#dcdcdc")).Element(CellStyle).AlignTop().Text("رقم الوصل").Bold().FontSize(7);
                             table.Cell().Row(1).Column(13).Background(Color.FromHex("#dcdcdc")).Element(CellStyle).AlignTop().Text("رقم الضبط").Bold().FontSize(7);
                             table.Cell().Row(1).Column(14).Background(Color.FromHex("#dcdcdc")).Element(CellStyle).AlignTop().Text("اسم صاحب الفتورة").Bold().FontSize(7);
-                            table.Cell().Row(1).Column(15).Background(Color.FromHex("#dcdcdc")).Element(CellStyle).AlignTop().Text("الحمولة").Bold().FontSize(7);
-                            table.Cell().Row(1).Column(16).Background(Color.FromHex("#dcdcdc")).Element(CellStyle).AlignTop().Text("السائق").Bold().FontSize(7);
-                            table.Cell().Row(1).Column(17).Background(Color.FromHex("#dcdcdc")).Element(CellStyle).AlignTop().Text("المستخدم").Bold().FontSize(7);
+                            table.Cell().Row(1).Column(15).Background(Color.FromHex("#dcdcdc")).Element(CellStyle).AlignTop().Text("المستخدم").Bold().FontSize(7);
 
 
                         }
@@ -221,8 +215,6 @@ namespace aspnetcore.ntier.BLL.Services.PDF
 
                                 table.Cell().Row(counter).Column(14).Element(CellStyle).AlignTop().Text(item.Violation).Bold().FontSize(7);
                                 table.Cell().Row(counter).Column(15).Element(CellStyle).AlignTop().Text(item.ProductName).Bold().FontSize(7);
-                                table.Cell().Row(counter).Column(16).Element(CellStyle).AlignTop().Text(item.DriverName).Bold().FontSize(7);
-                                table.Cell().Row(counter).Column(17).Element(CellStyle).AlignTop().Text(item.UserName).Bold().FontSize(7);
 
                             }
                             else

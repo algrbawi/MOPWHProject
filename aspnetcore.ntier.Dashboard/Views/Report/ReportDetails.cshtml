@@ -49,7 +49,7 @@
             @* <h2 class="text-center mb-4">Simple Search</h2> *@
             <form asp-action="ReportDetails" method="get">
                 <input asp-for="SiteId" hidden />
-                <div class="mb-3">
+                <div class="mb-3" id="date-filter">
                     <label for="input1" class="form-label">التاريخ</label>
                     <input class="form-control" asp-for="SearchDate" type="date" />
                 </div>
@@ -59,6 +59,7 @@
                         <option value="0" selected>يومي</option>
                         <option value="1">شهري</option>
                         <option value="2">سنوي</option>
+                        <option value="3">تقرير وصولات المخالفات</option>
                     </select>
 
                 </div>
@@ -162,6 +163,56 @@
             </table>
         </div>
     }
+    else if (Model.ReportType == ReportType.bill)
+    {
+        <div class="container d-flex justify-content-center mt-5">
+
+            <table class="table mt-5 second-table">
+                <tr class="second-table-header">
+                    <th>الرقم</th>
+                    <th>رقم العملية</th>
+                    <th>التاريخ</th>
+                    <th>الوقت</th>
+                    <th>رقم المركبة</th>
+                    <th>الجنسية</th>
+                    <th>التصنيف</th>
+                    <th>وزن المركبة</th>
+                    <th>الوزن المسموح</th>
+                    <th>فرق الوزن</th>
+                    <th>المخالفة</th>
+                    <th>رقم الوصل</th>
+                    <th>رقم الضبط</th>
+                    <th>إسم صاحب الفاتورة</th>
+                    @*        <th>الحمولة</th>
+                    <th>السائق</th> *@
+                    <th>المستخدم</th>
+                </tr>
+                @foreach (var item in report.ReportData)
+                {
+                    <tr>
+                        <td>@item.Number</td>
+                        <td> @item.OperationNumber</td>
+                        <td>@item.DateOnly</td>
+                        <td>@item.TimeOnly</td>
+                        <td>@item.TruckNumber </td>
+                        <td>@item.Nationality</td>
+                        <td>@item.Classification</td>
+                        <td> @item.TruckWeiht</td>
+                        <td>@item.AllowedWeight </td>
+                        <td> @item.DiifWeight</td>
+                        <td>@item.Violation</td>
+                        <td>@item.Bill_Num</td>
+                        <td>@item.Vio_Num</td>
+                        <td>@item.Bill_Name</td>
+                        @*               <td>@item.ProductName</td>
+                        <td>@item.DriverName</td> *@
+                        <td>@item.UserName</td>
+                    </tr>
+                }
+
+            </table>
+        </div>
+    }
     else
     {
 
@@ -204,12 +255,20 @@
     @await Html.PartialAsync("_PdfScripts.cshtml")
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script>
-          $(document).ready(function() {
-            $('#ReportType').select2();
-        });
+           $(document).ready(function() {
+             $('#ReportType').select2();
+                     $('#ReportType').change();
+         });
 
-        function downloadPDF(){
-        window.open("@Url.Action("DownloadReport")"+window.location.search, '_blank');
-        }
+         function downloadPDF(){
+         window.open("@Url.Action("DownloadReport")"+window.location.search, '_blank');
+         }
+
+        $('#ReportType').on('change', function(e) {
+            $("#date-filter").show();
+            if(this.value ==3){
+            $("#date-filter").hide();
+            }
+         });
     </script>
 }

@@ -67,43 +67,5 @@ namespace aspnetcore.ntier.Dashboard.Controllers
             }
             return RedirectToAction(nameof(Edit), new { siteId = mdoel.SiteId, WId = mdoel.WId });
         }
-
-        public async Task<IActionResult> DownloadReport(int siteId, decimal WId)
-        {
-
-            try
-            {
-
-                var weightReport = await _weightService.GetWeightReportData(siteId, WId, User.Identity.Name);
-
-                if (weightReport.ReportData?.Count() > 0)
-                {
-                    var site = await _siteService.GetUserSiteAsync(User.Identity.Name, siteId);
-                    var pdfDto = new PdfDto
-                    {
-                        ReportData = weightReport.ReportData,
-                        TotalTrucks = weightReport.TotalTrucks,
-                        TotalViolationTrucks = weightReport.TotalViolationTrucks,
-                        TotalViolationWeight = weightReport.TotalViolationWeight,
-                        TotlaViolationNumberMoreThan5 = weightReport.TotlaViolationNumberMoreThan5,
-                        TotlaViolationPrice = weightReport.TotlaViolationPrice,
-                        reportType = DTO.Enum.ReportType.bill,
-                        SiteName = site.SiteName,
-                        SiteTitle = site.SiteTitle
-                    };
-                    PDFService pDFService = new PDFService(pdfDto);
-
-                    var reportPdf = pDFService.GeneratePdf();
-                    return File(reportPdf, "application/octet-stream", ReportType.bill + ".pdf");
-                }
-
-            }
-            catch (Exception)
-            {
-
-            }
-            return RedirectToAction("index", "home");
-
-        }
     }
 }

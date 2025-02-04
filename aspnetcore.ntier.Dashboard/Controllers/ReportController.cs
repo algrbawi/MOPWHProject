@@ -34,8 +34,12 @@ namespace aspnetcore.ntier.Dashboard.Controllers
 
             var site = await _siteService.GetUserSiteAsync(User.Identity.Name, model.SiteId);
             var results = new ReportDetailsResponseViewModel();
-            if (model.SearchDate.HasValue && model.ReportType.HasValue)
+            if (model.SearchDate.HasValue && model.ReportType.HasValue || model.ReportType.HasValue && model.ReportType == DTO.Enum.ReportType.bill)
             {
+                if (model.ReportType == DTO.Enum.ReportType.bill)
+                {
+                    model.SearchDate = DateOnly.FromDateTime(DateTime.Now.AddDays(1));
+                }
                 results.ReportData = await _weightService.GetWeightReportData(model.SiteId, model.SearchDate.Value, model.ReportType.Value, User.Identity.Name);
             }
 
@@ -51,6 +55,10 @@ namespace aspnetcore.ntier.Dashboard.Controllers
 
             try
             {
+                if (model.ReportType == DTO.Enum.ReportType.bill)
+                {
+                    model.SearchDate = DateOnly.FromDateTime(DateTime.Now.AddDays(1));
+                }
                 var weightReport = await _weightService.GetWeightReportData(model.SiteId, model.SearchDate.Value, model.ReportType.Value, User.Identity.Name);
 
                 if (weightReport.ReportData?.Count() > 0)
