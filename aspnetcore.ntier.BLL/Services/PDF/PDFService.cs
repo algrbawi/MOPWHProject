@@ -208,13 +208,12 @@ namespace aspnetcore.ntier.BLL.Services.PDF
                                 table.Cell().Row(counter).Column(9).Element(CellStyle).AlignTop().Text(item.AllowedWeight).Bold().FontSize(7);
                                 table.Cell().Row(counter).Column(10).Element(CellStyle).AlignTop().Text(item.DiifWeight).Bold().FontSize(7);
 
-                                table.Cell().Row(counter).Column(11).Element(CellStyle).AlignTop().Text(item.Bill_Num).Bold().FontSize(7);
-                                table.Cell().Row(counter).Column(12).Element(CellStyle).AlignTop().Text(item.Vio_Num).Bold().FontSize(7);
-                                table.Cell().Row(counter).Column(13).Element(CellStyle).AlignTop().Text(item.Bill_Name).Bold().FontSize(7);
+                                table.Cell().Row(counter).Column(11).Element(CellStyle).AlignTop().Text(item.Violation).Bold().FontSize(7);
+                                table.Cell().Row(counter).Column(12).Element(CellStyle).AlignTop().Text(item.Bill_Num).Bold().FontSize(7);
+                                table.Cell().Row(counter).Column(13).Element(CellStyle).AlignTop().Text(item.Vio_Num).Bold().FontSize(7);
 
-
-                                table.Cell().Row(counter).Column(14).Element(CellStyle).AlignTop().Text(item.Violation).Bold().FontSize(7);
-                                table.Cell().Row(counter).Column(15).Element(CellStyle).AlignTop().Text(item.ProductName).Bold().FontSize(7);
+                                table.Cell().Row(counter).Column(14).Element(CellStyle).AlignTop().Text(item.Bill_Name).Bold().FontSize(7);
+                                table.Cell().Row(counter).Column(15).Element(CellStyle).AlignTop().Text(item.UserName).Bold().FontSize(7);
 
                             }
                             else
