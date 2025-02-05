@@ -62,6 +62,10 @@
             <span asp-validation-for="SitePermissions" class="text-danger"></span>
 
         </div>
+        <div class="mb-3 permissions" style="display:@(Model.IsSuperAdmin?"none":"block")">
+            <input type="checkbox" asp-for="IsAllowedToEdit" />
+            <label asp-for="IsAllowedToEdit"> يسمح التعديل</label>
+        </div>
 
 
         <!-- Submit Button -->

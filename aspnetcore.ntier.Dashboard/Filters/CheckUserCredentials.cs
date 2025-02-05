@@ -25,11 +25,20 @@ namespace aspnetcore.ntier.Dashboard.Filters
             {
                 context.Result = controller.RedirectToAction("logout", "account");
             }
+            if (user.IsAllowedToEdit != isTheUserAllowedToEdit(userPrinciples))
+            {
+                context.Result = controller.RedirectToAction("logout", "account");
+            }
 
         }
         private bool isTheUserSuperAdmin(ClaimsPrincipal User)
         {
             var role = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role && x.Value == "SuperAdmin");
+            return role is not null ? true : false;
+        }
+        private bool isTheUserAllowedToEdit(ClaimsPrincipal User)
+        {
+            var role = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role && x.Value == "AllowToEdit");
             return role is not null ? true : false;
         }
         private List<decimal> GetUserAccessToSites(ClaimsPrincipal User)

@@ -59,9 +59,11 @@
             <select class="form-select" asp-for="SitePermissions" asp-items="@Model.SiteItems" multiple="multiple">
             </select>
             <span asp-validation-for="SitePermissions" class="text-danger"></span>
-
         </div>
-
+        <div class="mb-3 permissions" style="display:@(Model.IsSuperAdmin?"none":"block")">
+            <input type="checkbox" asp-for="IsAllowedToEdit" />
+            <label asp-for="IsAllowedToEdit"> يسمح التعديل</label>
+        </div>
 
         <!-- Submit Button -->
         <button type="submit" class="btn btn-primary">حفظ</button>

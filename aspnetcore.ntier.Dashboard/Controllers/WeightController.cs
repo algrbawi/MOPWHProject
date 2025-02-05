@@ -5,12 +5,14 @@ using aspnetcore.ntier.Dashboard.Controllers.Base;
 using aspnetcore.ntier.Dashboard.Models.DashboardUser;
 using aspnetcore.ntier.DTO.DTOs;
 using aspnetcore.ntier.DTO.Enum;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using QuestPDF.Fluent;
 using System.Security.Cryptography;
 
 namespace aspnetcore.ntier.Dashboard.Controllers
 {
+    [Authorize(Roles = "AllowToEdit")]
     public class WeightController : BaseController
     {
         private readonly IWeightService _weightService;

@@ -70,7 +70,7 @@ namespace aspnetcore.ntier.BLL.Services.Apis
             var results = await _weightTblRepository.GetListAsync(
                                                                     x => x.SiteId == SiteId &&
                                                                     x.InDate >= date.Item1 && x.InDate <= date.Item2 &&
-                                                                    (user.IsSuperAdmin || x.Site.AccessUsers.Any(x => x.Id == user.Id)) &&
+                                                                    (user.IsSuperAdmin || x.Site.AccessUsers.Any(x => x.DashboardUserId == user.Id)) &&
                                                                     (ReportType != ReportType.bill ? true : x.VioPrice > 0),
                                                                     include: x => x.Include(n => n.Nation)
                                                                                     .Include(p => p.Product)

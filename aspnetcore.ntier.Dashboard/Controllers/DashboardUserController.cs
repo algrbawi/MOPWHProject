@@ -45,6 +45,7 @@ namespace aspnetcore.ntier.Dashboard.Controllers
                     model.SiteItems = siteIterms;
                     var dto = new DashboardUserDto
                     {
+                        IsAllowedToEdit = model.IsAllowedToEdit,
                         Email = model.Email,
                         IsSuperAdmin = model.IsSuperAdmin,
                         Id = model.Id,
@@ -86,6 +87,7 @@ namespace aspnetcore.ntier.Dashboard.Controllers
                 IsSuperAdmin = result.IsSuperAdmin,
                 Name = result.Name,
                 Password = "------",
+                IsAllowedToEdit = result.IsAllowedToEdit,
                 SiteItems = await GetSitesListItems(result.AccessUsers.Select(x => x.SiteTblId).ToList())
             };
 
@@ -103,6 +105,7 @@ namespace aspnetcore.ntier.Dashboard.Controllers
                     model.SiteItems = await GetSitesListItems(model.SitePermissions);
                     var dto = new DashboardUserDto
                     {
+                        IsAllowedToEdit = model.IsAllowedToEdit,
                         Email = model.Email,
                         IsSuperAdmin = model.IsSuperAdmin,
                         Id = model.Id,

@@ -19,6 +19,7 @@ namespace aspnetcore.ntier.Dashboard.Models.DashboardUser
         public string Password { get; set; }
         [Required(ErrorMessage = "يرجى تحديد نوع المستخدم")]
         public bool IsSuperAdmin { get; set; } = true;
+        public bool IsAllowedToEdit { get; set; } = false;
         public List<decimal>? SitePermissions { get; set; }
 
         public List<SelectListItem> SiteItems { get; set; } = new List<SelectListItem>();

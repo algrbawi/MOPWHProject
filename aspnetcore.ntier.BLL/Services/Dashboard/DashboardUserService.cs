@@ -61,6 +61,7 @@ namespace aspnetcore.ntier.BLL.Services.Dashboard
 
             user.Name = model.Name;
             user.Email = model.Email;
+            user.IsAllowedToEdit = model.IsAllowedToEdit;
             user.IsSuperAdmin = model.IsSuperAdmin;
             if (password != "------")
             {
@@ -99,6 +100,7 @@ namespace aspnetcore.ntier.BLL.Services.Dashboard
             HashPassword.CreatePasswordHash(password, out hashedPassword, out passwordSalt);
             user.PasswordHash = hashedPassword;
             user.PasswordSalt = passwordSalt;
+            user.IsAllowedToEdit = model.IsAllowedToEdit;
 
             if (!model.IsSuperAdmin)
             {

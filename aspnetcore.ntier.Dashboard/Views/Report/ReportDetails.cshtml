@@ -79,10 +79,14 @@
                             <i class="fa fa-regular fa-download"></i>
                             تحميل
                         </a>
-                        <a class="btn btn-primary" asp-action="Edit" asp-controller="Weight" asp-route-SiteId="@Model.SiteId">
-                            <i class="fa fas fa-edit"></i>
-                            تعديل
-                        </a>
+                        @if (User.IsInRole("AllowToEdit") || User.IsInRole("SuperAdmin"))
+                        {
+                            <a class="btn btn-primary" asp-action="Edit" asp-controller="Weight" asp-route-SiteId="@Model.SiteId">
+                                <i class="fa fas fa-edit"></i>
+                                تعديل
+                            </a>
+                        }
+                    
                     }
                 </div>
             </form>

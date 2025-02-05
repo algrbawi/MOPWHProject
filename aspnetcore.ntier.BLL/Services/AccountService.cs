@@ -63,6 +63,11 @@ namespace aspnetcore.ntier.BLL.Services
                     }
                 }
 
+                if (user.IsAllowedToEdit)
+                {
+                    claims.Add(new Claim(ClaimTypes.Role, "AllowToEdit"));
+                }
+
                 var claimsIdentity = new ClaimsIdentity(
                claims, CookieAuthenticationDefaults.AuthenticationScheme);
                 var authProperties = new AuthenticationProperties
