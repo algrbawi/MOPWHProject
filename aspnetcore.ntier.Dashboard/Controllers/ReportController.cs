@@ -83,7 +83,7 @@ namespace aspnetcore.ntier.Dashboard.Controllers
                 }
 
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
             }

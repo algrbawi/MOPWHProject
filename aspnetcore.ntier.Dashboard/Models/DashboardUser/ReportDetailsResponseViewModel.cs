@@ -20,6 +20,7 @@ namespace aspnetcore.ntier.Dashboard.Models.DashboardUser
                     DTO.Enum.ReportType.daily => "يومي",
                     DTO.Enum.ReportType.monthly => "شهري",
                     DTO.Enum.ReportType.yearly => "سنوي",
+                    DTO.Enum.ReportType.bill => "وصولات المخالفات",
                     _ => ""
                 };
 

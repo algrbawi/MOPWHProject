@@ -169,7 +169,6 @@
 
             <table class="table mt-5 second-table">
                 <tr class="second-table-header">
-                    <th>الرقم</th>
                     <th>رقم العملية</th>
                     <th>التاريخ</th>
                     <th>الوقت</th>
@@ -182,7 +181,7 @@
                     <th>المخالفة</th>
                     <th>رقم الوصل</th>
                     <th>رقم الضبط</th>
-                    <th>إسم صاحب الفاتورة</th>
+                    <th>إسم دافع الفاتورة</th>
                     @*        <th>الحمولة</th>
                     <th>السائق</th> *@
                     <th>المستخدم</th>
@@ -190,7 +189,6 @@
                 @foreach (var item in report.ReportData)
                 {
                     <tr>
-                        <td>@item.Number</td>
                         <td> @item.OperationNumber</td>
                         <td>@item.DateOnly</td>
                         <td>@item.TimeOnly</td>
