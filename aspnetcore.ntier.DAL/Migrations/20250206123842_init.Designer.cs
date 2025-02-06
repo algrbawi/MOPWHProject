@@ -12,7 +12,7 @@ using aspnetcore.ntier.DAL.DataContext;
 namespace aspnetcore.ntier.DAL.Migrations
 {
     [DbContext(typeof(AspNetCoreNTierDbContext))]
-    [Migration("20250203175536_init")]
+    [Migration("20250206123842_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -904,6 +904,9 @@ namespace aspnetcore.ntier.DAL.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("IsAllowedToEdit")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("IsSuperAdmin")
                         .HasColumnType("bit");
 
@@ -928,6 +931,7 @@ namespace aspnetcore.ntier.DAL.Migrations
                         {
                             Id = 1,
                             Email = "admin@admin.com",
+                            IsAllowedToEdit = false,
                             IsSuperAdmin = true,
                             Name = "Admin",
                             PasswordHash = new byte[] { 104, 136, 143, 19, 91, 5, 225, 182, 216, 68, 5, 115, 218, 150, 94, 159, 191, 141, 248, 163, 232, 71, 30, 153, 214, 80, 47, 192, 8, 145, 71, 249, 190, 24, 27, 7, 106, 166, 118, 135, 165, 169, 143, 163, 31, 23, 152, 100, 79, 110, 228, 225, 240, 16, 200, 173, 29, 142, 211, 253, 255, 82, 16, 97 },

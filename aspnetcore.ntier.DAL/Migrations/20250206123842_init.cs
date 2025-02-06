@@ -36,7 +36,8 @@ namespace aspnetcore.ntier.DAL.Migrations
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PasswordHash = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
                     PasswordSalt = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
-                    IsSuperAdmin = table.Column<bool>(type: "bit", nullable: false)
+                    IsSuperAdmin = table.Column<bool>(type: "bit", nullable: false),
+                    IsAllowedToEdit = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -522,8 +523,8 @@ namespace aspnetcore.ntier.DAL.Migrations
 
             migrationBuilder.InsertData(
                 table: "DashboardUsers",
-                columns: new[] { "Id", "Email", "IsSuperAdmin", "Name", "PasswordHash", "PasswordSalt" },
-                values: new object[] { 1, "admin@admin.com", true, "Admin", new byte[] { 104, 136, 143, 19, 91, 5, 225, 182, 216, 68, 5, 115, 218, 150, 94, 159, 191, 141, 248, 163, 232, 71, 30, 153, 214, 80, 47, 192, 8, 145, 71, 249, 190, 24, 27, 7, 106, 166, 118, 135, 165, 169, 143, 163, 31, 23, 152, 100, 79, 110, 228, 225, 240, 16, 200, 173, 29, 142, 211, 253, 255, 82, 16, 97 }, new byte[] { 218, 41, 250, 3, 4, 72, 102, 113, 5, 134, 173, 68, 162, 218, 93, 198, 22, 180, 85, 173, 60, 242, 199, 254, 97, 8, 94, 144, 125, 214, 128, 39, 177, 255, 224, 218, 108, 38, 245, 243, 208, 203, 91, 11, 188, 249, 129, 161, 190, 87, 63, 83, 182, 112, 60, 6, 67, 66, 212, 55, 15, 25, 215, 50, 151, 219, 194, 22, 135, 232, 14, 178, 85, 175, 251, 202, 48, 67, 113, 113, 244, 107, 166, 193, 218, 172, 218, 137, 186, 116, 223, 232, 123, 148, 173, 121, 208, 147, 24, 133, 241, 42, 170, 40, 235, 98, 222, 132, 241, 72, 80, 43, 36, 132, 98, 218, 150, 169, 10, 230, 247, 28, 52, 138, 249, 206, 233, 59 } });
+                columns: new[] { "Id", "Email", "IsAllowedToEdit", "IsSuperAdmin", "Name", "PasswordHash", "PasswordSalt" },
+                values: new object[] { 1, "admin@admin.com", false, true, "Admin", new byte[] { 104, 136, 143, 19, 91, 5, 225, 182, 216, 68, 5, 115, 218, 150, 94, 159, 191, 141, 248, 163, 232, 71, 30, 153, 214, 80, 47, 192, 8, 145, 71, 249, 190, 24, 27, 7, 106, 166, 118, 135, 165, 169, 143, 163, 31, 23, 152, 100, 79, 110, 228, 225, 240, 16, 200, 173, 29, 142, 211, 253, 255, 82, 16, 97 }, new byte[] { 218, 41, 250, 3, 4, 72, 102, 113, 5, 134, 173, 68, 162, 218, 93, 198, 22, 180, 85, 173, 60, 242, 199, 254, 97, 8, 94, 144, 125, 214, 128, 39, 177, 255, 224, 218, 108, 38, 245, 243, 208, 203, 91, 11, 188, 249, 129, 161, 190, 87, 63, 83, 182, 112, 60, 6, 67, 66, 212, 55, 15, 25, 215, 50, 151, 219, 194, 22, 135, 232, 14, 178, 85, 175, 251, 202, 48, 67, 113, 113, 244, 107, 166, 193, 218, 172, 218, 137, 186, 116, 223, 232, 123, 148, 173, 121, 208, 147, 24, 133, 241, 42, 170, 40, 235, 98, 222, 132, 241, 72, 80, 43, 36, 132, 98, 218, 150, 169, 10, 230, 247, 28, 52, 138, 249, 206, 233, 59 } });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AccessUser_DashboardUserId_SiteTblId",
