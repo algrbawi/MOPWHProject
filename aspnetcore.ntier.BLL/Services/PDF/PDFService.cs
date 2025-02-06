@@ -70,7 +70,6 @@ namespace aspnetcore.ntier.BLL.Services.PDF
                 //page.Footer().AlignCenter().Text("وزارة الأشغال العامة والإسكان - 2024");
             });
 
-            int rowCounter = 1;
             container.Page(page =>
             {
                 page.Margin(30);
@@ -88,26 +87,43 @@ namespace aspnetcore.ntier.BLL.Services.PDF
                     {
                         table.ColumnsDefinition(columns =>
                         {
-                            columns.RelativeColumn();
-                            columns.RelativeColumn();
-                            columns.RelativeColumn();
-                            columns.RelativeColumn();
-                            columns.RelativeColumn();
-                            columns.RelativeColumn();
-                            columns.RelativeColumn();
-                            columns.RelativeColumn();
-                            columns.RelativeColumn();
-                            columns.RelativeColumn();
                             if (pdfDto.reportType == ReportType.daily)
                             {
+                                columns.RelativeColumn();
+                                columns.RelativeColumn(2);
+                                columns.RelativeColumn(2);
+                                columns.RelativeColumn();
+                                columns.RelativeColumn();
+                                columns.RelativeColumn();
+                                columns.RelativeColumn();
+                                columns.RelativeColumn();
+                                columns.RelativeColumn();
+                                columns.RelativeColumn();
+                                columns.RelativeColumn();
+                                columns.RelativeColumn();
+                                columns.RelativeColumn();
+                                columns.RelativeColumn();
+                                columns.RelativeColumn();
 
+                            }
+                            else if (pdfDto.reportType == ReportType.bill)
+                            {
+                                columns.RelativeColumn(2);
+                                columns.RelativeColumn(2);
                                 columns.RelativeColumn();
                                 columns.RelativeColumn();
                                 columns.RelativeColumn();
+                                columns.RelativeColumn();
+                                columns.RelativeColumn();
+                                columns.RelativeColumn();
+                                columns.RelativeColumn();
+                                columns.RelativeColumn();
+                                columns.RelativeColumn(2);
+                                columns.RelativeColumn(2);
                                 columns.RelativeColumn();
                                 columns.RelativeColumn();
                             }
-                            if (pdfDto.reportType == ReportType.bill)
+                            else
                             {
 
                                 columns.RelativeColumn();
@@ -116,7 +132,13 @@ namespace aspnetcore.ntier.BLL.Services.PDF
                                 columns.RelativeColumn();
                                 columns.RelativeColumn();
                                 columns.RelativeColumn();
+                                columns.RelativeColumn();
+                                columns.RelativeColumn();
+                                columns.RelativeColumn();
+                                columns.RelativeColumn();
+
                             }
+
                         });
                         if (pdfDto.reportType == ReportType.daily)
                         {
@@ -138,20 +160,20 @@ namespace aspnetcore.ntier.BLL.Services.PDF
                         else if (pdfDto.reportType == ReportType.bill)
                         {
 
-                            table.Cell().Row(1).Column(1).ScaleHorizontal(0).Background(Color.FromHex("#dcdcdc")).Element(CellStyle).AlignTop().Text("رقم العملية").Bold().FontSize(7);
-                            table.Cell().Row(1).Column(2).ScaleToFit().Background(Color.FromHex("#dcdcdc")).Element(CellStyle).AlignTop().Text("التاريخ").Bold().FontSize(7);
-                            table.Cell().Row(1).Column(3).ScaleToFit().Background(Color.FromHex("#dcdcdc")).Element(CellStyle).AlignTop().Text("الوقت").Bold().FontSize(7);
-                            table.Cell().Row(1).Column(4).ScaleToFit().Background(Color.FromHex("#dcdcdc")).Element(CellStyle).AlignTop().Text("رقم المركبة").Bold().FontSize(7);
-                            table.Cell().Row(1).Column(5).ScaleToFit().Background(Color.FromHex("#dcdcdc")).Element(CellStyle).AlignTop().Text("الجنسية").Bold().FontSize(7);
-                            table.Cell().Row(1).Column(6).ScaleToFit().Background(Color.FromHex("#dcdcdc")).Element(CellStyle).AlignTop().Text("التصنيف").Bold().FontSize(7);
-                            table.Cell().Row(1).Column(7).ScaleToFit().Background(Color.FromHex("#dcdcdc")).Element(CellStyle).AlignTop().Text("وزن المركبة").Bold().FontSize(7);
-                            table.Cell().Row(1).Column(8).ScaleToFit().Background(Color.FromHex("#dcdcdc")).Element(CellStyle).AlignTop().Text("الوزن المسموح").Bold().FontSize(7);
-                            table.Cell().Row(1).Column(9).ScaleToFit().Background(Color.FromHex("#dcdcdc")).Element(CellStyle).AlignTop().Text("فرق الوزن").Bold().FontSize(7);
-                            table.Cell().Row(1).Column(10).ScaleToFit().Background(Color.FromHex("#dcdcdc")).Element(CellStyle).AlignTop().Text("المخالفة").Bold().FontSize(7);
-                            table.Cell().Row(1).Column(11).ScaleToFit().Background(Color.FromHex("#dcdcdc")).Element(CellStyle).AlignTop().Text("رقم الوصل").Bold().FontSize(7);
-                            table.Cell().Row(1).Column(12).ScaleToFit().Background(Color.FromHex("#dcdcdc")).Element(CellStyle).AlignTop().Text("رقم الضبط").Bold().FontSize(7);
-                            table.Cell().Row(1).Column(13).ScaleToFit().Background(Color.FromHex("#dcdcdc")).Element(CellStyle).AlignTop().Text("اسم صاحب الفتورة").Bold().FontSize(7);
-                            table.Cell().Row(1).Column(14).ScaleToFit().Background(Color.FromHex("#dcdcdc")).Element(CellStyle).AlignTop().Text("المستخدم").Bold().FontSize(7);
+                            table.Cell().Row(1).Column(1).Background(Color.FromHex("#dcdcdc")).Element(CellStyle).AlignTop().Text("رقم العملية").Bold().FontSize(7);
+                            table.Cell().Row(1).Column(2).Background(Color.FromHex("#dcdcdc")).Element(CellStyle).AlignTop().Text("التاريخ").Bold().FontSize(7);
+                            table.Cell().Row(1).Column(3).Background(Color.FromHex("#dcdcdc")).Element(CellStyle).AlignTop().Text("الوقت").Bold().FontSize(7);
+                            table.Cell().Row(1).Column(4).Background(Color.FromHex("#dcdcdc")).Element(CellStyle).AlignTop().Text("رقم المركبة").Bold().FontSize(7);
+                            table.Cell().Row(1).Column(5).Background(Color.FromHex("#dcdcdc")).Element(CellStyle).AlignTop().Text("الجنسية").Bold().FontSize(7);
+                            table.Cell().Row(1).Column(6).Background(Color.FromHex("#dcdcdc")).Element(CellStyle).AlignTop().Text("التصنيف").Bold().FontSize(7);
+                            table.Cell().Row(1).Column(7).Background(Color.FromHex("#dcdcdc")).Element(CellStyle).AlignTop().Text("وزن المركبة").Bold().FontSize(7);
+                            table.Cell().Row(1).Column(8).Background(Color.FromHex("#dcdcdc")).Element(CellStyle).AlignTop().Text("الوزن المسموح").Bold().FontSize(7);
+                            table.Cell().Row(1).Column(9).Background(Color.FromHex("#dcdcdc")).Element(CellStyle).AlignTop().Text("فرق الوزن").Bold().FontSize(7);
+                            table.Cell().Row(1).Column(10).Background(Color.FromHex("#dcdcdc")).Element(CellStyle).AlignTop().Text("المخالفة").Bold().FontSize(7);
+                            table.Cell().Row(1).Column(11).Background(Color.FromHex("#dcdcdc")).Element(CellStyle).AlignTop().Text("رقم الوصل").Bold().FontSize(7);
+                            table.Cell().Row(1).Column(12).Background(Color.FromHex("#dcdcdc")).Element(CellStyle).AlignTop().Text("رقم الضبط").Bold().FontSize(7);
+                            table.Cell().Row(1).Column(13).Background(Color.FromHex("#dcdcdc")).Element(CellStyle).AlignTop().Text("اسم صاحب الفتورة").Bold().FontSize(7);
+                            table.Cell().Row(1).Column(14).Background(Color.FromHex("#dcdcdc")).Element(CellStyle).AlignTop().Text("المستخدم").Bold().FontSize(7);
 
 
                         }
