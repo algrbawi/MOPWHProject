@@ -25,8 +25,12 @@ namespace aspnetcore.ntier.Dashboard.Controllers
             var results = await _siteService.GetUserSitesListAsync(User.Identity.Name, siteName);
             if (!string.IsNullOrEmpty(siteName))
             {
-                results = results.GroupBy(x => x.SiteName).Select(x => x.First()).ToList();
+                results = results.Where(x => x.SiteName == siteName).ToList();
                 ViewBag.IsSubSite = true;
+            }
+            else
+            {
+                results = results.GroupBy(x => x.SiteName).Select(x => x.First()).ToList();
             }
             return View(results);
         }
