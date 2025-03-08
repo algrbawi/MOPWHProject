@@ -188,8 +188,8 @@ namespace aspnetcore.ntier.BLL.Services.Apis
                     TotalNumberWeights = v.Count(),
                     TotalTruckesNotInViolation = v.Where(x => x.VioPrice == 0).Count(),
                     TotalTruckesViolation = v.Where(x => x.VioPrice > 0).Count(),
-                    TotalTruckesViolationGreaterThan5 = v.Where(v => v.VioWeight >= 6000 && v.VioPrice > 0).Count(),
-                    TotalTruckesViolationLessThan5 = v.Where(v => v.VioWeight < 6000 && v.VioPrice > 0).Count(),
+                    TotalTruckesViolationGreaterThan5 = v.Where(v => v.VioWeight >= 6 && v.VioPrice > 0).Count(),
+                    TotalTruckesViolationLessThan5 = v.Where(v => v.VioWeight < 6 && v.VioPrice > 0).Count(),
                     TotalViolationWeights = v.Where(x => x.VioPrice > 0).Sum(x => x.VioWeight),
                     TotalViolationPrice = v.Where(x => x.VioPrice > 0).Sum(x => x.VioPrice)
                 }).ToList();
@@ -199,7 +199,7 @@ namespace aspnetcore.ntier.BLL.Services.Apis
             weightReportDto.TotalTrucks = weightTbls.Count();
             weightReportDto.TotalViolationWeight = weightTbls.Where(v => v.VioPrice > 0).Sum(x => x.VioWeight).Value;
             weightReportDto.TotlaViolationPrice = weightTbls.Where(v => v.VioPrice > 0).Sum(x => x.VioPrice).Value;
-            weightReportDto.TotlaViolationNumberMoreThan5 = weightTbls.Where(v => v.VioWeight >= 6000 && v.VioPrice > 0).Count();
+            weightReportDto.TotlaViolationNumberMoreThan5 = weightTbls.Where(v => v.VioWeight >= 6 && v.VioPrice > 0).Count();
             return weightReportDto;
         }
     }
