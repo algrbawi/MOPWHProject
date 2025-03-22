@@ -9,6 +9,8 @@ namespace aspnetcore.ntier.Dashboard.Models.DashboardUser
         public SiteTblDto Site { get; set; }
         public int SiteId { get; set; }
         public DateOnly? SearchDate { get; set; }
+        public DateOnly? SearchDateTo { get; set; }
+        public string? TruckNumber { get; set; }
         public ReportType? ReportType { get; set; }
         public string DateTypeText
         {

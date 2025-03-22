@@ -49,10 +49,23 @@
             @* <h2 class="text-center mb-4">Simple Search</h2> *@
             <form asp-action="ReportDetails" method="get">
                 <input asp-for="SiteId" hidden />
-                <div class="mb-3" id="date-filter">
-                    <label for="input1" class="form-label">التاريخ</label>
+                <div class="mb-3">
+                    <label for="input1" class="form-label">من</label>
+                    <label for="input1" class="form-label billFilter">التاريخ</label>
+
                     <input class="form-control" asp-for="SearchDate" type="date" />
                 </div>
+                <div class="billFilter">
+                    <div class="mb-3">
+                        <label for="input1" class="form-label">إلى</label>
+                        <input class="form-control" asp-for="SearchDateTo" type="date" />
+                    </div>
+                    <div class="mb-3">
+                        <label for="input1" class="form-label">رقم الشاحنة</label>
+                        <input class="form-control" asp-for="TruckNumber" />
+                    </div>
+                </div>
+
                 <div class="mb-3">
                     <label asp-for="ReportType" class="form-label">نوع البحث</label>
                     <select class="form-select" asp-for="ReportType">
@@ -86,7 +99,7 @@
                                 تعديل
                             </a>
                         }
-                    
+
                     }
                 </div>
             </form>
@@ -268,8 +281,12 @@
 
         $('#ReportType').on('change', function(e) {
             $("#date-filter").show();
+            $(".otherBillTypes").show();
+            $(".billFilter").hide();
             if(this.value ==3){
             $("#date-filter").hide();
+            $(".otherBillTypes").hide();
+            $(".billFilter").show();
             }
          });
     </script>

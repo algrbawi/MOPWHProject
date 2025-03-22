@@ -34,17 +34,14 @@ namespace aspnetcore.ntier.Dashboard.Controllers
 
             var site = await _siteService.GetUserSiteAsync(User.Identity.Name, model.SiteId);
             var results = new ReportDetailsResponseViewModel();
-            if (model.SearchDate.HasValue && model.ReportType.HasValue || model.ReportType.HasValue && model.ReportType == DTO.Enum.ReportType.bill)
+            if (model.SearchDate.HasValue && model.ReportType.HasValue)
             {
-                if (model.ReportType == DTO.Enum.ReportType.bill)
-                {
-                    model.SearchDate = DateOnly.FromDateTime(DateTime.Now.AddDays(1));
-                }
-                results.ReportData = await _weightService.GetWeightReportData(model.SiteId, model.SearchDate.Value, model.ReportType.Value, User.Identity.Name);
+                results.ReportData = await _weightService.GetWeightReportData(model.SiteId, model.SearchDate.Value, model.ReportType.Value, User.Identity.Name, model.SearchDateTo, model.TruckNumber);
             }
 
             results.SiteId = model.SiteId;
             results.SearchDate = model.SearchDate;
+            results.SearchDateTo = model.SearchDateTo;
             results.ReportType = model.ReportType;
             results.Site = site;
             return View(results);
@@ -55,11 +52,7 @@ namespace aspnetcore.ntier.Dashboard.Controllers
 
             try
             {
-                if (model.ReportType == DTO.Enum.ReportType.bill)
-                {
-                    model.SearchDate = DateOnly.FromDateTime(DateTime.Now.AddDays(1));
-                }
-                var weightReport = await _weightService.GetWeightReportData(model.SiteId, model.SearchDate.Value, model.ReportType.Value, User.Identity.Name);
+                var weightReport = await _weightService.GetWeightReportData(model.SiteId, model.SearchDate.Value, model.ReportType.Value, User.Identity.Name, model.SearchDateTo, model.TruckNumber);
 
                 if (weightReport.ReportData?.Count() > 0)
                 {

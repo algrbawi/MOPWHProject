@@ -63,14 +63,16 @@ namespace aspnetcore.ntier.BLL.Services.Apis
         }
 
 
-        public async Task<WeightReportDto> GetWeightReportData(int SiteId, DateOnly Date, ReportType ReportType, string userEmail)
+        public async Task<WeightReportDto> GetWeightReportData(int SiteId, DateOnly Date, ReportType ReportType, string userEmail, DateOnly? ToDate = null, string? TruckNumber = null)
         {
             var user = await _dashboardUserRepository.GetAsync(x => x.Email.ToLower() == userEmail.ToLower());
-            var date = GetFilterDate(ReportType, Date);
+            var date = GetFilterDate(ReportType, Date, ToDate);
             var results = await _weightTblRepository.GetListAsync(
                                                                     x => x.SiteId == SiteId &&
                                                                     x.InDate >= date.Item1 && x.InDate <= date.Item2 &&
                                                                     (user.IsSuperAdmin || x.Site.AccessUsers.Any(x => x.DashboardUserId == user.Id)) &&
+                                                                    (string.IsNullOrEmpty(TruckNumber) ? true : x.TruckNum == TruckNumber)
+                                                                    &&
                                                                     (ReportType != ReportType.bill ? true : x.VioPrice > 0),
                                                                     include: x => x.Include(n => n.Nation)
                                                                                     .Include(p => p.Product)
@@ -110,7 +112,7 @@ namespace aspnetcore.ntier.BLL.Services.Apis
             }
             return null;
         }
-        private (DateOnly, DateOnly) GetFilterDate(ReportType reportType, DateOnly date)
+        private (DateOnly, DateOnly) GetFilterDate(ReportType reportType, DateOnly date, DateOnly? toDate)
         {
             DateOnly filterDateFrom = DateOnly.FromDateTime(DateTime.Now);
             DateOnly filterDateTo = DateOnly.FromDateTime(DateTime.Now);
@@ -122,8 +124,12 @@ namespace aspnetcore.ntier.BLL.Services.Apis
             }
             else if (reportType == ReportType.bill)
             {
-                filterDateFrom = DateOnly.FromDateTime(DateTime.MinValue);
-                filterDateTo = date;
+                filterDateFrom = date;
+                if (toDate is null)
+                {
+                    toDate = date;
+                }
+                filterDateTo = toDate.Value;
             }
             else if (reportType == ReportType.monthly)
             {
