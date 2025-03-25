@@ -12,7 +12,7 @@ using System.Security.Cryptography;
 
 namespace aspnetcore.ntier.Dashboard.Controllers
 {
-    [Authorize(Roles = "AllowToEdit")]
+    [Authorize(Roles = "AllowToEdit, SuperAdmin")]
     public class WeightController : BaseController
     {
         private readonly IWeightService _weightService;
