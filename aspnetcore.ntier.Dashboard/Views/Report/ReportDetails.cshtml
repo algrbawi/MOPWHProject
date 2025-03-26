@@ -5,6 +5,12 @@
 @{
     var report = Model.ReportData;
     var IsReportDataNotNull = report?.ReportData is not null && report.ReportData.Count() > 0;
+    var yearsListItems = new List<SelectListItem>();
+    var currentYear = DateTime.Now.Year;
+    for (int i = 1800; i <= currentYear; i++)
+    {
+        yearsListItems.Add(new SelectListItem { Value = new DateTime(i, 01, 01).ToString("MM/dd/yyyy"), Text = i.ToString(), Selected = i == currentYear });
+    }
     ViewBag.Title = "التقرير";
 }
 @section Styles {
@@ -50,12 +56,12 @@
             <form asp-action="ReportDetails" method="get">
                 <input asp-for="SiteId" hidden />
                 <div class="mb-3">
-                    <label for="input1" class="form-label">من</label>
-                    <label for="input1" class="form-label billFilter">التاريخ</label>
-
-                    <input class="form-control" asp-for="SearchDate" type="date" />
+                    <label for="date-label" class="form-label date-label"></label>
+                    <input id="day" pattern="\d{4}-\d{2}-\d{2}" class="form-control date-filter" asp-for="SearchDate" type="date" disabled />
+                    <input id="month" class="form-control date-filter" asp-for="SearchDate" type="month" value="@DateTime.Now.ToString("yyyy-MM")" disabled />
+                    <select id="year" asp-items="yearsListItems" class="form-select date-filter" asp-for="SearchDate" disabled></select>
                 </div>
-                <div class="billFilter">
+                <div class="bill-filter-type">
                     <div class="mb-3">
                         <label for="input1" class="form-label">إلى</label>
                         <input class="form-control" asp-for="SearchDateTo" type="date" />
@@ -272,7 +278,8 @@
     <script>
            $(document).ready(function() {
              $('#ReportType').select2();
-                     $('#ReportType').change();
+             $('#year').select2();
+             $('#ReportType').change();
          });
 
          function downloadPDF(){
@@ -280,13 +287,39 @@
          }
 
         $('#ReportType').on('change', function(e) {
-            $("#date-filter").show();
-            $(".otherBillTypes").show();
-            $(".billFilter").hide();
-            if(this.value ==3){
-            $("#date-filter").hide();
-            $(".otherBillTypes").hide();
-            $(".billFilter").show();
+            $(".date-filter").prop('disabled', true);
+            $(".date-filter").hide();
+            $('#year').next(".select2-container").hide();
+            $(".bill-filter-type").hide();
+            $(".bill-filter-type").hide();
+            $(".other-bill-filter-type").hide();
+            var dateLabel = $(".date-label");
+            if(this.value ==0){
+                var dayFilter=   $("#day");
+                dayFilter.removeAttr("disabled")
+                dayFilter.show();
+                dateLabel.text("التاريخ")
+            }
+            else if(this.value ==1){
+                var monthFilter=   $("#month");
+                monthFilter.removeAttr("disabled")
+                monthFilter.show();
+                dateLabel.text("الشهر")
+
+
+            }
+            else if(this.value ==2){
+                var yearFilter= $("#year");
+                yearFilter.removeAttr("disabled")
+                yearFilter.next(".select2-container").show();
+                dateLabel.text("السنة")
+            }
+            else{
+            $(".bill-filter-type").show();
+            var dayFilter=   $("#day");
+            dayFilter.removeAttr("disabled")
+            dayFilter.show();
+            dateLabel.text("من")
             }
          });
     </script>
