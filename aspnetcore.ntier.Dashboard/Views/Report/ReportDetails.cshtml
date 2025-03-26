@@ -57,7 +57,7 @@
                 <input asp-for="SiteId" hidden />
                 <div class="mb-3">
                     <label for="date-label" class="form-label date-label"></label>
-                    <input id="day" pattern="\d{4}-\d{2}-\d{2}" class="form-control date-filter" asp-for="SearchDate" type="date" disabled />
+                    <input id="day" class="form-control date-filter" asp-for="SearchDate" type="date" disabled />
                     <input id="month" class="form-control date-filter" asp-for="SearchDate" type="month" value="@DateTime.Now.ToString("yyyy-MM")" disabled />
                     <select id="year" asp-items="yearsListItems" class="form-select date-filter" asp-for="SearchDate" disabled></select>
                 </div>

@@ -63,7 +63,7 @@ namespace aspnetcore.ntier.BLL.Services.Dashboard
             user.Email = model.Email;
             user.IsAllowedToEdit = model.IsAllowedToEdit;
             user.IsSuperAdmin = model.IsSuperAdmin;
-            if (password != "------")
+            if (password != "11111111aA!")
             {
                 byte[] hashedPassword;
                 byte[] passwordSalt;

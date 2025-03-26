@@ -86,7 +86,7 @@ namespace aspnetcore.ntier.Dashboard.Controllers
                 Id = result.Id,
                 IsSuperAdmin = result.IsSuperAdmin,
                 Name = result.Name,
-                Password = "------",
+                Password = "11111111aA!",
                 IsAllowedToEdit = result.IsAllowedToEdit,
                 SiteItems = await GetSitesListItems(result.AccessUsers.Select(x => x.SiteTblId).ToList())
             };
