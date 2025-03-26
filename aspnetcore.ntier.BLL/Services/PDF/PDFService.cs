@@ -154,7 +154,7 @@ namespace aspnetcore.ntier.BLL.Services.PDF
                             table.Cell().Row(1).Column(10).Background(Color.FromHex("#dcdcdc")).Element(CellStyle).AlignTop().Text("فرق الوزن").Bold().FontSize(7);
                             table.Cell().Row(1).Column(11).Background(Color.FromHex("#dcdcdc")).Element(CellStyle).AlignTop().Text("المخالفة").Bold().FontSize(7);
                             table.Cell().Row(1).Column(12).Background(Color.FromHex("#dcdcdc")).Element(CellStyle).AlignTop().Text("الحمولة").Bold().FontSize(7);
-                            table.Cell().Row(1).Column(13).Background(Color.FromHex("#dcdcdc")).Element(CellStyle).AlignTop().Text("السائق").Bold().FontSize(7);
+                            table.Cell().Row(1).Column(13).Background(Color.FromHex("#dcdcdc")).Element(CellStyle).AlignTop().Text("الملاحظات").Bold().FontSize(7);
                             table.Cell().Row(1).Column(14).Background(Color.FromHex("#dcdcdc")).Element(CellStyle).AlignTop().Text("المستخدم").Bold().FontSize(7);
                         }
                         else if (pdfDto.reportType == ReportType.bill)
