@@ -170,7 +170,8 @@ namespace aspnetcore.ntier.BLL.Services.Apis
                     UserName = v.User?.UserName,
                     Bill_Name = v.Bill_Name,
                     Bill_Num = v.Bill_Num,
-                    Vio_Num = v.Vio_Num
+                    Vio_Num = v.Vio_Num,
+                    WeightNote = v.WeightNote,
 
                 }).ToList();
 
@@ -197,7 +198,7 @@ namespace aspnetcore.ntier.BLL.Services.Apis
                     TotalTruckesViolationGreaterThan5 = v.Where(v => v.VioWeight >= 6 && v.VioPrice > 0).Count(),
                     TotalTruckesViolationLessThan5 = v.Where(v => v.VioWeight < 6 && v.VioPrice > 0).Count(),
                     TotalViolationWeights = v.Where(x => x.VioPrice > 0).Sum(x => x.VioWeight),
-                    TotalViolationPrice = v.Where(x => x.VioPrice > 0).Sum(x => x.VioPrice)
+                    TotalViolationPrice = v.Where(x => x.VioPrice > 0).Sum(x => x.VioPrice),
                 }).ToList();
             }
 

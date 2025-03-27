@@ -206,7 +206,7 @@ namespace aspnetcore.ntier.BLL.Services.PDF
                                 table.Cell().Row(counter).Column(10).Element(CellStyle).AlignTop().Text(item.DiifWeight).Bold().FontSize(7);
                                 table.Cell().Row(counter).Column(11).Element(CellStyle).AlignTop().Text(item.Violation).Bold().FontSize(7);
                                 table.Cell().Row(counter).Column(12).Element(CellStyle).AlignTop().Text(item.ProductName).Bold().FontSize(7);
-                                table.Cell().Row(counter).Column(13).Element(CellStyle).AlignTop().Text(item.DriverName).Bold().FontSize(7);
+                                table.Cell().Row(counter).Column(13).Element(CellStyle).AlignTop().Text(item.WeightNote).Bold().FontSize(7);
                                 table.Cell().Row(counter).Column(14).Element(CellStyle).AlignTop().Text(item.UserName).Bold().FontSize(7);
                             }
                             else if (pdfDto.reportType == ReportType.bill)

@@ -44,6 +44,7 @@ namespace aspnetcore.ntier.DTO.DTOs
         public object? TotalTruckesViolationLessThan5 { get; set; }
         public object? TotalViolationWeights { get; set; }
         public object? TotalViolationPrice { get; set; }
+        public string? WeightNote { get; set; }
 
     }
 }
