@@ -53,7 +53,7 @@
     <div class="container mt-5 col-4">
         <div class="card shadow p-4">
             @* <h2 class="text-center mb-4">Simple Search</h2> *@
-            <form asp-action="ReportDetails" method="get">
+            <form asp-action="ReportDetails" method="get" id="ReportDetailsForm" style="display:none">
                 <input asp-for="SiteId" hidden />
                 <div class="mb-3">
                     <label for="date-label" class="form-label date-label"></label>
@@ -275,6 +275,7 @@
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script>
            $(document).ready(function() {
+             $("#ReportDetailsForm").show();
              $('#ReportType').select2();
              $('#year').select2();
              $('#ReportType').change();
