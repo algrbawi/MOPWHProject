@@ -78,6 +78,7 @@ namespace aspnetcore.ntier.BLL.Services.Apis
                                                                                     .Include(p => p.Product)
                                                                                     .Include(d => d.Driver)
                                                                                     .Include(u => u.User)
+                                                                                    .Include(c => c.WClass)
                                                                                     .Include(s => s.Site)
                                                                                     .ThenInclude(uac => uac.AccessUsers));
 
@@ -160,7 +161,7 @@ namespace aspnetcore.ntier.BLL.Services.Apis
                     TimeOnly = FixTimeFormat(v.InTime),
                     TruckNumber = v.TruckNum,
                     Nationality = v.Nation?.NationName,
-                    Classification = v.SeqNo,
+                    Classification = v.WClass?.WClassName,
                     TruckWeiht = v.TruckWeight,
                     AllowedWeight = v.ClassWeight,
                     DiifWeight = v.DiffWeight,

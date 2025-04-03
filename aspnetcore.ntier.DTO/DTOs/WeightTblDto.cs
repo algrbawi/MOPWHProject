@@ -57,5 +57,7 @@ namespace aspnetcore.ntier.DTO.DTOs
         public ProductsTblDto? Product { get; set; }
         public DriversTblDto? Driver { get; set; }
         public UsersTblDto? User { get; set; }
+        public WeightClassTblDto? WClass { get; set; }
+
     }
 }
