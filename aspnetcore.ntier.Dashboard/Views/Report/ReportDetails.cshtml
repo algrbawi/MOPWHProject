@@ -58,7 +58,7 @@
                 <div class="mb-3">
                     <label for="date-label" class="form-label date-label"></label>
                     <input id="day" class="form-control date-filter" asp-for="SearchDate" type="date" disabled />
-                    <input id="month" class="form-control date-filter" asp-for="SearchDate" type="month" value="@DateTime.Now.ToString("yyyy-MM")" disabled />
+                    <input id="month" class="form-control date-filter" asp-for="SearchDate" type="month" disabled />
                     <select id="year" asp-items="yearsListItems" class="form-select date-filter" asp-for="SearchDate" disabled></select>
                 </div>
                 <div class="bill-filter-type">
@@ -244,8 +244,8 @@
                     <th>عدد عمليات التوزين</th>
                     <th>عدد المركبات غير المخالفة </th>
                     <th>عدد المركبات المخالفة</th>
-                    <th>عدد المركبات المخالفة <span> &gt; </span> 5 </th>
                     <th>عدد المركبات المخالفة <span> &lt; </span> 5 </th>
+                    <th>عدد المركبات المخالفة <span> &gt; </span> 5 </th>
                     <th>مجموع الاوزان المخالف عليها</th>
                     <th>مجموع المخالفات دينار</th>
                 </tr>
@@ -257,8 +257,8 @@
                         <td>@item.TotalNumberWeights</td>
                         <td>@item.TotalTruckesNotInViolation</td>
                         <td>@item.TotalTruckesViolation</td>
-                        <td>@item.TotalTruckesViolationGreaterThan5</td>
                         <td>@item.TotalTruckesViolationLessThan5</td>
+                        <td>@item.TotalTruckesViolationGreaterThan5</td>
                         <td>@item.TotalViolationWeights</td>
                         <td>@item.TotalViolationPrice</td>
                     </tr>
