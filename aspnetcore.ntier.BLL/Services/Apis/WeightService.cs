@@ -73,7 +73,7 @@ namespace aspnetcore.ntier.BLL.Services.Apis
                                                                     (user.IsSuperAdmin || x.Site.AccessUsers.Any(x => x.DashboardUserId == user.Id)) &&
                                                                     (string.IsNullOrEmpty(TruckNumber) ? true : x.TruckNum == TruckNumber)
                                                                     &&
-                                                                    (ReportType != ReportType.bill ? true : x.VioPrice > 0),
+                                                                    (ReportType != ReportType.bill ? true : x.VioPrice > 0 && !string.IsNullOrEmpty(x.Bill_Name) && !string.IsNullOrEmpty(x.Bill_Num) && !string.IsNullOrEmpty(x.Vio_Num)),
                                                                     include: x => x.Include(n => n.Nation)
                                                                                     .Include(p => p.Product)
                                                                                     .Include(d => d.Driver)

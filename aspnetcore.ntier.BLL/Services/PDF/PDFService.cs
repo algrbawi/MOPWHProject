@@ -259,7 +259,7 @@ namespace aspnetcore.ntier.BLL.Services.PDF
 
 
                grid.Item(8).Text(@$"المملكة الأردنية الهاشمية
-وزارة الأشغال العامة والإسكان - وحدة الأوزان المحورية
+وزارة الأشغال العامة والإسكان - وحدة الحمولات المحورية
 {pdfDto.SiteName} ({pdfDto.SiteTitle})
 {reportText} {pdfDto.ReportTypeText}
 ").AlignCenter().Bold().FontSize(13).ParagraphSpacing(3);
