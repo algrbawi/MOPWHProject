@@ -43,7 +43,11 @@ namespace aspnetcore.ntier.BLL.Services
                 result.ErrorMessage = "البريد الالكتروني او كلمة المرور غير صحيحة";
                 result.StatusCode = HttpStatusCode.BadRequest;
             }
-
+            else if (!user.IsActive)
+            {
+                result.ErrorMessage = "تم إيقاف الحساب";
+                result.StatusCode = HttpStatusCode.BadRequest;
+            }
             else
             {
                 var claims = new List<Claim>{

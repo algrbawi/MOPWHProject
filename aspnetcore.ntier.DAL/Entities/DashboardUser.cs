@@ -12,6 +12,8 @@ public class DashboardUser
     public string Name { get; set; }
     public byte[] PasswordHash { get; set; }
     public byte[] PasswordSalt { get; set; }
+    public DateOnly LastUpdatePassword { get; set; }
+    public bool IsActive { get; set; }
     public bool IsSuperAdmin { get; set; }
     public bool IsAllowedToEdit { get; set; }
     public virtual ICollection<AccessUser> AccessUsers { get; set; } = new List<AccessUser>();

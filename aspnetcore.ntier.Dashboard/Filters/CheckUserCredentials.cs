@@ -16,7 +16,10 @@ namespace aspnetcore.ntier.Dashboard.Filters
             var userEmail = context.HttpContext.User.Identity.Name;
             var user = userService.GetByEmailAsync(userEmail).Result;
             var controller = (BaseController)context.Controller;
-
+            if (!user.IsActive)
+            {
+                context.Result = controller.RedirectToAction("logout", "account");
+            }
             if (user is null || user.IsSuperAdmin != isTheUserSuperAdmin(userPrinciples))
             {
                 context.Result = controller.RedirectToAction("logout", "account");
@@ -29,7 +32,18 @@ namespace aspnetcore.ntier.Dashboard.Filters
             {
                 context.Result = controller.RedirectToAction("logout", "account");
             }
+        }
 
+        public override void OnActionExecuted(ActionExecutedContext context)
+        {
+            var userService = context.HttpContext.RequestServices.GetService<IDashboardUserService>();
+            var userEmail = context.HttpContext.User.Identity.Name;
+            var user = userService.GetByEmailAsync(userEmail).Result;
+            var controller = (BaseController)context.Controller;
+            if ((DateTime.Now.Date - user.LastUpdatePassword.ToDateTime(TimeOnly.Parse("00:00 PM")).Date).Days > 30)
+            {
+                context.Result = controller.RedirectToAction("setnewpassword", "password");
+            }
         }
         private bool isTheUserSuperAdmin(ClaimsPrincipal User)
         {

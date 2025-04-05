@@ -15,6 +15,8 @@ namespace aspnetcore.ntier.DTO.DTOs
         public byte[] PasswordSalt { get; set; }
         public bool IsSuperAdmin { get; set; }
         public bool IsAllowedToEdit { get; set; }
+        public DateOnly LastUpdatePassword { get; set; }
+        public bool IsActive { get; set; }
         public virtual ICollection<AccessUserDto> AccessUsers { get; set; } = new List<AccessUserDto>();
 
     }

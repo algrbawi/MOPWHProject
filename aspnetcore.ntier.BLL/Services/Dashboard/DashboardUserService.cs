@@ -63,6 +63,7 @@ namespace aspnetcore.ntier.BLL.Services.Dashboard
             user.Email = model.Email;
             user.IsAllowedToEdit = model.IsAllowedToEdit;
             user.IsSuperAdmin = model.IsSuperAdmin;
+            user.IsActive = model.IsActive;
             if (password != "11111111aA!")
             {
                 byte[] hashedPassword;
@@ -84,6 +85,18 @@ namespace aspnetcore.ntier.BLL.Services.Dashboard
 
 
         }
+        public async Task UpdatePassword(string email, string password)
+        {
+            var user = await _dashboardRepository.GetAsync(x => x.Email == email);
+            byte[] hashedPassword;
+            byte[] passwordSalt;
+            HashPassword.CreatePasswordHash(password, out hashedPassword, out passwordSalt);
+            user.PasswordHash = hashedPassword;
+            user.PasswordSalt = passwordSalt;
+            user.LastUpdatePassword = DateOnly.FromDateTime(DateTime.Now);
+            await _dashboardRepository.UpdateAsync(user);
+
+        }
         public async Task AddUserAsync(DashboardUserDto model, string password)
         {
             var user = await _dashboardRepository.GetAsync(x => x.Email == model.Email, include: inc => inc.Include(ac => ac.AccessUsers));
@@ -101,6 +114,7 @@ namespace aspnetcore.ntier.BLL.Services.Dashboard
             user.PasswordHash = hashedPassword;
             user.PasswordSalt = passwordSalt;
             user.IsAllowedToEdit = model.IsAllowedToEdit;
+            user.IsActive = model.IsActive;
 
             if (!model.IsSuperAdmin)
             {

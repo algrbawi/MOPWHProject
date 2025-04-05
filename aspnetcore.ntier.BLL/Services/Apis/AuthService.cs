@@ -99,7 +99,7 @@ public class AuthService : IAuthService
         var tokenDescriptor = new SecurityTokenDescriptor
         {
             Subject = new ClaimsIdentity(claims),
-            Expires = DateTime.UtcNow.AddMinutes(expirationInMinutes),
+            Expires = DateTime.Now.AddMinutes(expirationInMinutes),
             SigningCredentials = creds
         };
 

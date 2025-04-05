@@ -64,7 +64,10 @@
             <input type="checkbox" asp-for="IsAllowedToEdit" />
             <label asp-for="IsAllowedToEdit">  يسمح التعديل على وصولات المخالفات</label>
         </div>
-
+        <div class="mb-3 permissions">
+            <input type="checkbox" asp-for="IsActive" />
+            <label asp-for="IsAllowedToEdit">حساب نشط</label>
+        </div>
         <!-- Submit Button -->
         <button type="submit" class="btn btn-primary">حفظ</button>
         <a class="btn btn-primary" asp-action="index">إلغاء</a>

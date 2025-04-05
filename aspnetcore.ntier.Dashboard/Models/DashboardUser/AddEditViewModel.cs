@@ -14,7 +14,6 @@ namespace aspnetcore.ntier.Dashboard.Models.DashboardUser
         [Required(ErrorMessage = "يرجى إدخال الأسم")]
         public string Name { get; set; }
         [Required(ErrorMessage = "يرجى إدخال كلمة المرور")]
-        [MinLength(6, ErrorMessage = "كلمة المرور يجب ان تحتوي على الالقل 6 أحرف ")]
         [DataType(DataType.Password)]
         [RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,16}$",
         ErrorMessage = "يجب أن تكون كلمة المرور بين 8 إلى 16 حرفًا، وتحتوي على حرف كبير واحد على الأقل، وحرف صغير واحد على الأقل، ورقم واحد على الأقل، وحرف خاص واحد على الأقل")]
@@ -23,6 +22,8 @@ namespace aspnetcore.ntier.Dashboard.Models.DashboardUser
         public bool IsSuperAdmin { get; set; } = true;
         public bool IsAllowedToEdit { get; set; } = false;
         public List<decimal>? SitePermissions { get; set; }
+
+        public bool IsActive { get; set; }
 
         public List<SelectListItem> SiteItems { get; set; } = new List<SelectListItem>();
     }
