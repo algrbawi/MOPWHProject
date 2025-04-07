@@ -67,7 +67,7 @@
                         <input class="form-control" asp-for="SearchDateTo" type="date" />
                     </div>
                     <div class="mb-3">
-                        <label for="input1" class="form-label">رقم الشاحنة</label>
+                        <label for="input1" class="form-label">رقم المركبة</label>
                         <input class="form-control" asp-for="TruckNumber" />
                     </div>
                 </div>
@@ -79,6 +79,7 @@
                         <option value="1">شهري</option>
                         <option value="2">سنوي</option>
                         <option value="3">تقرير وصولات المخالفات</option>
+                        <option value="4">تقرير حسب المركبة</option>
                     </select>
 
                 </div>
@@ -142,7 +143,7 @@
 
 
 
-    @if (Model.ReportType == ReportType.daily)
+    @if (Model.ReportType == ReportType.daily || Model.ReportType == ReportType.vehicle)
     {
         <div class="container d-flex justify-content-center mt-5">
 

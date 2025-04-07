@@ -75,7 +75,7 @@ namespace aspnetcore.ntier.BLL.Services.PDF
                 page.Margin(30);
                 page.MarginRight(60);
                 page.ContentFromRightToLeft();
-                page.Size(pdfDto.reportType == ReportType.daily || pdfDto.reportType == ReportType.bill ? PageSizes.A3 : PageSizes.A4);
+                page.Size(pdfDto.reportType == ReportType.daily || pdfDto.reportType == ReportType.vehicle || pdfDto.reportType == ReportType.bill ? PageSizes.A3 : PageSizes.A4);
                 page.Header().Element(GetHeader);
                 page.Content().Grid(grid =>
                 {
@@ -87,7 +87,7 @@ namespace aspnetcore.ntier.BLL.Services.PDF
                     {
                         table.ColumnsDefinition(columns =>
                         {
-                            if (pdfDto.reportType == ReportType.daily)
+                            if (pdfDto.reportType == ReportType.daily || pdfDto.reportType == ReportType.vehicle)
                             {
                                 columns.RelativeColumn();
                                 columns.RelativeColumn(2);
@@ -106,7 +106,7 @@ namespace aspnetcore.ntier.BLL.Services.PDF
                                 columns.RelativeColumn();
 
                             }
-                            else if (pdfDto.reportType == ReportType.bill)
+                            else if (pdfDto.reportType == ReportType.bill || pdfDto.reportType == ReportType.vehicle)
                             {
                                 columns.RelativeColumn(2);
                                 columns.RelativeColumn(2);
@@ -140,7 +140,7 @@ namespace aspnetcore.ntier.BLL.Services.PDF
                             }
 
                         });
-                        if (pdfDto.reportType == ReportType.daily)
+                        if (pdfDto.reportType == ReportType.daily || pdfDto.reportType == ReportType.vehicle)
                         {
                             table.Cell().Row(1).Column(1).Background(Color.FromHex("#dcdcdc")).Element(CellStyle).AlignTop().Text("الرقم").Bold().FontSize(7);
                             table.Cell().Row(1).Column(2).Background(Color.FromHex("#dcdcdc")).Element(CellStyle).AlignTop().Text("رقم العملية").Bold().FontSize(7);
@@ -192,7 +192,7 @@ namespace aspnetcore.ntier.BLL.Services.PDF
                         uint counter = 2;
                         foreach (var item in pdfDto.ReportData)
                         {
-                            if (pdfDto.reportType == ReportType.daily)
+                            if (pdfDto.reportType == ReportType.daily || pdfDto.reportType == ReportType.vehicle)
                             {
                                 table.Cell().Row(counter).Column(1).Element(CellStyle).AlignTop().Text(item.Number).Bold().FontSize(7);
                                 table.Cell().Row(counter).Column(2).Element(CellStyle).AlignTop().Text(item.OperationNumber).Bold().FontSize(7);

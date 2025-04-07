@@ -123,7 +123,7 @@ namespace aspnetcore.ntier.BLL.Services.Apis
                 filterDateFrom = date;
                 filterDateTo = date;
             }
-            else if (reportType == ReportType.bill)
+            else if (reportType == ReportType.bill || reportType == ReportType.vehicle)
             {
                 filterDateFrom = date;
                 if (toDate is null)
@@ -150,7 +150,7 @@ namespace aspnetcore.ntier.BLL.Services.Apis
         {
             IEnumerable<IGrouping<int?, WeightTbl>> weights = null;
             var weightReportDto = new WeightReportDto();
-            if (reportType == ReportType.daily || reportType == ReportType.bill)
+            if (reportType == ReportType.daily || reportType == ReportType.bill || reportType == ReportType.vehicle)
             {
 
                 weightReportDto.ReportData = weightTbls.OrderBy(x => x.InDate == null).ThenBy(x => x.InDate).Select((v, i) => new ReportData
