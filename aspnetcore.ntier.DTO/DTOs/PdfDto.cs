@@ -26,6 +26,7 @@ namespace aspnetcore.ntier.DTO.DTOs
                     ReportType.daily => "يومي",
                     ReportType.monthly => "شهري",
                     ReportType.bill => "تقرير وصولات المخالفات",
+                    ReportType.vehicle => "حسب المركبة",
                     _ => "سنوي",
 
                 };
