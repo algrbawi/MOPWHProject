@@ -75,7 +75,7 @@ namespace aspnetcore.ntier.BLL.Services.PDF
                 page.Margin(30);
                 page.MarginRight(60);
                 page.ContentFromRightToLeft();
-                page.Size(pdfDto.reportType == ReportType.daily || pdfDto.reportType == ReportType.vehicle || pdfDto.reportType == ReportType.bill ? PageSizes.A3 : PageSizes.A4);
+                page.Size(PageSizes.A3);
                 page.Header().Element(GetHeader);
                 page.Content().Grid(grid =>
                 {
