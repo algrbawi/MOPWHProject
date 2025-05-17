@@ -63,7 +63,7 @@ namespace aspnetcore.ntier.BLL.Services.Apis
         }
 
 
-        public async Task<WeightReportDto> GetWeightReportData(int SiteId, DateOnly Date, ReportType ReportType, string userEmail, DateOnly? ToDate = null, string? TruckNumber = null)
+        public async Task<WeightReportDto> GetWeightReportData(int SiteId, DateOnly Date, ReportType ReportType, string userEmail, DateOnly? ToDate = null, string? TruckNumber = null, string? Product = null, string? classification = null)
         {
             var user = await _dashboardUserRepository.GetAsync(x => x.Email.ToLower() == userEmail.ToLower());
             var date = GetFilterDate(ReportType, Date, ToDate);
@@ -72,6 +72,10 @@ namespace aspnetcore.ntier.BLL.Services.Apis
                                                                     x.InDate >= date.Item1 && x.InDate <= date.Item2 &&
                                                                     (user.IsSuperAdmin || x.Site.AccessUsers.Any(x => x.DashboardUserId == user.Id)) &&
                                                                     (string.IsNullOrEmpty(TruckNumber) ? true : x.TruckNum == TruckNumber)
+                                                                    &&
+                                                                    (string.IsNullOrEmpty(classification) ? true : x.WClass.WClassName == classification)
+                                                                    &&
+                                                                    (string.IsNullOrEmpty(Product) ? true : x.Product.ProductName == Product)
                                                                     &&
                                                                     (ReportType != ReportType.bill ? true : x.VioPrice > 0 && !string.IsNullOrEmpty(x.Bill_Name) && !string.IsNullOrEmpty(x.Bill_Num) && !string.IsNullOrEmpty(x.Vio_Num)),
                                                                     include: x => x.Include(n => n.Nation)

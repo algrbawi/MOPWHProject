@@ -42,13 +42,13 @@ namespace aspnetcore.ntier.BLL.Services.Apis
         public async Task<List<SiteTblDto>> GetUserSitesListAsync(string email, string siteName = "")
         {
             var user = await _dashboardUserRepository.GetAsync(x => x.Email == email);
-            var results = await _siteTblRepository.GetListAsync(x => (user.IsSuperAdmin || x.AccessUsers.Any(x => x.DashboardUserId == user.Id)) && (string.IsNullOrEmpty(siteName) ? true : x.SiteName.ToLower() == siteName.ToLower()), inc => inc.Include(ua => ua.AccessUsers));
+            var results = await _siteTblRepository.GetListAsync(x => (user.IsSuperAdmin || x.AccessUsers.Any(x => x.DashboardUserId == user.Id)) && (string.IsNullOrEmpty(siteName) ? true : x.SiteName.ToLower() == siteName.ToLower()), inc => inc.Include(ua => ua.AccessUsers).Include(l => l.LogTbls));
             return _mapper.Map<List<SiteTblDto>>(results);
         }
         public async Task<SiteTblDto> GetUserSiteAsync(string email, int siteId)
         {
             var user = await _dashboardUserRepository.GetAsync(x => x.Email == email);
-            var results = await _siteTblRepository.GetAsync(x =>x.SiteId == siteId && (user.IsSuperAdmin || x.AccessUsers.Any(x => x.SiteTblId == siteId && x.DashboardUserId == user.Id)), inc => inc.Include(ua => ua.AccessUsers));
+            var results = await _siteTblRepository.GetAsync(x => x.SiteId == siteId && (user.IsSuperAdmin || x.AccessUsers.Any(x => x.SiteTblId == siteId && x.DashboardUserId == user.Id)), inc => inc.Include(ua => ua.AccessUsers));
             return _mapper.Map<SiteTblDto>(results);
         }
         public async Task<List<SiteTblDto>> GetListAsync(List<decimal>? Ids = null)

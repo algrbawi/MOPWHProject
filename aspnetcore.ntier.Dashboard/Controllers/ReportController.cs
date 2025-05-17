@@ -36,7 +36,7 @@ namespace aspnetcore.ntier.Dashboard.Controllers
             var results = new ReportDetailsResponseViewModel();
             if (model.SearchDate.HasValue && model.ReportType.HasValue)
             {
-                results.ReportData = await _weightService.GetWeightReportData(model.SiteId, model.SearchDate.Value, model.ReportType.Value, User.Identity.Name, model.SearchDateTo, model.TruckNumber);
+                results.ReportData = await _weightService.GetWeightReportData(model.SiteId, model.SearchDate.Value, model.ReportType.Value, User.Identity.Name, model.SearchDateTo, model.TruckNumber, model.Product, model.Classfication);
             }
 
             results.SiteId = model.SiteId;
@@ -44,6 +44,8 @@ namespace aspnetcore.ntier.Dashboard.Controllers
             results.SearchDateTo = model.SearchDateTo;
             results.ReportType = model.ReportType;
             results.Site = site;
+            results.Product = model.Product;
+            results.Classfication = model.Classfication;
             return View(results);
         }
 

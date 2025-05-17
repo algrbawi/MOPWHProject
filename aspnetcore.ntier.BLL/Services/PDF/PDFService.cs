@@ -75,7 +75,7 @@ namespace aspnetcore.ntier.BLL.Services.PDF
                 page.Margin(30);
                 page.MarginRight(60);
                 page.ContentFromRightToLeft();
-                page.Size(PageSizes.A3);
+                page.Size(PageSizes.A4.Landscape());
                 page.Header().Element(GetHeader);
                 page.Content().Grid(grid =>
                 {

@@ -11,6 +11,10 @@ namespace aspnetcore.ntier.Dashboard.Models.DashboardUser
         public DateOnly? SearchDate { get; set; }
         public DateOnly? SearchDateTo { get; set; }
         public string? TruckNumber { get; set; }
+        public string? Classfication { get; set; }
+        public string? Product { get; set; }
+        public string? Paload { get; set; }
+
         public ReportType? ReportType { get; set; }
         public string DateTypeText
         {

@@ -27,7 +27,7 @@
                 if (ViewBag.IsSubSite)
                 {
                     <a asp-action="ReportDetails" asp-controller="Report" asp-route-SiteId="@item.SiteId" class="col-6 mt-3" style="text-decoration:none">
-                        <div class="p-3 text-white text-center border border-dark border-2" style="background-color:#4472c4">@item.SiteTitle</div>
+                        <div class="p-3 text-white text-center border border-dark border-2 @(item.LogTbls.Any(x=>x.LogName.ToLower() == "logout")?"bg-danger":"")" style="background-color:#4472c4">@item.SiteTitle</div>
                     </a>
                 }
                 else

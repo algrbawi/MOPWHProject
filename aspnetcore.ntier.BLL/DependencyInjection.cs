@@ -36,6 +36,7 @@ public static class DependencyInjection
         services.AddScoped<IPictureService, PictureService>();
         services.AddScoped<IWeightClassTblService, WeightClassTblService>();
         services.AddScoped<IDashboardUserService, DashboardUserService>();
+        services.AddScoped<ILogService, LogService>();
         services.AddScoped<ModelStateValidation>();
 
 
