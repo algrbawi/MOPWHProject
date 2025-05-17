@@ -106,7 +106,27 @@ namespace aspnetcore.ntier.BLL.Services.PDF
                                 columns.RelativeColumn();
 
                             }
-                            else if (pdfDto.reportType == ReportType.bill || pdfDto.reportType == ReportType.vehicle)
+                            else if (pdfDto.reportType == ReportType.violation_vehicle)
+                            {
+                                columns.RelativeColumn();
+                                columns.RelativeColumn(2);
+                                columns.RelativeColumn(2);
+                                columns.RelativeColumn(2);
+                                columns.RelativeColumn();
+                                columns.RelativeColumn();
+                                columns.RelativeColumn();
+                                columns.RelativeColumn();
+                                columns.RelativeColumn();
+                                columns.RelativeColumn();
+                                columns.RelativeColumn();
+                                columns.RelativeColumn();
+                                columns.RelativeColumn();
+                                columns.RelativeColumn();
+                                columns.RelativeColumn();
+                                columns.RelativeColumn();
+
+                            }
+                            else if (pdfDto.reportType == ReportType.bill)
                             {
                                 columns.RelativeColumn(2);
                                 columns.RelativeColumn(2);
@@ -156,6 +176,25 @@ namespace aspnetcore.ntier.BLL.Services.PDF
                             table.Cell().Row(1).Column(12).Background(Color.FromHex("#dcdcdc")).Element(CellStyle).AlignTop().Text("الحمولة").Bold().FontSize(7);
                             table.Cell().Row(1).Column(13).Background(Color.FromHex("#dcdcdc")).Element(CellStyle).AlignTop().Text("الملاحظات").Bold().FontSize(7);
                             table.Cell().Row(1).Column(14).Background(Color.FromHex("#dcdcdc")).Element(CellStyle).AlignTop().Text("المستخدم").Bold().FontSize(7);
+                        }
+                        else if (pdfDto.reportType == ReportType.violation_vehicle)
+                        {
+                            table.Cell().Row(1).Column(1).Background(Color.FromHex("#dcdcdc")).Element(CellStyle).AlignTop().Text("الرقم").Bold().FontSize(7);
+                            table.Cell().Row(1).Column(2).Background(Color.FromHex("#dcdcdc")).Element(CellStyle).AlignTop().Text("رقم العملية").Bold().FontSize(7);
+                            table.Cell().Row(1).Column(3).Background(Color.FromHex("#dcdcdc")).Element(CellStyle).AlignTop().Text("رقم الضبط").Bold().FontSize(7);
+                            table.Cell().Row(1).Column(4).Background(Color.FromHex("#dcdcdc")).Element(CellStyle).AlignTop().Text("التاريخ").Bold().FontSize(7);
+                            table.Cell().Row(1).Column(5).Background(Color.FromHex("#dcdcdc")).Element(CellStyle).AlignTop().Text("الوقت").Bold().FontSize(7);
+                            table.Cell().Row(1).Column(6).Background(Color.FromHex("#dcdcdc")).Element(CellStyle).AlignTop().Text("رقم المركبة").Bold().FontSize(7);
+                            table.Cell().Row(1).Column(7).Background(Color.FromHex("#dcdcdc")).Element(CellStyle).AlignTop().Text("الجنسية").Bold().FontSize(7);
+                            table.Cell().Row(1).Column(8).Background(Color.FromHex("#dcdcdc")).Element(CellStyle).AlignTop().Text("التصنيف").Bold().FontSize(7);
+                            table.Cell().Row(1).Column(9).Background(Color.FromHex("#dcdcdc")).Element(CellStyle).AlignTop().Text("وزن المركبة").Bold().FontSize(7);
+                            table.Cell().Row(1).Column(10).Background(Color.FromHex("#dcdcdc")).Element(CellStyle).AlignTop().Text("الوزن المسموح").Bold().FontSize(7);
+                            table.Cell().Row(1).Column(11).Background(Color.FromHex("#dcdcdc")).Element(CellStyle).AlignTop().Text("فرق الوزن").Bold().FontSize(7);
+                            table.Cell().Row(1).Column(12).Background(Color.FromHex("#dcdcdc")).Element(CellStyle).AlignTop().Text("المخالفة").Bold().FontSize(7);
+                            table.Cell().Row(1).Column(13).Background(Color.FromHex("#dcdcdc")).Element(CellStyle).AlignTop().Text("الحمولة").Bold().FontSize(7);
+                            table.Cell().Row(1).Column(14).Background(Color.FromHex("#dcdcdc")).Element(CellStyle).AlignTop().Text("الملاحظات").Bold().FontSize(7);
+                            table.Cell().Row(1).Column(15).Background(Color.FromHex("#dcdcdc")).Element(CellStyle).AlignTop().Text("المستخدم").Bold().FontSize(7);
+                            table.Cell().Row(1).Column(15).Background(Color.FromHex("#dcdcdc")).Element(CellStyle).AlignTop().Text("المستخدم").Bold().FontSize(7);
                         }
                         else if (pdfDto.reportType == ReportType.bill)
                         {
@@ -208,6 +247,24 @@ namespace aspnetcore.ntier.BLL.Services.PDF
                                 table.Cell().Row(counter).Column(12).Element(CellStyle).AlignTop().Text(item.ProductName).Bold().FontSize(7);
                                 table.Cell().Row(counter).Column(13).Element(CellStyle).AlignTop().Text(item.WeightNote).Bold().FontSize(7);
                                 table.Cell().Row(counter).Column(14).Element(CellStyle).AlignTop().Text(item.UserName).Bold().FontSize(7);
+                            }
+                            else if (pdfDto.reportType == ReportType.violation_vehicle)
+                            {
+                                table.Cell().Row(counter).Column(1).Element(CellStyle).AlignTop().Text(item.Number).Bold().FontSize(7);
+                                table.Cell().Row(counter).Column(2).Element(CellStyle).AlignTop().Text(item.OperationNumber).Bold().FontSize(7);
+                                table.Cell().Row(counter).Column(3).Element(CellStyle).AlignTop().Text(item.Vio_Num).Bold().FontSize(7);
+                                table.Cell().Row(counter).Column(4).Element(CellStyle).AlignTop().Text(item.DateOnly).Bold().FontSize(7);
+                                table.Cell().Row(counter).Column(5).Element(CellStyle).AlignTop().Text(item.TimeOnly).Bold().FontSize(7);
+                                table.Cell().Row(counter).Column(6).Element(CellStyle).AlignTop().Text(item.TruckNumber).Bold().FontSize(7);
+                                table.Cell().Row(counter).Column(7).Element(CellStyle).AlignTop().Text(item.Nationality).Bold().FontSize(7);
+                                table.Cell().Row(counter).Column(8).Element(CellStyle).AlignTop().Text(item.Classification).Bold().FontSize(7);
+                                table.Cell().Row(counter).Column(9).Element(CellStyle).AlignTop().Text(item.TruckWeiht).Bold().FontSize(7);
+                                table.Cell().Row(counter).Column(10).Element(CellStyle).AlignTop().Text(item.AllowedWeight).Bold().FontSize(7);
+                                table.Cell().Row(counter).Column(11).Element(CellStyle).AlignTop().Text(item.DiifWeight).Bold().FontSize(7);
+                                table.Cell().Row(counter).Column(12).Element(CellStyle).AlignTop().Text(item.Violation).Bold().FontSize(7);
+                                table.Cell().Row(counter).Column(13).Element(CellStyle).AlignTop().Text(item.ProductName).Bold().FontSize(7);
+                                table.Cell().Row(counter).Column(14).Element(CellStyle).AlignTop().Text(item.WeightNote).Bold().FontSize(7);
+                                table.Cell().Row(counter).Column(15).Element(CellStyle).AlignTop().Text(item.UserName).Bold().FontSize(7);
                             }
                             else if (pdfDto.reportType == ReportType.bill)
                             {

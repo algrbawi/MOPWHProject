@@ -70,11 +70,11 @@
                         <label for="input1" class="form-label">رقم المركبة</label>
                         <input class="form-control" asp-for="TruckNumber" />
                     </div>
-                    <div class="mb-3">
+                    <div class="mb-3 vehicle">
                         <label for="input1" class="form-label">الحمولة</label>
                         <input class="form-control" asp-for="Product" />
                     </div>
-                    <div class="mb-3">
+                    <div class="mb-3 vehicle">
                         <label for="input1" class="form-label">التصنيف</label>
                         <input class="form-control" asp-for="Classfication" />
                     </div>
@@ -88,6 +88,7 @@
                         <option value="2">سنوي</option>
                         <option value="3">تقرير وصولات المخالفات</option>
                         <option value="4">تقرير حسب المركبة</option>
+                        <option value="5">تقرير المركبات المخالفة</option>
                     </select>
 
                 </div>
@@ -177,6 +178,52 @@
                     <tr>
                         <td>@item.Number</td>
                         <td> @item.OperationNumber</td>
+                        <td>@item.DateOnly</td>
+                        <td>@item.TimeOnly</td>
+                        <td>@item.TruckNumber </td>
+                        <td>@item.Nationality</td>
+                        <td>@item.Classification</td>
+                        <td> @item.TruckWeiht</td>
+                        <td>@item.AllowedWeight </td>
+                        <td> @item.DiifWeight</td>
+                        <td>@item.Violation</td>
+                        <td>@item.ProductName</td>
+                        <td>@item.WeightNote</td>
+                        <td>@item.UserName</td>
+                    </tr>
+                }
+
+            </table>
+        </div>
+    }
+    else if (Model.ReportType == ReportType.violation_vehicle)
+    {
+        <div class="container d-flex justify-content-center mt-5">
+
+            <table class="table mt-5 second-table">
+                <tr class="second-table-header">
+                    <th>الرقم</th>
+                    <th>رقم العملية</th>
+                    <th>رقم الضبط</th>
+                    <th>التاريخ</th>
+                    <th>الوقت</th>
+                    <th>رقم المركبة</th>
+                    <th>الجنسية</th>
+                    <th>التصنيف</th>
+                    <th>وزن المركبة</th>
+                    <th>الوزن المسموح</th>
+                    <th>فرق الوزن</th>
+                    <th>المخالفة</th>
+                    <th>الحمولة</th>
+                    <th>الملاحظات</th>
+                    <th>المستخدم</th>
+                </tr>
+                @foreach (var item in report.ReportData)
+                {
+                    <tr>
+                        <td>@item.Number</td>
+                        <td> @item.OperationNumber</td>
+                        <td>@item.Vio_Num</td>
                         <td>@item.DateOnly</td>
                         <td>@item.TimeOnly</td>
                         <td>@item.TruckNumber </td>
@@ -301,6 +348,7 @@
             $(".bill-filter-type").hide();
             $(".bill-filter-type").hide();
             $(".other-bill-filter-type").hide();
+            $(".vehicle").hide();
             var dateLabel = $(".date-label");
             if(this.value ==0){
                 var dayFilter=   $("#day");
@@ -322,8 +370,16 @@
                 yearFilter.next(".select2-container").show();
                 dateLabel.text("السنة")
             }
+            else if(this.value ==3){
+            $(".bill-filter-type").show();
+            var dayFilter=   $("#day");
+            dayFilter.removeAttr("disabled")
+            dayFilter.show();
+            dateLabel.text("من")
+            }
             else{
             $(".bill-filter-type").show();
+            $(".vehicle").show();
             var dayFilter=   $("#day");
             dayFilter.removeAttr("disabled")
             dayFilter.show();

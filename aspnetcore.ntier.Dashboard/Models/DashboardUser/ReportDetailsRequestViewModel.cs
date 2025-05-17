@@ -17,13 +17,13 @@ namespace aspnetcore.ntier.Dashboard.Models.DashboardUser
         }
         public string? Product
         {
-            get { return (ReportType != null && ReportType == DTO.Enum.ReportType.vehicle) ? PrivateProduct : null; }
+            get { return (ReportType != null && ReportType == DTO.Enum.ReportType.vehicle || ReportType == DTO.Enum.ReportType.violation_vehicle) ? PrivateProduct : null; }
             set { PrivateProduct = value; }
         }
 
         public string Classfication
         {
-            get { return (ReportType != null && ReportType == DTO.Enum.ReportType.vehicle) ? PrivateClassfication : null; }
+            get { return (ReportType != null && ReportType == DTO.Enum.ReportType.vehicle || ReportType == DTO.Enum.ReportType.violation_vehicle) ? PrivateClassfication : null; }
             set { PrivateClassfication = value; }
         }
 
