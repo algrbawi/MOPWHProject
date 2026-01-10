@@ -46,8 +46,11 @@ namespace aspnetcore.ntier.BLL.Services.Dashboard
         {
 
             var users = await _dashboardRepository.GetListAsync(x => x.IsSuperAdmin);
-            var user = await _dashboardRepository.GetAsync(x => x.Email == model.Email, include: inc => inc.Include(ac => ac.AccessUsers));
-            if (user.Id != model.Id)
+            
+            var user = await _dashboardRepository.GetAsync(x => x.Id == model.Id, include: inc => inc.Include(ac => ac.AccessUsers));
+
+            var anotherUserHasSameEmail = await _dashboardRepository.GetAsync(u => u.Email == model.Email);
+            if (anotherUserHasSameEmail is not null && anotherUserHasSameEmail.Id != user.Id)
             {
                 throw new Exception("البريد الألكتروني مستخدم من قبل مستخدم اخر");
             }

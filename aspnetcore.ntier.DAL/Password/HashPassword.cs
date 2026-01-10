@@ -32,5 +32,16 @@ namespace aspnetcore.ntier.DAL.Password
                 return computedHash.SequenceEqual(storedHash);
             }
         }
+        public static byte[] StringToByteArray(string hex)
+        {
+            if (string.IsNullOrEmpty(hex))
+            {
+                return null;
+            }
+            return Enumerable.Range(0, hex.Length)
+                             .Where(x => x % 2 == 0)
+                             .Select(x => Convert.ToByte(hex.Substring(x, 2), 16))
+                             .ToArray();
+        }
     }
 }

@@ -1,7 +1,10 @@
 ﻿using aspnetcore.ntier.BLL.Services.IServices;
+using aspnetcore.ntier.BLL.Static;
+using aspnetcore.ntier.DAL.Password;
 using aspnetcore.ntier.Dashboard.Controllers.Base;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using System;
 using System.Linq;
 using System.Security.Claims;
 
@@ -16,19 +19,32 @@ namespace aspnetcore.ntier.Dashboard.Filters
             var userEmail = context.HttpContext.User.Identity.Name;
             var user = userService.GetByEmailAsync(userEmail).Result;
             var controller = (BaseController)context.Controller;
-            if (!user.IsActive)
-            {
-                context.Result = controller.RedirectToAction("logout", "account");
-            }
+
             if (user is null || user.IsSuperAdmin != isTheUserSuperAdmin(userPrinciples))
             {
                 context.Result = controller.RedirectToAction("logout", "account");
             }
-            if (user.AccessUsers.Select(x => x.SiteTblId).Count() != GetUserAccessToSites(userPrinciples).Count() || !user.AccessUsers.Select(x => x.SiteTblId).All(GetUserAccessToSites(userPrinciples).Contains))
+            else if (!user.IsActive)
             {
                 context.Result = controller.RedirectToAction("logout", "account");
             }
-            if (user.IsAllowedToEdit != isTheUserAllowedToEdit(userPrinciples))
+            else if (user.AccessUsers.Select(x => x.SiteTblId).Count() != GetUserAccessToSites(userPrinciples).Count() || !user.AccessUsers.Select(x => x.SiteTblId).All(GetUserAccessToSites(userPrinciples).Contains))
+            {
+                context.Result = controller.RedirectToAction("logout", "account");
+            }
+            else if (user.IsAllowedToEdit != isTheUserAllowedToEdit(userPrinciples))
+            {
+                context.Result = controller.RedirectToAction("logout", "account");
+            }
+            else if (!user.PasswordHash.SequenceEqual(GetUserPassword(userPrinciples)))
+            {
+                context.Result = controller.RedirectToAction("logout", "account");
+            }
+            else if (!user.Email.Equals(GetUserEmail(userPrinciples)))
+            {
+                context.Result = controller.RedirectToAction("logout", "account");
+            }
+            else if (!user.Name.Equals(GetUserName(userPrinciples)))
             {
                 context.Result = controller.RedirectToAction("logout", "account");
             }
@@ -59,6 +75,18 @@ namespace aspnetcore.ntier.Dashboard.Filters
         {
             var role = User.Claims.Where(x => x.Type == ClaimTypes.Role && decimal.TryParse(x.Value, out _) == true).Select(x => Convert.ToDecimal(x.Value)).ToList();
             return role;
+        }
+        private byte[] GetUserPassword(ClaimsPrincipal User)
+        {
+            return (HashPassword.StringToByteArray(User.Claims.FirstOrDefault(x => x.Type == CustomClaims.UserHashedPassword)?.Value));
+        }
+        private string GetUserName(ClaimsPrincipal User)
+        {
+            return User.Claims.FirstOrDefault(x => x.Type == CustomClaims.UserFullName)?.Value;
+        }
+        private string GetUserEmail(ClaimsPrincipal User)
+        {
+            return User.Identity.Name;
         }
     }
 }

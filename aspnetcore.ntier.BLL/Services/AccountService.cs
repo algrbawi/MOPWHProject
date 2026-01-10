@@ -14,6 +14,7 @@ using aspnetcore.ntier.DAL.Repositories.IRepositories;
 using aspnetcore.ntier.DAL.Entities;
 using aspnetcore.ntier.DAL.Password;
 using Microsoft.EntityFrameworkCore;
+using aspnetcore.ntier.BLL.Static;
 
 namespace aspnetcore.ntier.BLL.Services
 {
@@ -52,7 +53,7 @@ namespace aspnetcore.ntier.BLL.Services
             {
                 var claims = new List<Claim>{
                                             new Claim(ClaimTypes.Name, Email),
-                                            new Claim("FullName", Email),
+                                            new Claim(CustomClaims.UserFullName, user.Name),
                 };
 
                 if (user.IsSuperAdmin)
@@ -71,7 +72,9 @@ namespace aspnetcore.ntier.BLL.Services
                 {
                     claims.Add(new Claim(ClaimTypes.Role, "AllowToEdit"));
                 }
+                var hexArrayOfBytes = string.Join(string.Empty, Array.ConvertAll(user.PasswordHash, b => b.ToString("X2")));
 
+                claims.Add(new Claim(CustomClaims.UserHashedPassword, hexArrayOfBytes));
                 var claimsIdentity = new ClaimsIdentity(
                claims, CookieAuthenticationDefaults.AuthenticationScheme);
                 var authProperties = new AuthenticationProperties
