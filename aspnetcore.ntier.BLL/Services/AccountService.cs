@@ -39,16 +39,33 @@ namespace aspnetcore.ntier.BLL.Services
             };
             var isValidPassword = HashPassword.VerifyPasswordHash(Password, user?.PasswordHash, user?.PasswordSalt);
 
-            if (user is null || !isValidPassword)
-            {
-                result.ErrorMessage = "البريد الالكتروني او كلمة المرور غير صحيحة";
-                result.StatusCode = HttpStatusCode.BadRequest;
-            }
-            else if (!user.IsActive)
+
+            if (!user.IsActive)
             {
                 result.ErrorMessage = "تم إيقاف الحساب";
                 result.StatusCode = HttpStatusCode.BadRequest;
             }
+            else if (user is not null && !isValidPassword)
+            {
+
+                result.ErrorMessage = "البريد الالكتروني او كلمة المرور غير صحيحة";
+                result.StatusCode = HttpStatusCode.BadRequest;
+                if (user.FailedLoginAttempts >= 2)
+                {
+                    user.IsActive = false;
+                }
+                else
+                {
+                    user.FailedLoginAttempts++;
+                }
+                await _dashboardUser.UpdateAsync(user);
+            }
+            else if (user is null || !isValidPassword)
+            {
+                result.ErrorMessage = "البريد الالكتروني او كلمة المرور غير صحيحة";
+                result.StatusCode = HttpStatusCode.BadRequest;
+            }
+
             else
             {
                 var claims = new List<Claim>{
@@ -81,7 +98,8 @@ namespace aspnetcore.ntier.BLL.Services
                 {
                     IsPersistent = IsPersistent
                 };
-
+                user.FailedLoginAttempts = 0;
+                await _dashboardUser.UpdateAsync(user);
                 await _contextAccessor.HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
                                                                new ClaimsPrincipal(claimsIdentity),
                                                                authProperties);

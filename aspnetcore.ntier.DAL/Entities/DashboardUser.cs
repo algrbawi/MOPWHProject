@@ -16,5 +16,6 @@ public class DashboardUser
     public bool IsActive { get; set; }
     public bool IsSuperAdmin { get; set; }
     public bool IsAllowedToEdit { get; set; }
+    public int FailedLoginAttempts { get; set; } = 0;
     public virtual ICollection<AccessUser> AccessUsers { get; set; } = new List<AccessUser>();
 }

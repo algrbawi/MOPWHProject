@@ -901,6 +901,9 @@ namespace aspnetcore.ntier.DAL.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("FailedLoginAttempts")
+                        .HasColumnType("int");
+
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
@@ -934,6 +937,7 @@ namespace aspnetcore.ntier.DAL.Migrations
                         {
                             Id = 1,
                             Email = "admin@admin.com",
+                            FailedLoginAttempts = 0,
                             IsActive = false,
                             IsAllowedToEdit = false,
                             IsSuperAdmin = true,
