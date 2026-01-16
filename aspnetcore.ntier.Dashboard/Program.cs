@@ -72,15 +72,19 @@ namespace aspnetcore.ntier.Dashboard
                 pattern: "{controller=Home}/{action=Index}/{id?}");
 
             app.UseSwagger();
-            app.UseSwaggerUI(c =>
+            if (!app.Environment.IsProduction())
             {
-                var provider = app.Services.GetRequiredService<IApiVersionDescriptionProvider>();
-
-                foreach (var description in provider.ApiVersionDescriptions)
+                app.UseSwaggerUI(c =>
                 {
-                    c.SwaggerEndpoint($"../swagger/{description.GroupName}/swagger.json", description.GroupName.ToString());
-                }
-            });
+                    var provider = app.Services.GetRequiredService<IApiVersionDescriptionProvider>();
+
+                    foreach (var description in provider.ApiVersionDescriptions)
+                    {
+                        c.SwaggerEndpoint($"../swagger/{description.GroupName}/swagger.json", description.GroupName.ToString());
+                    }
+                });
+            }
+
             app.Run();
         }
     }
