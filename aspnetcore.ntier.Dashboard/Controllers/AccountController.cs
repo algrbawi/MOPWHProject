@@ -4,6 +4,7 @@ using aspnetcore.ntier.Dashboard.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 using System.Net;
 using System.Security.Claims;
 
@@ -26,6 +27,7 @@ namespace aspnetcore.ntier.Dashboard.Controllers
         }
 
         [HttpPost]
+        [EnableRateLimiting("RateLimit")]
         public async Task<IActionResult> Login(LoginViewModel model)
         {
             if (ModelState.IsValid)

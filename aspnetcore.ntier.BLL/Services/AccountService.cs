@@ -40,7 +40,7 @@ namespace aspnetcore.ntier.BLL.Services
             var isValidPassword = HashPassword.VerifyPasswordHash(Password, user?.PasswordHash, user?.PasswordSalt);
 
 
-            if (!user.IsActive)
+            if (user is not null && !user.IsActive)
             {
                 result.ErrorMessage = "تم إيقاف الحساب";
                 result.StatusCode = HttpStatusCode.BadRequest;

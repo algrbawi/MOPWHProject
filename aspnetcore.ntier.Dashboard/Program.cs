@@ -1,14 +1,16 @@
-using Microsoft.AspNetCore.Authentication.Cookies;
 using aspnetcore.ntier.BLL;
+using aspnetcore.ntier.BLL.Utilities.AutoMapperProfiles;
 using aspnetcore.ntier.BLL.Utilities.Settings;
 using aspnetcore.ntier.DAL;
+using aspnetcore.ntier.Dashboard.Filters;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
+using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using aspnetcore.ntier.BLL.Utilities.AutoMapperProfiles;
-using Microsoft.AspNetCore.Mvc;
-using aspnetcore.ntier.Dashboard.Filters;
+using System.Threading.RateLimiting;
 namespace aspnetcore.ntier.Dashboard
 {
     public class Program
@@ -16,6 +18,17 @@ namespace aspnetcore.ntier.Dashboard
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+            builder.Services.AddRateLimiter(_ => _
+                                                .AddFixedWindowLimiter(policyName: "RateLimit", options =>
+                                                {
+                                                    options.PermitLimit = 10;
+                                                    options.Window = TimeSpan.FromSeconds(120);
+                                                    options.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;
+                                                    options.QueueLimit = 0;
+                                                }).OnRejected = async (context, cancelationToken) =>
+                                                {
+                                                    context.HttpContext.Response.Redirect("/RateLimit", false);
+                                                });
 
             builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(
                 options =>
@@ -51,7 +64,6 @@ namespace aspnetcore.ntier.Dashboard
             });
             builder.Services.AddScoped<ExceptionFilter>();
             var app = builder.Build();
-
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
             {
@@ -64,6 +76,7 @@ namespace aspnetcore.ntier.Dashboard
             app.UseStaticFiles();
 
             app.UseRouting();
+            app.UseRateLimiter();
             app.UseAuthentication();
             app.UseAuthorization();
 
