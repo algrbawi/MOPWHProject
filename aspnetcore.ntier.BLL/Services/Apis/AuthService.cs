@@ -38,7 +38,7 @@ public class AuthService : IAuthService
 
 
         if (user == null || !isValidPassword)
-            throw new UserNotFoundException();
+            throw new UserNotFoundException("Invalid Credentials");
 
         var userToReturn = new UserToReturnDTO();
         userToReturn.Token = GenerateToken(user.Id, user.Email);

@@ -83,6 +83,32 @@ namespace aspnetcore.ntier.Dashboard
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
+            
+            app.Use(async (context, next) =>
+            {
+                context.Request.EnableBuffering();
+
+                string body = string.Empty;
+
+                if (context.Request.ContentLength > 0)
+                {
+                    context.Request.Body.Position = 0;
+
+                    using var reader = new StreamReader(
+                        context.Request.Body,
+                        Encoding.UTF8,
+                        leaveOpen: true);
+
+                    body = await reader.ReadToEndAsync();
+
+                    context.Request.Body.Position = 0;
+                }
+
+                // Store for later use
+                context.Items["RequestBody"] = body;
+
+                await next();
+            });
 
             app.UseSwagger();
             if (!app.Environment.IsProduction())
