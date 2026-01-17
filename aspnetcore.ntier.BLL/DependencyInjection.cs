@@ -2,6 +2,7 @@
 using aspnetcore.ntier.BLL.Services.Apis;
 using aspnetcore.ntier.BLL.Services.Dashboard;
 using aspnetcore.ntier.BLL.Services.IServices;
+using aspnetcore.ntier.BLL.Services.Log;
 using aspnetcore.ntier.BLL.Utilities.AutoMapperProfiles;
 using aspnetcore.ntier.BLL.Utilities.Filters;
 using aspnetcore.ntier.BLL.Utilities.ModelStateValidation;
@@ -38,10 +39,7 @@ public static class DependencyInjection
         services.AddScoped<IDashboardUserService, DashboardUserService>();
         services.AddScoped<ILogService, LogService>();
         services.AddScoped<ModelStateValidation>();
-
-
-
-
+        services.AddScoped<ILogRequestsService, LogRequestService>();
         services.AddFluentValidationAutoValidation();
         services.AddValidatorsFromAssemblyContaining<UserToLoginDTOValidator>();
         services.AddValidatorsFromAssemblyContaining<UserToRegisterDTOValidator>();

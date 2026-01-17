@@ -24,6 +24,7 @@ namespace aspnetcore.ntier.Dashboard.Controllers.Apis
         [HttpPost("login")]
         public async Task<IActionResult> Login(UserToLoginDTO userToLoginDTO)
         {
+            throw new Exception();
             var user = await _authService.LoginAsync(userToLoginDTO);
             return Ok(user);
         }

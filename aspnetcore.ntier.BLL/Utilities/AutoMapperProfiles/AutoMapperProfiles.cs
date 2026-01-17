@@ -28,5 +28,6 @@ public class AutoMapperProfile : Profile
         CreateMap<DashboardUserDto, DashboardUser>().ReverseMap();
         CreateMap<AccessUserDto, AccessUser>().ReverseMap();
         CreateMap<LogTbl, LogTblDto>().ReverseMap();
+        CreateMap<Log, LogRequestDto>().ReverseMap();
     }
 }

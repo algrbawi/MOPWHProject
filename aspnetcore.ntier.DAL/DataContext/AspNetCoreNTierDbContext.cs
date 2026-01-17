@@ -3,6 +3,7 @@ using aspnetcore.ntier.BLL;
 using aspnetcore.ntier.DAL.Entities;
 using aspnetcore.ntier.DAL.Password;
 using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace aspnetcore.ntier.DAL.DataContext;
 
@@ -49,6 +50,9 @@ public partial class AspNetCoreNTierDbContext : DbContext
     public virtual DbSet<WeightClassTbl> WeightClassTbls { get; set; }
 
     public virtual DbSet<WeightTbl> WeightTbls { get; set; }
+    public virtual DbSet<Log> Logs { get; set; }
+
+
 
     public virtual DbSet<WeightTicketTbl> WeightTicketTbls { get; set; }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -679,7 +683,6 @@ public partial class AspNetCoreNTierDbContext : DbContext
                 .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("FK_Weight_Ticket_TBL_Site_TBL");
         });
-
         OnModelCreatingPartial(modelBuilder);
 
     }

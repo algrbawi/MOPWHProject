@@ -1,5 +1,6 @@
 ﻿using aspnetcore.ntier.BLL.Services.Dashboard;
 using aspnetcore.ntier.BLL.Services.IServices;
+using aspnetcore.ntier.BLL.Services.Log;
 using aspnetcore.ntier.BLL.Utilities.CustomExceptions;
 using Azure.Core;
 using Microsoft.AspNetCore.Mvc;
@@ -11,9 +12,9 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace aspnetcore.ntier.Dashboard.Filters
 {
-    public class ExceptionFilter : IExceptionFilter
+    public class ExceptionFilter : IAsyncExceptionFilter
     {
-        public void OnException(ExceptionContext context)
+        public async Task OnExceptionAsync(ExceptionContext context)
         {
 
             if (context.Exception.GetType() == typeof(BadRequestException) || context.Exception.GetType() == typeof(UserNotFoundException))
@@ -22,14 +23,23 @@ namespace aspnetcore.ntier.Dashboard.Filters
             }
             else
             {
-
                 var request = context.HttpContext.Request;
-                var service = (DashboardUserService)context.HttpContext.RequestServices.GetService(typeof(IDashboardUserService));
-                var query = request.QueryString;
+                var logService = (LogRequestService)context.HttpContext.RequestServices.GetService(typeof(ILogRequestsService));
+                var queryString = request.QueryString.ToString();
                 var path = request.Path;
                 var method = request.Method;
                 var schema = request.Scheme;
-                var body = context.HttpContext.Items["RequestBody"];
+                var body = context.HttpContext.Items["RequestBody"]?.ToString();
+                await logService.LogRequest(new DTO.DTOs.LogRequestDto
+                {
+                    Schema = schema,
+                    Body = body,
+                    HttpMethod = method,
+                    Path = path,
+                    QueryString = queryString,
+                    RequestAt = DateTime.UtcNow,
+                    Error = context.Exception.Message,
+                });
                 context.Result = new BadRequestObjectResult(new { Error = "Something went wrong please try again later !" });
             }
         }
