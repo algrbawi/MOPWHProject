@@ -84,4 +84,8 @@ public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEnt
         await _aspNetCoreNTierDbContext.SaveChangesAsync();
         return entity;
     }
+    public void ClearChangeTracker()
+    {
+        _aspNetCoreNTierDbContext.ChangeTracker.Clear();
+    }
 }

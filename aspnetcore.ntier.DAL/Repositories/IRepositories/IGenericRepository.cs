@@ -13,4 +13,5 @@ public interface IGenericRepository<T> where T : class, new()
     Task<List<T>> AddRangeAsync(List<T> entity);
     Task<List<T>> UpdateRangeAsync(List<T> entity);
     Task<int> DeleteRangeAsync(Expression<Func<T, bool>> filter);
+    void ClearChangeTracker();
 }

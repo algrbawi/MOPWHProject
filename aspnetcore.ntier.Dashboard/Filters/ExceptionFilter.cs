@@ -38,7 +38,7 @@ namespace aspnetcore.ntier.Dashboard.Filters
                     Path = path,
                     QueryString = queryString,
                     RequestAt = DateTime.UtcNow,
-                    Error = context.Exception.Message,
+                    Error = context.Exception.Message + "\n" + context.Exception.InnerException?.Message,
                 });
                 context.Result = new BadRequestObjectResult(new { Error = "Something went wrong please try again later !" });
             }
