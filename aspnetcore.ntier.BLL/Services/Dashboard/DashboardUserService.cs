@@ -1,4 +1,5 @@
-﻿using aspnetcore.ntier.BLL.Services.IServices;
+﻿using aspnetcore.ntier.BLL.Exceptions;
+using aspnetcore.ntier.BLL.Services.IServices;
 using aspnetcore.ntier.BLL.Utilities.CustomExceptions;
 using aspnetcore.ntier.DAL.Entities;
 using aspnetcore.ntier.DAL.Password;
@@ -46,13 +47,13 @@ namespace aspnetcore.ntier.BLL.Services.Dashboard
         public async Task EditUserAsync(DashboardUserDto model, string password)
         {
             var users = await _dashboardRepository.GetListAsync(x => x.IsSuperAdmin);
-            
+
             var user = await _dashboardRepository.GetAsync(x => x.Id == model.Id, include: inc => inc.Include(ac => ac.AccessUsers));
 
             var anotherUserHasSameEmail = await _dashboardRepository.GetAsync(u => u.Email == model.Email);
             if (anotherUserHasSameEmail is not null && anotherUserHasSameEmail.Id != user.Id)
             {
-                throw new BadRequestException("البريد الألكتروني مستخدم من قبل مستخدم اخر");
+                throw new CustomValidationException("اسم المستخدم مستخدم من قبل مستخدم اخر");
             }
 
             if (users.Count() < 2 && !model.IsSuperAdmin && users.FirstOrDefault(x => x.Id == model.Id) is not null)
@@ -105,7 +106,7 @@ namespace aspnetcore.ntier.BLL.Services.Dashboard
             var user = await _dashboardRepository.GetAsync(x => x.Email == model.Email, include: inc => inc.Include(ac => ac.AccessUsers));
             if (user is not null)
             {
-                throw new BadRequestException("البريد الألكتروني مستخدم من قبل مستخدم اخر");
+                throw new CustomValidationException("اسم المستخدم مستخدم من قبل مستخدم اخر");
             }
             user = new DashboardUser();
             user.Name = model.Name;

@@ -63,6 +63,7 @@ namespace aspnetcore.ntier.Dashboard
                 opt.SuppressModelStateInvalidFilter = true;
             });
             builder.Services.AddScoped<ExceptionFilter>();
+            builder.Services.AddScoped<DashboardExceptionFilter>();
             var app = builder.Build();
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
@@ -83,7 +84,7 @@ namespace aspnetcore.ntier.Dashboard
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
-            
+
             app.Use(async (context, next) =>
             {
                 context.Request.EnableBuffering();
@@ -106,6 +107,27 @@ namespace aspnetcore.ntier.Dashboard
 
                 // Store for later use
                 context.Items["RequestBody"] = body;
+
+                await next();
+            });
+            app.Use(async (context, next) =>
+            {
+                if (context.User.Identity.IsAuthenticated)
+                {
+                    try
+                    {
+                        var trackUserAction = context.GetEndpoint();
+                        if (trackUserAction is not null && trackUserAction.Metadata.GetMetadata<aspnetcore.ntier.Dashboard.Attributes.TrackUser>() is not null)
+                        {
+
+                        }
+
+                    }
+                    catch (Exception)
+                    {
+                    }
+
+                }
 
                 await next();
             });

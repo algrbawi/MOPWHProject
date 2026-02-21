@@ -126,14 +126,14 @@ namespace aspnetcore.ntier.Dashboard.Controllers
 
                     }
                     await _dashboardUserService.EditUserAsync(dto, model.Password);
-                }
+            }
                 catch (Exception ex)
                 {
 
-                    ModelState.AddModelError("Email", ex.Message);
-                    return View(model);
-                }
-                ViewBag.MessageStatus = "تم التعديل بنجاح";
+                ModelState.AddModelError("Email", ex.Message);
+                return View(model);
+            }
+            ViewBag.MessageStatus = "تم التعديل بنجاح";
                 return View(model);
             }
             return View(model);
