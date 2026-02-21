@@ -17,6 +17,7 @@ namespace aspnetcore.ntier.DTO.DTOs
         public bool IsAllowedToEdit { get; set; }
         public int FailedLoginAttempts { get; set; }
         public DateOnly LastUpdatePassword { get; set; }
+        public DateTime? LastFailedLogin { get; set; }
         public bool IsActive { get; set; }
         public virtual ICollection<AccessUserDto> AccessUsers { get; set; } = new List<AccessUserDto>();
 

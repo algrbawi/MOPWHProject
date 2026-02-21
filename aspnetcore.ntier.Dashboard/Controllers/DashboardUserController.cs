@@ -47,7 +47,7 @@ namespace aspnetcore.ntier.Dashboard.Controllers
                     {
                         IsActive = model.IsActive,
                         IsAllowedToEdit = model.IsAllowedToEdit,
-                        Email = model.Email,
+                        Email = model.Email.Trim(),
                         IsSuperAdmin = model.IsSuperAdmin,
                         Id = model.Id,
                         Name = model.Name,
@@ -109,7 +109,7 @@ namespace aspnetcore.ntier.Dashboard.Controllers
                     {
                         IsActive = model.IsActive,
                         IsAllowedToEdit = model.IsAllowedToEdit,
-                        Email = model.Email,
+                        Email = model.Email.Trim(),
                         IsSuperAdmin = model.IsSuperAdmin,
                         Id = model.Id,
                         Name = model.Name,

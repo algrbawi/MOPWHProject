@@ -13,6 +13,7 @@ public class DashboardUser
     public byte[] PasswordHash { get; set; }
     public byte[] PasswordSalt { get; set; }
     public DateOnly LastUpdatePassword { get; set; }
+    public DateTime? LastFailedLogin { get; set; }
     public bool IsActive { get; set; }
     public bool IsSuperAdmin { get; set; }
     public bool IsAllowedToEdit { get; set; }

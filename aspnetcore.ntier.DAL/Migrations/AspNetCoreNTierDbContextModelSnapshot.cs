@@ -913,6 +913,9 @@ namespace aspnetcore.ntier.DAL.Migrations
                     b.Property<bool>("IsSuperAdmin")
                         .HasColumnType("bit");
 
+                    b.Property<DateTime?>("LastFailedLogin")
+                        .HasColumnType("datetime2");
+
                     b.Property<DateOnly>("LastUpdatePassword")
                         .HasColumnType("date");
 

@@ -8,8 +8,7 @@ namespace aspnetcore.ntier.Dashboard.Models.DashboardUser
     {
         public int Id { get; set; }
 
-        [Required(ErrorMessage = "يرجى إدخال البريد الألكتروني")]
-        [RegularExpression(pattern: @"^[\w-_]+(\.[\w!#$%'*+\/=?\^`{|}]+)*@((([\-\w]+\.)+[a-zA-Z]{2,20})|(([0-9]{1,3}\.){3}[0-9]{1,3}))$", ErrorMessage = "صيغة البريد الألكتروني غير صحيحة")]
+        [Required(ErrorMessage = "يرجى إدخال اسم المستخدم")]
         public string Email { get; set; }
         [Required(ErrorMessage = "يرجى إدخال الأسم")]
         public string Name { get; set; }

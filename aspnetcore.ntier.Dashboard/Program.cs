@@ -21,7 +21,7 @@ namespace aspnetcore.ntier.Dashboard
             builder.Services.AddRateLimiter(_ => _
                                                 .AddFixedWindowLimiter(policyName: "RateLimit", options =>
                                                 {
-                                                    options.PermitLimit = 5;
+                                                    options.PermitLimit = 10;
                                                     options.Window = TimeSpan.FromSeconds(120);
                                                     options.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;
                                                     options.QueueLimit = 0;

@@ -15,6 +15,7 @@ using aspnetcore.ntier.DAL.Entities;
 using aspnetcore.ntier.DAL.Password;
 using Microsoft.EntityFrameworkCore;
 using aspnetcore.ntier.BLL.Static;
+using Microsoft.Extensions.Configuration;
 
 namespace aspnetcore.ntier.BLL.Services
 {
@@ -22,11 +23,12 @@ namespace aspnetcore.ntier.BLL.Services
     {
         private readonly IHttpContextAccessor _contextAccessor;
         private readonly IGenericRepository<DashboardUser> _dashboardUser;
-
-        public AccountService(IHttpContextAccessor contextAccessor, IGenericRepository<DashboardUser> dashboardUser)
+        private readonly IConfiguration _configuration;
+        public AccountService(IHttpContextAccessor contextAccessor, IGenericRepository<DashboardUser> dashboardUser, IConfiguration configuration)
         {
             _contextAccessor = contextAccessor;
             _dashboardUser = dashboardUser;
+            _configuration = configuration;
         }
 
         public async Task<LoginResponseDto> Login(string Email, string Password, bool IsPersistent)
@@ -38,7 +40,16 @@ namespace aspnetcore.ntier.BLL.Services
                 StatusCode = HttpStatusCode.OK
             };
             var isValidPassword = HashPassword.VerifyPasswordHash(Password, user?.PasswordHash, user?.PasswordSalt);
-
+            var lastFailedLogin = user.LastFailedLogin;
+            var unlockInMinutes = Convert.ToInt16(_configuration.GetSection("UnlockAccountInMinutes").Value);
+            var currentDateTime = DateTime.UtcNow;
+            if (lastFailedLogin is not null && currentDateTime >= lastFailedLogin.Value.AddMinutes(unlockInMinutes))
+            {
+                user.IsActive = true;
+                user.FailedLoginAttempts = 0;
+                user.LastFailedLogin = null;
+                user = await _dashboardUser.UpdateAsync(user);
+            }
 
             if (user is not null && !user.IsActive)
             {
@@ -50,9 +61,10 @@ namespace aspnetcore.ntier.BLL.Services
 
                 result.ErrorMessage = "البريد الالكتروني او كلمة المرور غير صحيحة";
                 result.StatusCode = HttpStatusCode.BadRequest;
-                if (user.FailedLoginAttempts >= 2)
+                if (user.FailedLoginAttempts >= 4)
                 {
                     user.IsActive = false;
+                    user.LastFailedLogin = DateTime.UtcNow;
                 }
                 else
                 {
@@ -99,6 +111,7 @@ namespace aspnetcore.ntier.BLL.Services
                     IsPersistent = IsPersistent
                 };
                 user.FailedLoginAttempts = 0;
+                user.LastFailedLogin = null;
                 await _dashboardUser.UpdateAsync(user);
                 await _contextAccessor.HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
                                                                new ClaimsPrincipal(claimsIdentity),
