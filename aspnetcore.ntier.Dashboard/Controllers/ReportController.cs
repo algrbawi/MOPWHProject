@@ -52,36 +52,29 @@ namespace aspnetcore.ntier.Dashboard.Controllers
         public async Task<IActionResult> DownloadReport(ReportDetailsRequestViewModel model)
         {
 
-            try
-            {
-                var weightReport = await _weightService.GetWeightReportData(model.SiteId, model.SearchDate.Value, model.ReportType.Value, User.Identity.Name, model.SearchDateTo, model.TruckNumber);
+            var weightReport = await _weightService.GetWeightReportData(model.SiteId, model.SearchDate.Value, model.ReportType.Value, User.Identity.Name, model.SearchDateTo, model.TruckNumber);
 
-                if (weightReport.ReportData?.Count() > 0)
+            if (weightReport.ReportData?.Count() > 0)
+            {
+                var site = await _siteService.GetUserSiteAsync(User.Identity.Name, model.SiteId);
+                var pdfDto = new PdfDto
                 {
-                    var site = await _siteService.GetUserSiteAsync(User.Identity.Name, model.SiteId);
-                    var pdfDto = new PdfDto
-                    {
-                        ReportData = weightReport.ReportData,
-                        TotalTrucks = weightReport.TotalTrucks,
-                        TotalViolationTrucks = weightReport.TotalViolationTrucks,
-                        TotalViolationWeight = weightReport.TotalViolationWeight,
-                        TotlaViolationNumberMoreThan5 = weightReport.TotlaViolationNumberMoreThan5,
-                        TotlaViolationPrice = weightReport.TotlaViolationPrice,
-                        reportType = model.ReportType.Value,
-                        SiteName = site.SiteName,
-                        SiteTitle = site.SiteTitle
-                    };
-                    PDFService pDFService = new PDFService(pdfDto);
+                    ReportData = weightReport.ReportData,
+                    TotalTrucks = weightReport.TotalTrucks,
+                    TotalViolationTrucks = weightReport.TotalViolationTrucks,
+                    TotalViolationWeight = weightReport.TotalViolationWeight,
+                    TotlaViolationNumberMoreThan5 = weightReport.TotlaViolationNumberMoreThan5,
+                    TotlaViolationPrice = weightReport.TotlaViolationPrice,
+                    reportType = model.ReportType.Value,
+                    SiteName = site.SiteName,
+                    SiteTitle = site.SiteTitle
+                };
+                PDFService pDFService = new PDFService(pdfDto);
 
-                    var reportPdf = pDFService.GeneratePdf();
-                    return File(reportPdf, "application/octet-stream", model.ReportType.ToString() + ".pdf");
-                }
-
+                var reportPdf = pDFService.GeneratePdf();
+                return File(reportPdf, "application/octet-stream", model.ReportType.ToString() + ".pdf");
             }
-            catch (Exception ex)
-            {
 
-            }
             return RedirectToAction("index", "home");
 
         }

@@ -44,7 +44,7 @@ namespace aspnetcore.ntier.BLL.Services.Dashboard
             var user = await _dashboardRepository.GetAsync(x => x.Email == email, include: inc => inc.Include(ac => ac.AccessUsers));
             return _mapper.Map<DashboardUserDto>(user);
         }
-        public async Task EditUserAsync(DashboardUserDto model, string password)
+        public async Task<string> EditUserAsync(DashboardUserDto model, string password)
         {
             var users = await _dashboardRepository.GetListAsync(x => x.IsSuperAdmin);
 
@@ -53,7 +53,7 @@ namespace aspnetcore.ntier.BLL.Services.Dashboard
             var anotherUserHasSameEmail = await _dashboardRepository.GetAsync(u => u.Email == model.Email);
             if (anotherUserHasSameEmail is not null && anotherUserHasSameEmail.Id != user.Id)
             {
-                throw new CustomValidationException("اسم المستخدم مستخدم من قبل مستخدم اخر");
+                return "اسم المستخدم مستخدم من قبل مستخدم اخر";
             }
 
             if (users.Count() < 2 && !model.IsSuperAdmin && users.FirstOrDefault(x => x.Id == model.Id) is not null)
@@ -86,6 +86,7 @@ namespace aspnetcore.ntier.BLL.Services.Dashboard
             }
             await _accessUserRepository.DeleteRangeAsync(x => x.DashboardUserId == model.Id);
             await _dashboardRepository.UpdateAsync(user);
+            return null;
 
 
         }
@@ -101,12 +102,12 @@ namespace aspnetcore.ntier.BLL.Services.Dashboard
             await _dashboardRepository.UpdateAsync(user);
 
         }
-        public async Task AddUserAsync(DashboardUserDto model, string password)
+        public async Task<string> AddUserAsync(DashboardUserDto model, string password)
         {
             var user = await _dashboardRepository.GetAsync(x => x.Email == model.Email, include: inc => inc.Include(ac => ac.AccessUsers));
             if (user is not null)
             {
-                throw new CustomValidationException("اسم المستخدم مستخدم من قبل مستخدم اخر");
+                return "اسم المستخدم مستخدم من قبل مستخدم اخر";
             }
             user = new DashboardUser();
             user.Name = model.Name;
@@ -129,6 +130,7 @@ namespace aspnetcore.ntier.BLL.Services.Dashboard
                 user.AccessUsers = null;
             }
             await _dashboardRepository.AddAsync(user);
+            return null;
         }
         public async Task RemoveUserAsync(int Id)
         {

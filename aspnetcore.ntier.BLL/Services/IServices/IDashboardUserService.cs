@@ -9,8 +9,8 @@ namespace aspnetcore.ntier.BLL.Services.IServices
 {
     public interface IDashboardUserService
     {
-        Task AddUserAsync(DashboardUserDto model, string password);
-        Task EditUserAsync(DashboardUserDto model, string password);
+        Task<string> AddUserAsync(DashboardUserDto model, string password);
+        Task<string> EditUserAsync(DashboardUserDto model, string password);
         Task<List<DashboardUserDto>> GetAllAsync();
         Task<DashboardUserDto> GetByEmailAsync(string email);
         Task<DashboardUserDto> GetByIdAsync(int Id);

@@ -40,35 +40,36 @@ namespace aspnetcore.ntier.Dashboard.Controllers
             var siteIterms = await GetSitesListItems(model.SitePermissions);
             if (ModelState.IsValid)
             {
-                try
+
+                model.SiteItems = siteIterms;
+                var dto = new DashboardUserDto
                 {
-                    model.SiteItems = siteIterms;
-                    var dto = new DashboardUserDto
+                    IsActive = model.IsActive,
+                    IsAllowedToEdit = model.IsAllowedToEdit,
+                    Email = model.Email.Trim(),
+                    IsSuperAdmin = model.IsSuperAdmin,
+                    Id = model.Id,
+                    Name = model.Name,
+                    AccessUsers = model.SitePermissions?.Select(si => new AccessUserDto
                     {
-                        IsActive = model.IsActive,
-                        IsAllowedToEdit = model.IsAllowedToEdit,
-                        Email = model.Email.Trim(),
-                        IsSuperAdmin = model.IsSuperAdmin,
-                        Id = model.Id,
-                        Name = model.Name,
-                        AccessUsers = model.SitePermissions?.Select(si => new AccessUserDto
-                        {
-                            DashboardUserId = model.Id,
-                            SiteTblId = si
-                        }).ToList()
-                    };
-                    if (!model.IsSuperAdmin && model.SitePermissions is null || model.SitePermissions?.Count() == 0)
-                    {
-                        ModelState.AddModelError("SitePermissions", "يرجى إضافة صلاحيات المستخدم");
-                        return View(model);
-                    }
-                    await _dashboardUserService.AddUserAsync(dto, model.Password);
-                }
-                catch (Exception ex)
+                        DashboardUserId = model.Id,
+                        SiteTblId = si
+                    }).ToList()
+                };
+                if (!model.IsSuperAdmin && model.SitePermissions is null || model.SitePermissions?.Count() == 0)
                 {
-                    ModelState.AddModelError("Email", ex.Message);
+                    ModelState.AddModelError("SitePermissions", "يرجى إضافة صلاحيات المستخدم");
                     return View(model);
                 }
+                var result = await _dashboardUserService.AddUserAsync(dto, model.Password);
+
+                if (!string.IsNullOrEmpty(result))
+                {
+                    ModelState.AddModelError("Email", result);
+                    return View(model);
+                }
+
+
 
             }
             ViewBag.MessageStatus = "تم الأضافة بنجاح";
@@ -102,38 +103,37 @@ namespace aspnetcore.ntier.Dashboard.Controllers
         {
             if (ModelState.IsValid)
             {
-                try
-                {
-                    model.SiteItems = await GetSitesListItems(model.SitePermissions);
-                    var dto = new DashboardUserDto
-                    {
-                        IsActive = model.IsActive,
-                        IsAllowedToEdit = model.IsAllowedToEdit,
-                        Email = model.Email.Trim(),
-                        IsSuperAdmin = model.IsSuperAdmin,
-                        Id = model.Id,
-                        Name = model.Name,
-                        AccessUsers = model.SitePermissions?.Select(si => new AccessUserDto
-                        {
-                            DashboardUserId = model.Id,
-                            SiteTblId = si
-                        }).ToList()
-                    };
-                    if (!model.IsSuperAdmin && model.SitePermissions is null || model.SitePermissions?.Count() == 0)
-                    {
-                        ModelState.AddModelError("SitePermissions", "يرجى إضافة صلاحيات المستخدم");
-                        return View(model);
 
-                    }
-                    await _dashboardUserService.EditUserAsync(dto, model.Password);
-            }
-                catch (Exception ex)
+                model.SiteItems = await GetSitesListItems(model.SitePermissions);
+                var dto = new DashboardUserDto
                 {
+                    IsActive = model.IsActive,
+                    IsAllowedToEdit = model.IsAllowedToEdit,
+                    Email = model.Email.Trim(),
+                    IsSuperAdmin = model.IsSuperAdmin,
+                    Id = model.Id,
+                    Name = model.Name,
+                    AccessUsers = model.SitePermissions?.Select(si => new AccessUserDto
+                    {
+                        DashboardUserId = model.Id,
+                        SiteTblId = si
+                    }).ToList()
+                };
+                if (!model.IsSuperAdmin && model.SitePermissions is null || model.SitePermissions?.Count() == 0)
+                {
+                    ModelState.AddModelError("SitePermissions", "يرجى إضافة صلاحيات المستخدم");
+                    return View(model);
 
-                ModelState.AddModelError("Email", ex.Message);
-                return View(model);
-            }
-            ViewBag.MessageStatus = "تم التعديل بنجاح";
+                }
+                var result = await _dashboardUserService.EditUserAsync(dto, model.Password);
+
+                if (!string.IsNullOrEmpty(result))
+                {
+                    ModelState.AddModelError("Email", result);
+                    return View(model);
+                }
+
+                ViewBag.MessageStatus = "تم التعديل بنجاح";
                 return View(model);
             }
             return View(model);
