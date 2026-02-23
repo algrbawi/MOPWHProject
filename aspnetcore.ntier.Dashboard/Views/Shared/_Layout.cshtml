@@ -32,6 +32,12 @@
                                 <a class="nav-link text-dark" asp-area="" asp-controller="DashboardUser" asp-action="index">مستخدمين لوحة التحكم</a>
                             </li>
                         }
+                        @if (User.IsInRole("SuperAdmin"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="UserAction" asp-action="index">تتبع حركات المستخدمين</a>
+                            </li>
+                        }
 
                     </ul>
                     <ul class="navbar-nav flex-grow-1 justify-content-center">

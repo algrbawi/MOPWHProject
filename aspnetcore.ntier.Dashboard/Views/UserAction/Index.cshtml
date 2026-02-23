@@ -1,0 +1,43 @@
+﻿@using X.PagedList
+@using X.PagedList.Mvc.Core
+@using aspnetcore.ntier.DTO.DTOs
+@model IPagedList<UserActionDto>
+@{
+    ViewData["Title"] = "تتبع حركات المستخدمين";
+}
+@section Styles {
+<style>
+    ul.pagination{
+    justify-content:center;
+    }
+</style>
+}
+<div class="text-center">
+    <div class="container mt-4">
+        <!-- Display the data using a foreach loop -->
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">النص</th>
+                    <th scope="col">الوقت و التاريخ UTC</th>
+                </tr>
+            </thead>
+            @foreach (var item in Model)
+            {
+                <tr dir="ltr">
+                    <td>@Html.Raw(item.Message.Replace(Environment.NewLine,"<br/>"))</td>
+                    @* <td>@TimeZoneInfo.ConvertTimeBySystemTimeZoneId(item.ActionTime, "Jordan Standard Time") *@
+                    <td>@item.ActionTime</td>
+                </tr>
+            }
+        </table>
+
+        @if (Model.PageCount>1)
+        {
+        <!-- Display the pager control -->
+        @Html.PagedListPager(Model, page => Url.Action("Index",
+        new { pageNumber = page }) ,new PagedListRenderOptions(){LiElementClasses = new string[] { "page-item" },
+            PageClasses = new string[] { "page-link" }})
+        }
+    </div>
+</div>
