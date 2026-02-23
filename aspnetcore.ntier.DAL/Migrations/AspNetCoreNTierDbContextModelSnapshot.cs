@@ -991,6 +991,33 @@ namespace aspnetcore.ntier.DAL.Migrations
                     b.ToTable("Logs");
                 });
 
+            modelBuilder.Entity("aspnetcore.ntier.DAL.Entities.UserAction", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<DateTime>("ActionTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    SqlServerKeyBuilderExtensions.IsClustered(b.HasKey("Id"), false);
+
+                    b.HasIndex("ActionTime")
+                        .IsDescending();
+
+                    SqlServerIndexBuilderExtensions.IsClustered(b.HasIndex("ActionTime"));
+
+                    b.ToTable("UserActions");
+                });
+
             modelBuilder.Entity("aspnetcore.ntier.BLL.CameraTbl", b =>
                 {
                     b.HasOne("aspnetcore.ntier.BLL.SiteTbl", "Site")

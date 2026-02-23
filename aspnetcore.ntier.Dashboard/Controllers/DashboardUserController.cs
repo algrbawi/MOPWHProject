@@ -13,11 +13,13 @@ namespace aspnetcore.ntier.Dashboard.Controllers
     {
         private readonly IDashboardUserService _dashboardUserService;
         private readonly ISiteService _siteService;
+        private readonly IUserActionService _userActionService;
 
-        public DashboardUserController(IDashboardUserService dashboardUserService, ISiteService siteService)
+        public DashboardUserController(IDashboardUserService dashboardUserService, ISiteService siteService, IUserActionService userActionService)
         {
             _dashboardUserService = dashboardUserService;
             _siteService = siteService;
+            _userActionService = userActionService;
         }
 
         public async Task<IActionResult> Index()
@@ -73,7 +75,7 @@ namespace aspnetcore.ntier.Dashboard.Controllers
 
             }
             ViewBag.MessageStatus = "تم الأضافة بنجاح";
-
+            await _userActionService.AddAsync($"{User.Identity.Name} لقد قام المستخدم  {Environment.NewLine}{model.Email} بإضافة المستخدم");
             return View(new AddEditViewModel() { SiteItems = siteIterms });
         }
 
@@ -134,6 +136,7 @@ namespace aspnetcore.ntier.Dashboard.Controllers
                 }
 
                 ViewBag.MessageStatus = "تم التعديل بنجاح";
+                await _userActionService.AddAsync($"{User.Identity.Name} لقد قام المستخدم  {Environment.NewLine}{model.Email} بتعديل معلومات  المستخدم");
                 return View(model);
             }
             return View(model);
@@ -145,7 +148,9 @@ namespace aspnetcore.ntier.Dashboard.Controllers
         {
             if (ModelState.IsValid)
             {
+                var user = await _dashboardUserService.GetByIdAsync(userId);
                 await _dashboardUserService.RemoveUserAsync(userId);
+                await _userActionService.AddAsync($"{User.Identity.Name} لقد قام المستخدم {Environment.NewLine}{user.Email} بحذف المستخدم ");
             }
 
             return RedirectToAction(nameof(Index));

@@ -1,4 +1,5 @@
 ﻿using aspnetcore.ntier.BLL.Services.Apis;
+using aspnetcore.ntier.BLL.Services.Dashboard;
 using aspnetcore.ntier.BLL.Services.IServices;
 using aspnetcore.ntier.BLL.Services.PDF;
 using aspnetcore.ntier.Dashboard.Controllers.Base;
@@ -17,11 +18,13 @@ namespace aspnetcore.ntier.Dashboard.Controllers
     {
         private readonly IWeightService _weightService;
         private readonly ISiteService _siteService;
+        private readonly IUserActionService _userActionService;
 
-        public WeightController(IWeightService weightService, ISiteService siteService)
+        public WeightController(IWeightService weightService, ISiteService siteService, IUserActionService userActionService)
         {
             _weightService = weightService;
             _siteService = siteService;
+            _userActionService = userActionService;
         }
 
         public async Task<IActionResult> Edit(int siteId, decimal? WId)
@@ -53,21 +56,27 @@ namespace aspnetcore.ntier.Dashboard.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(EditWeightViewModel mdoel)
+        public async Task<IActionResult> Edit(EditWeightViewModel model)
         {
             if (ModelState.IsValid)
             {
                 var editModel = new EditWeightTblDto
                 {
-                    Bill_Name = mdoel.Bill_Name,
-                    Bill_Num = mdoel.Bill_Num,
-                    Vio_Num = mdoel.Vio_Num,
-                    WID = mdoel.WId.Value
+                    Bill_Name = model.Bill_Name,
+                    Bill_Num = model.Bill_Num,
+                    Vio_Num = model.Vio_Num,
+                    WID = model.WId.Value
                 };
                 await _weightService.UpdateAsync(editModel);
+                await _userActionService.AddAsync($"{User.Identity.Name} لقد قام المستخدم " +
+                                                                    $"{Environment.NewLine}" +
+                                                                    $"بتعديل على الفاتورة" +
+                                                                    $"{Environment.NewLine}" +
+                                                                    $"رقم الوصل:  {model.WId}"
+                                                  );
                 TempData["MessageStatus"] = "تم الحفظ بنجاح";
             }
-            return RedirectToAction(nameof(Edit), new { siteId = mdoel.SiteId, WId = mdoel.WId });
+            return RedirectToAction(nameof(Edit), new { siteId = model.SiteId, WId = model.WId });
         }
     }
 }

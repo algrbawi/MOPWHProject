@@ -38,6 +38,7 @@ public static class DependencyInjection
         services.AddScoped<IWeightClassTblService, WeightClassTblService>();
         services.AddScoped<IDashboardUserService, DashboardUserService>();
         services.AddScoped<ILogService, LogService>();
+        services.AddScoped<IUserActionService, UserActionService>();
         services.AddScoped<ModelStateValidation>();
         services.AddScoped<ILogRequestsService, LogRequestService>();
         services.AddFluentValidationAutoValidation();

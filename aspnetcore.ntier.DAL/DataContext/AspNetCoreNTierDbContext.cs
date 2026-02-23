@@ -4,6 +4,7 @@ using aspnetcore.ntier.DAL.Entities;
 using aspnetcore.ntier.DAL.Password;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Reflection.Metadata;
 
 namespace aspnetcore.ntier.DAL.DataContext;
 
@@ -51,6 +52,7 @@ public partial class AspNetCoreNTierDbContext : DbContext
 
     public virtual DbSet<WeightTbl> WeightTbls { get; set; }
     public virtual DbSet<Log> Logs { get; set; }
+    public virtual DbSet<UserAction> UserActions { get; set; }
 
 
 
@@ -115,6 +117,12 @@ public partial class AspNetCoreNTierDbContext : DbContext
                 .HasForeignKey(d => d.SiteId)
                 .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("FK_Camera_TBL_Site_TBL");
+
+            modelBuilder.Entity<UserAction>().HasIndex(b => b.ActionTime).IsClustered().IsDescending();
+
+            modelBuilder.Entity<UserAction>()
+                .HasKey(b => b.Id)
+                .IsClustered(false);
         });
 
         modelBuilder.Entity<ComScreenSetting>(entity =>

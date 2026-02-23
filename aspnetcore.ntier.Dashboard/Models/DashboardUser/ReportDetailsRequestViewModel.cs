@@ -1,4 +1,5 @@
 ﻿using aspnetcore.ntier.DTO.Enum;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace aspnetcore.ntier.Dashboard.Models.DashboardUser
 {
@@ -28,5 +29,38 @@ namespace aspnetcore.ntier.Dashboard.Models.DashboardUser
         }
 
         public ReportType? ReportType { get; set; }
+
+        [NotMapped]
+        public string ReportTypeText
+        {
+            get
+            {
+                switch (ReportType)
+                {
+                    case DTO.Enum.ReportType.daily:
+                        return "يومي";
+                        break;
+                    case DTO.Enum.ReportType.monthly:
+                        return "شهري";
+                        break;
+                    case DTO.Enum.ReportType.yearly:
+                        return "سنوي";
+                        break;
+                    case DTO.Enum.ReportType.bill:
+                        return "نقرير وصولات المخالفات";
+                        break;
+                    case DTO.Enum.ReportType.vehicle:
+                        return "تقرير حسب المركبة";
+                        break;
+                    case DTO.Enum.ReportType.violation_vehicle:
+                        return "تقرير المركبات المخالفة";
+                        break;
+                    default:
+                        return "";
+                        break;
+                }
+                return "";
+            }
+        }
     }
 }

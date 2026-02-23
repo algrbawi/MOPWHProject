@@ -1,4 +1,5 @@
 ﻿using aspnetcore.ntier.BLL;
+using aspnetcore.ntier.BLL.Services.Dashboard;
 using aspnetcore.ntier.BLL.Services.IServices;
 using aspnetcore.ntier.BLL.Services.PDF;
 using aspnetcore.ntier.Dashboard.Controllers.Base;
@@ -19,11 +20,13 @@ namespace aspnetcore.ntier.Dashboard.Controllers
     {
         private readonly IWeightService _weightService;
         private readonly ISiteService _siteService;
+        private readonly IUserActionService _userActionService;
 
-        public ReportController(IWeightService weightService, ISiteService siteService)
+        public ReportController(IWeightService weightService, ISiteService siteService, IUserActionService userActionService)
         {
             _weightService = weightService;
             _siteService = siteService;
+            _userActionService = userActionService;
         }
         public async Task<IActionResult> ReportDetails(ReportDetailsRequestViewModel model)
         {
@@ -72,6 +75,12 @@ namespace aspnetcore.ntier.Dashboard.Controllers
                 PDFService pDFService = new PDFService(pdfDto);
 
                 var reportPdf = pDFService.GeneratePdf();
+                await _userActionService.AddAsync($"{User.Identity.Name} لقد قام المستخدم " +
+                    $"{Environment.NewLine}" +
+                    $"بتحميل تقرير الموقع {site.SiteName} " +
+                    $"{Environment.NewLine}" +
+                    $"نوع التقرير:  {model.ReportTypeText}"
+                    );
                 return File(reportPdf, "application/octet-stream", model.ReportType.ToString() + ".pdf");
             }
 
