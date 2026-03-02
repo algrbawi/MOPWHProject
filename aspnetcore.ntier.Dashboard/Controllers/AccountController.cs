@@ -1,4 +1,5 @@
 ﻿using aspnetcore.ntier.BLL.Exceptions;
+using aspnetcore.ntier.BLL.Services.Dashboard;
 using aspnetcore.ntier.BLL.Services.IServices;
 using aspnetcore.ntier.BLL.Utilities.ModelStateValidation;
 using aspnetcore.ntier.Dashboard.Models;
@@ -15,11 +16,13 @@ namespace aspnetcore.ntier.Dashboard.Controllers
     {
         private readonly IAccountService _accountService;
         private readonly ModelStateValidation _modelStateValidation;
+        private readonly IUserActionService _userActionService;
 
-        public AccountController(IAccountService accountService, ModelStateValidation modelStateValidation)
+        public AccountController(IAccountService accountService, ModelStateValidation modelStateValidation, IUserActionService userActionService)
         {
             _accountService = accountService;
             _modelStateValidation = modelStateValidation;
+            _userActionService = userActionService;
         }
 
         public IActionResult Login()
@@ -36,8 +39,10 @@ namespace aspnetcore.ntier.Dashboard.Controllers
                 var result = await _accountService.Login(model.Email, model.Password, model.RemmberMe);
                 if (result.StatusCode == HttpStatusCode.OK)
                 {
+                    await _userActionService.AddAsync($"{model.Email} عملية تسجيل دخول ناجحة");
                     return Redirect(model.ReturnUrl);
                 }
+                await _userActionService.AddAsync($"{model.Email} محاولة تسجيل دخول غير ناجحة");
                 _modelStateValidation.ModelStateErrors(ModelState, new Dictionary<string, string> { { "", result.ErrorMessage } });
 
             }

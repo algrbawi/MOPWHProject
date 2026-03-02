@@ -11,5 +11,6 @@ namespace aspnetcore.ntier.BLL.Static
     {
         public static string UserHashedPassword = "UserHashedPassword";
         public static string UserFullName = "UserFullName";
+        public static string UserId = "UserId";
     }
 }

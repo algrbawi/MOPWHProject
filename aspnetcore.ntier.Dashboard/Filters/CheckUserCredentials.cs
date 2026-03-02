@@ -53,8 +53,8 @@ namespace aspnetcore.ntier.Dashboard.Filters
         public override void OnActionExecuted(ActionExecutedContext context)
         {
             var userService = context.HttpContext.RequestServices.GetService<IDashboardUserService>();
-            var userEmail = context.HttpContext.User.Identity.Name;
-            var user = userService.GetByEmailAsync(userEmail).Result;
+            var userId = context.HttpContext.User.Claims.FirstOrDefault(x => x.Type == CustomClaims.UserId).Value;
+            var user = userService.GetByIdAsync(int.Parse(userId)).Result;
             var controller = (BaseController)context.Controller;
             if ((DateTime.Now.Date - user.LastUpdatePassword.ToDateTime(TimeOnly.Parse("00:00 PM")).Date).Days > 30)
             {

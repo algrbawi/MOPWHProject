@@ -107,6 +107,7 @@ namespace aspnetcore.ntier.BLL.Services
                 var hexArrayOfBytes = string.Join(string.Empty, Array.ConvertAll(user.PasswordHash, b => b.ToString("X2")));
 
                 claims.Add(new Claim(CustomClaims.UserHashedPassword, hexArrayOfBytes));
+                claims.Add(new Claim(CustomClaims.UserId, user.Id.ToString()));
                 var claimsIdentity = new ClaimsIdentity(
                claims, CookieAuthenticationDefaults.AuthenticationScheme);
                 var authProperties = new AuthenticationProperties
