@@ -40,26 +40,15 @@ namespace aspnetcore.ntier.BLL.Services
                 StatusCode = HttpStatusCode.OK
             };
             var isValidPassword = HashPassword.VerifyPasswordHash(Password, user?.PasswordHash, user?.PasswordSalt);
-            var lastFailedLogin = user.LastFailedLogin;
+            var lastFailedLogin = user?.LastFailedLogin;
             var unlockInMinutes = Convert.ToInt16(_configuration.GetSection("UnlockAccountInMinutes").Value);
             var currentDateTime = DateTime.UtcNow;
-            if (lastFailedLogin is not null && currentDateTime >= lastFailedLogin.Value.AddMinutes(unlockInMinutes))
-            {
-                user.IsActive = true;
-                user.FailedLoginAttempts = 0;
-                user.LastFailedLogin = null;
-                user = await _dashboardUser.UpdateAsync(user);
-            }
 
-            if (user is not null && !user.IsActive)
-            {
-                result.ErrorMessage = "تم إيقاف الحساب";
-                result.StatusCode = HttpStatusCode.BadRequest;
-            }
-            else if (user is not null && !isValidPassword)
+
+            if (user is not null && !isValidPassword)
             {
 
-                result.ErrorMessage = "البريد الالكتروني او كلمة المرور غير صحيحة";
+                result.ErrorMessage = "إسم المستخدم او كلمة المرور غير صحيحة";
                 result.StatusCode = HttpStatusCode.BadRequest;
                 if (user.FailedLoginAttempts >= 4)
                 {
@@ -72,9 +61,23 @@ namespace aspnetcore.ntier.BLL.Services
                 }
                 await _dashboardUser.UpdateAsync(user);
             }
+            else if (lastFailedLogin is not null && currentDateTime >= lastFailedLogin.Value.AddMinutes(unlockInMinutes))
+            {
+                user.IsActive = true;
+                user.FailedLoginAttempts = 0;
+                user.LastFailedLogin = null;
+                user = await _dashboardUser.UpdateAsync(user);
+            }
+
+            if (user is not null && !user.IsActive)
+            {
+                result.ErrorMessage = "تم إيقاف الحساب";
+                result.StatusCode = HttpStatusCode.BadRequest;
+            }
+
             else if (user is null || !isValidPassword)
             {
-                result.ErrorMessage = "البريد الالكتروني او كلمة المرور غير صحيحة";
+                result.ErrorMessage = "إسم المستخدم او كلمة المرور غير صحيحة";
                 result.StatusCode = HttpStatusCode.BadRequest;
             }
 
