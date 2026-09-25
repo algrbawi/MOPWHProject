@@ -9,8 +9,10 @@ namespace aspnetcore.ntier.Dashboard.Models.DashboardUser
         public int Id { get; set; }
 
         [Required(ErrorMessage = "يرجى إدخال اسم المستخدم")]
+        [RegularExpression(@"^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$", ErrorMessage = "يرجى إدخال بريد إلكتروني صحيح.")]
         public string Email { get; set; }
         [Required(ErrorMessage = "يرجى إدخال الأسم")]
+        [RegularExpression(@"^[A-Za-z\u0600-\u06FF0-9 ]+$", ErrorMessage = "يُسمح فقط بالأحرف والأرقام والمسافات.")]
         public string Name { get; set; }
         [Required(ErrorMessage = "يرجى إدخال كلمة المرور")]
         [DataType(DataType.Password)]
