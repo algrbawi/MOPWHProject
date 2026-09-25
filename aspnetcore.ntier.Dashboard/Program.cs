@@ -74,13 +74,23 @@ namespace aspnetcore.ntier.Dashboard
             }
 
             app.UseHttpsRedirection();
+            app.Use(async (context, next) =>
+            {
+                context.Response.Headers.Append("Permissions-Policy", "camera=(), microphone=(), geolocation=()");
+                context.Response.Headers.Append("Cross-Origin-Opener-Policy", "same-origin");
+                context.Response.Headers.Append("Cross-Origin-Resource-Policy", "same-origin");
+                context.Response.Headers.Append("X-Content-Type-Options", "nosniff");
+                context.Response.Headers.Append("Referrer-Policy", "strict-origin-when-cross-origin");
+                context.Response.Headers.Append("Cross-Origin-Embedder-Policy", "require-corp");
+                context.Response.Headers.Append("Content-Security-Policy", "default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://code.jquery.com; style-src 'self' https://cdnjs.cloudflare.com 'unsafe-inline'; img-src 'self' data:;  font-src 'self' https://cdnjs.cloudflare.com;connect-src 'self' https://cdnjs.cloudflare.com https://cdn.jsdelivr.net; base-uri 'self'; form-action 'self'");
+                await next();
+            });
             app.UseStaticFiles();
 
             app.UseRouting();
             app.UseRateLimiter();
             app.UseAuthentication();
             app.UseAuthorization();
-
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
