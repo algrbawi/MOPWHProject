@@ -1,4 +1,4 @@
-﻿using aspnetcore.ntier.BLL.Services.Apis;
+using aspnetcore.ntier.BLL.Services.Apis;
 using aspnetcore.ntier.BLL.Services.IServices;
 using aspnetcore.ntier.Dashboard.Controllers.Apis.BaseController;
 using aspnetcore.ntier.Dashboard.Filters;
@@ -7,6 +7,7 @@ using aspnetcore.ntier.DTO.DTOs;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace aspnetcore.ntier.Dashboard.Controllers.Apis
 {
@@ -58,6 +59,19 @@ namespace aspnetcore.ntier.Dashboard.Controllers.Apis
         {
             await _weightClassTblService.AddAsync(model);
             return Ok();
+        }
+
+        [HttpGet("GetTruckVioApi")]
+        public async Task<IActionResult> GetTruckVioApi()
+        {
+            var userEmail = User.FindFirst(ClaimTypes.Name)?.Value;
+            if (string.IsNullOrEmpty(userEmail))
+            {
+                return Unauthorized();
+            }
+
+            var result = await _weightService.GetTruckVioAsync(userEmail);
+            return Ok(result);
         }
     }
 }
