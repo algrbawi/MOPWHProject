@@ -109,7 +109,7 @@ namespace aspnetcore.ntier.BLL.Services.Apis
 
         }
 
-        public async Task<List<WeightTblDto>> GetTruckVioAsync(string userEmail, string? truckNum, DateOnly date, decimal? siteId = null)
+        public async Task<List<WeightTblDto>> GetTruckVioAsync(string userEmail, string truckNum, DateOnly? date = null, decimal? siteId = null)
         {
             var user = await _dashboardUserRepository.GetAsync(x => x.Email.ToLower() == userEmail.ToLower());
             if (user == null)
@@ -118,17 +118,21 @@ namespace aspnetcore.ntier.BLL.Services.Apis
             }
 
             var cleanTruckNum = truckNum?.Trim();
+            if (string.IsNullOrEmpty(cleanTruckNum))
+            {
+                return new List<WeightTblDto>();
+            }
 
             var results = await _weightTblRepository.GetListAsync(
                 x => x.VioPrice > 0 && x.VioWeight > 0 &&
-                     (string.IsNullOrEmpty(cleanTruckNum) || x.TruckNum == cleanTruckNum) &&
-                     x.InDate == date &&
+                     x.TruckNum == cleanTruckNum &&
+                     (date == null || x.InDate == date) &&
                      (siteId == null || x.SiteId == siteId) &&
                      (user.IsSuperAdmin || (x.Site != null && x.Site.AccessUsers.Any(a => a.DashboardUserId == user.Id))),
                 include: x => x.Include(c => c.WClass)
                                 .Include(s => s.Site));
 
-            return _mapper.Map<List<WeightTblDto>>(results.OrderByDescending(x => x.InTime).ToList());
+            return _mapper.Map<List<WeightTblDto>>(results.OrderByDescending(x => x.InDate).ThenByDescending(x => x.InTime).ToList());
         }
 
         private string FixTimeFormat(TimeOnly? time)
