@@ -1,4 +1,4 @@
-﻿using aspnetcore.ntier.BLL.Services.Apis;
+using aspnetcore.ntier.BLL.Services.Apis;
 using aspnetcore.ntier.BLL.Services.IServices;
 using aspnetcore.ntier.DAL.Entities;
 using aspnetcore.ntier.DTO.DTOs;
@@ -22,7 +22,7 @@ public class AutoMapperProfile : Profile
         CreateMap<UsersTblDto, UsersTbl>().ReverseMap();
         CreateMap<DriversTblDto, DriversTbl>().ReverseMap();
         CreateMap<NationTblDto, NationTbl>().ReverseMap();
-        CreateMap<WeightClassTblDto, WeightClassTbl>();
+        CreateMap<WeightClassTblDto, WeightClassTbl>().ReverseMap();
         CreateMap<SiteTblDto, SiteTbl>().ReverseMap();
         CreateMap<PictureTblDto, PicturesTbl>().ReverseMap();
         CreateMap<DashboardUserDto, DashboardUser>().ReverseMap();
