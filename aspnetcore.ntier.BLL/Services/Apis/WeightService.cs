@@ -126,7 +126,7 @@ namespace aspnetcore.ntier.BLL.Services.Apis
             var results = await _weightTblRepository.GetListAsync(
                 x => x.VioPrice > 0 &&
                      x.VioWeight > 0 &&
-                     !string.IsNullOrEmpty(x.Bill_Num) &&
+                     string.IsNullOrEmpty(x.Bill_Num) &&
                      x.TruckNum == cleanTruckNum &&
                      (date == null || x.InDate == date) &&
                      (siteId == null || x.SiteId == siteId) &&
