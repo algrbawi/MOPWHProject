@@ -109,30 +109,51 @@ namespace aspnetcore.ntier.BLL.Services.Apis
 
         }
 
-        public async Task<List<WeightTblDto>> GetTruckVioAsync(string userEmail, string truckNum, DateOnly? date = null, decimal? siteId = null)
+        public async Task<List<TruckVioResponseDto>> GetTruckVioAsync(string userEmail, string truckNum, DateOnly? date = null, decimal? siteId = null)
         {
             var user = await _dashboardUserRepository.GetAsync(x => x.Email.ToLower() == userEmail.ToLower());
             if (user == null)
             {
-                return new List<WeightTblDto>();
+                return new List<TruckVioResponseDto>();
             }
 
             var cleanTruckNum = truckNum?.Trim();
             if (string.IsNullOrEmpty(cleanTruckNum))
             {
-                return new List<WeightTblDto>();
+                return new List<TruckVioResponseDto>();
             }
 
             var results = await _weightTblRepository.GetListAsync(
-                x => x.VioPrice > 0 && x.VioWeight > 0 &&
+                x => x.VioPrice > 0 &&
+                     x.VioWeight > 0 &&
+                     !string.IsNullOrEmpty(x.Bill_Num) &&
                      x.TruckNum == cleanTruckNum &&
                      (date == null || x.InDate == date) &&
                      (siteId == null || x.SiteId == siteId) &&
                      (user.IsSuperAdmin || (x.Site != null && x.Site.AccessUsers.Any(a => a.DashboardUserId == user.Id))),
-                include: x => x.Include(c => c.WClass)
+                include: x => x.Include(d => d.Driver)
                                 .Include(s => s.Site));
 
-            return _mapper.Map<List<WeightTblDto>>(results.OrderByDescending(x => x.InDate).ThenByDescending(x => x.InTime).ToList());
+            return results.Select(x => new TruckVioResponseDto
+            {
+                WId = x.WId,
+                InDate = x.InDate,
+                InTime = x.InTime,
+                ClassWeight = x.ClassWeight,
+                TruckWeight = x.TruckWeight,
+                DiffWeight = x.DiffWeight,
+                VioPrice = x.VioPrice,
+                VioWeight = x.VioWeight,
+                TruckNum = x.TruckNum,
+                DriverName = x.Driver?.DriverName,
+                SiteId = x.SiteId,
+                SiteName = x.Site?.SiteName,
+                SiteLocation = x.Site?.SiteLocation,
+                SiteTitle = x.Site?.SiteTitle
+            })
+            .OrderByDescending(x => x.InDate)
+            .ThenByDescending(x => x.InTime)
+            .ToList();
         }
 
         private string FixTimeFormat(TimeOnly? time)
