@@ -109,7 +109,7 @@ namespace aspnetcore.ntier.BLL.Services.Apis
 
         }
 
-        public async Task<List<WeightTblDto>> GetTruckVioAsync(string userEmail)
+        public async Task<List<WeightTblDto>> GetTruckVioAsync(string userEmail, string truckNum, DateOnly date, decimal? siteId = null)
         {
             var user = await _dashboardUserRepository.GetAsync(x => x.Email.ToLower() == userEmail.ToLower());
             if (user == null)
@@ -119,6 +119,9 @@ namespace aspnetcore.ntier.BLL.Services.Apis
 
             var results = await _weightTblRepository.GetListAsync(
                 x => x.VioPrice > 0 && x.VioWeight > 0 &&
+                     x.TruckNum == truckNum &&
+                     x.InDate == date &&
+                     (siteId == null || x.SiteId == siteId) &&
                      (user.IsSuperAdmin || x.Site.AccessUsers.Any(a => a.DashboardUserId == user.Id)),
                 include: x => x.Include(n => n.Nation)
                                 .Include(p => p.Product)
@@ -128,7 +131,7 @@ namespace aspnetcore.ntier.BLL.Services.Apis
                                 .Include(s => s.Site)
                                 .ThenInclude(uac => uac.AccessUsers));
 
-            return _mapper.Map<List<WeightTblDto>>(results.OrderByDescending(x => x.InDate).ThenByDescending(x => x.InTime).ToList());
+            return _mapper.Map<List<WeightTblDto>>(results.OrderByDescending(x => x.InTime).ToList());
         }
 
         private string FixTimeFormat(TimeOnly? time)
