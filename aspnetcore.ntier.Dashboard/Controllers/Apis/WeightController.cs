@@ -62,17 +62,12 @@ namespace aspnetcore.ntier.Dashboard.Controllers.Apis
         }
 
         [HttpGet("GetTruckVioApi")]
-        public async Task<IActionResult> GetTruckVioApi(string truckNum, DateOnly date, decimal? siteId = null)
+        public async Task<IActionResult> GetTruckVioApi(string? truckNum, DateOnly date, decimal? siteId = null)
         {
             var userEmail = User.FindFirst(ClaimTypes.Name)?.Value;
             if (string.IsNullOrEmpty(userEmail))
             {
                 return Unauthorized();
-            }
-
-            if (string.IsNullOrWhiteSpace(truckNum))
-            {
-                return BadRequest("Truck number is required");
             }
 
             var result = await _weightService.GetTruckVioAsync(userEmail, truckNum, date, siteId);

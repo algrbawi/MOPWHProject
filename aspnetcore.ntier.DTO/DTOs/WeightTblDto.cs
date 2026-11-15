@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -58,6 +58,7 @@ namespace aspnetcore.ntier.DTO.DTOs
         public DriversTblDto? Driver { get; set; }
         public UsersTblDto? User { get; set; }
         public WeightClassTblDto? WClass { get; set; }
+        public SiteTblDto? Site { get; set; }
 
     }
 }

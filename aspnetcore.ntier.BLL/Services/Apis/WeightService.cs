@@ -109,7 +109,7 @@ namespace aspnetcore.ntier.BLL.Services.Apis
 
         }
 
-        public async Task<List<WeightTblDto>> GetTruckVioAsync(string userEmail, string truckNum, DateOnly date, decimal? siteId = null)
+        public async Task<List<WeightTblDto>> GetTruckVioAsync(string userEmail, string? truckNum, DateOnly date, decimal? siteId = null)
         {
             var user = await _dashboardUserRepository.GetAsync(x => x.Email.ToLower() == userEmail.ToLower());
             if (user == null)
@@ -117,19 +117,16 @@ namespace aspnetcore.ntier.BLL.Services.Apis
                 return new List<WeightTblDto>();
             }
 
+            var cleanTruckNum = truckNum?.Trim();
+
             var results = await _weightTblRepository.GetListAsync(
                 x => x.VioPrice > 0 && x.VioWeight > 0 &&
-                     x.TruckNum == truckNum &&
+                     (string.IsNullOrEmpty(cleanTruckNum) || x.TruckNum == cleanTruckNum) &&
                      x.InDate == date &&
                      (siteId == null || x.SiteId == siteId) &&
-                     (user.IsSuperAdmin || x.Site.AccessUsers.Any(a => a.DashboardUserId == user.Id)),
-                include: x => x.Include(n => n.Nation)
-                                .Include(p => p.Product)
-                                .Include(d => d.Driver)
-                                .Include(u => u.User)
-                                .Include(c => c.WClass)
-                                .Include(s => s.Site)
-                                .ThenInclude(uac => uac.AccessUsers));
+                     (user.IsSuperAdmin || (x.Site != null && x.Site.AccessUsers.Any(a => a.DashboardUserId == user.Id))),
+                include: x => x.Include(c => c.WClass)
+                                .Include(s => s.Site));
 
             return _mapper.Map<List<WeightTblDto>>(results.OrderByDescending(x => x.InTime).ToList());
         }
