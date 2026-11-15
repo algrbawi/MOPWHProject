@@ -1,4 +1,4 @@
-﻿using aspnetcore.ntier.DTO.DTOs;
+using aspnetcore.ntier.DTO.DTOs;
 using aspnetcore.ntier.DTO.Enum;
 using System;
 using System.Collections.Generic;
@@ -16,5 +16,6 @@ namespace aspnetcore.ntier.BLL.Services.IServices
         Task<WeightReportDto> GetWeightReportData(int SiteId, DateOnly Date, ReportType ReportType, string userEmail, DateOnly? ToDate = null, string? TruckNumber = null, string? Product = null, string? classification = null);
         Task<WeightReportDto> GetWeightReportData(int SiteId, decimal WId, string userEmail);
         Task UpdateAsync(EditWeightTblDto model);
+        Task<List<WeightTblDto>> GetTruckVioAsync(string userEmail);
     }
 }
