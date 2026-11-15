@@ -1,4 +1,4 @@
-﻿using aspnetcore.ntier.BLL.Services.IServices;
+using aspnetcore.ntier.BLL.Services.IServices;
 using aspnetcore.ntier.DAL.Entities;
 using aspnetcore.ntier.DAL.Repositories.IRepositories;
 using aspnetcore.ntier.DTO.DTOs;
@@ -107,6 +107,28 @@ namespace aspnetcore.ntier.BLL.Services.Apis
             var weightReport = new WeightReportDto();
             return GetReportDataType(results, ReportType.bill);
 
+        }
+
+        public async Task<List<WeightTblDto>> GetTruckVioAsync(string userEmail)
+        {
+            var user = await _dashboardUserRepository.GetAsync(x => x.Email.ToLower() == userEmail.ToLower());
+            if (user == null)
+            {
+                return new List<WeightTblDto>();
+            }
+
+            var results = await _weightTblRepository.GetListAsync(
+                x => x.VioPrice > 0 && x.VioWeight > 0 &&
+                     (user.IsSuperAdmin || x.Site.AccessUsers.Any(a => a.DashboardUserId == user.Id)),
+                include: x => x.Include(n => n.Nation)
+                                .Include(p => p.Product)
+                                .Include(d => d.Driver)
+                                .Include(u => u.User)
+                                .Include(c => c.WClass)
+                                .Include(s => s.Site)
+                                .ThenInclude(uac => uac.AccessUsers));
+
+            return _mapper.Map<List<WeightTblDto>>(results.OrderByDescending(x => x.InDate).ThenByDescending(x => x.InTime).ToList());
         }
 
         private string FixTimeFormat(TimeOnly? time)
