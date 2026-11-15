@@ -76,6 +76,7 @@ namespace aspnetcore.ntier.Dashboard.Controllers.Apis
             }
 
             var result = await _weightService.GetTruckVioAsync(userEmail, truckNum, date, siteId);
+
             return Ok(result);
         }
     }
